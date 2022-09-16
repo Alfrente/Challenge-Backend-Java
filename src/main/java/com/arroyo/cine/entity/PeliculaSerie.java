@@ -1,19 +1,19 @@
 package com.arroyo.cine.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-
 @Entity
+@Table(name = "pelicula_serie")
 public class PeliculaSerie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_pelicula_serie ;
-    @NotBlank
-    private Integer id_genero;
-    @NotBlank
-    private Integer id_persona;
     @NotBlank
     @Column(length = 50)
     private String titulo;
@@ -22,9 +22,13 @@ public class PeliculaSerie {
     @Column(length = 1)
     private Byte califiacion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_persona", insertable = false, updatable = false)
-    private Persona persona;
+    @NotBlank
+    @Size(min = 1)
+    private Integer id_personaje;
+
+    @ManyToOne
+    @JoinColumn(name = "id_personaje", insertable = false, updatable = false)
+    private Personaje personaje;
 
     public Integer getId_pelicula_serie() {
         return id_pelicula_serie;
@@ -32,22 +36,6 @@ public class PeliculaSerie {
 
     public void setId_pelicula_serie(Integer id_pelicula_serie) {
         this.id_pelicula_serie = id_pelicula_serie;
-    }
-
-    public Integer getId_genero() {
-        return id_genero;
-    }
-
-    public void setId_genero(Integer id_genero) {
-        this.id_genero = id_genero;
-    }
-
-    public Integer getId_persona() {
-        return id_persona;
-    }
-
-    public void setId_persona(Integer id_persona) {
-        this.id_persona = id_persona;
     }
 
     public String getTitulo() {
@@ -74,11 +62,30 @@ public class PeliculaSerie {
         this.califiacion = califiacion;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public Integer getId_personaje() {
+        return id_personaje;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
+    public void setId_personaje(Integer id_personaje) {
+        this.id_personaje = id_personaje;
+    }
+
+    public Personaje getPersonaje() {
+        return personaje;
+    }
+
+    public void setPersonaje(Personaje personaje) {
+        this.personaje = personaje;
+    }
+
+    @Override
+    public String toString() {
+        return "PeliculaSerie{" +
+                "id_pelicula_serie=" + id_pelicula_serie +
+                ", titulo='" + titulo + '\'' +
+                ", fecha_creacion=" + fecha_creacion +
+                ", califiacion=" + califiacion +
+                ", id_personaje=" + id_personaje +
+                '}';
     }
 }

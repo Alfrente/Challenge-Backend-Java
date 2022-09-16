@@ -1,34 +1,36 @@
 package com.arroyo.cine.dto;
 
 import com.arroyo.cine.entity.PeliculaSerie;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
-@Data
-public class PersonaDto {
-    private int persona;
+
+public class PersonajeDto  {
+
+    private Integer id_personaje;
     @NotBlank
     @Column(length = 55)
     private String nombre;
     @NotBlank
     @Column(length = 2)
-    private byte edad;
+    private Byte edad;
     @NotBlank
-    private float peso;
+    private Float peso;
     private String imagen;
     private String historia;
 
     private List<PeliculaSerie> peliculaSeries;
 
-    public int getPersona() {
-        return persona;
+    public Integer getId_personaje() {
+        return id_personaje;
     }
 
-    public void setPersona(int persona) {
-        this.persona = persona;
+    public void setId_personaje(Integer id_personaje) {
+        this.id_personaje = id_personaje;
     }
 
     public String getNombre() {
@@ -39,19 +41,19 @@ public class PersonaDto {
         this.nombre = nombre;
     }
 
-    public byte getEdad() {
+    public Byte getEdad() {
         return edad;
     }
 
-    public void setEdad(byte edad) {
+    public void setEdad(Byte edad) {
         this.edad = edad;
     }
 
-    public float getPeso() {
+    public Float getPeso() {
         return peso;
     }
 
-    public void setPeso(float peso) {
+    public void setPeso(Float peso) {
         this.peso = peso;
     }
 
@@ -77,5 +79,17 @@ public class PersonaDto {
 
     public void setPeliculaSeries(List<PeliculaSerie> peliculaSeries) {
         this.peliculaSeries = peliculaSeries;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonajeDto{" +
+                "id_personaje=" + id_personaje +
+                ", nombre='" + nombre + '\'' +
+                ", edad=" + edad +
+                ", peso=" + peso +
+                ", imagen='" + imagen + '\'' +
+                ", historia='" + historia + '\'' +
+                '}';
     }
 }

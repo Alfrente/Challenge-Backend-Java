@@ -24,7 +24,7 @@ public class GeneroService {
     }
 
     public GeneroDto delete(GeneroDto generoDto) {
-        Genero genero = generoRepository.findById(generoDto.getGenero()).orElse(new Genero());
+        Genero genero = generoRepository.findById(generoDto.getId_genero()).orElse(new Genero());
         if (genero.getId_genero() != null && genero.getId_genero() > 0)
             generoRepository.delete(generoMapper.aGenero(generoDto));
         return generoMapper.aGeneroDto(genero);
@@ -42,5 +42,13 @@ public class GeneroService {
 
     public List<GeneroDto> getAll() {
         return generoMapper.aListGeneroDto(generoRepository.findAll());
+    }
+
+    public GeneroDto update(Integer idGenero, String nuevoGenero) {
+        Genero genero = generoRepository.findById(idGenero).orElse(new Genero());
+        genero.setNombre(nuevoGenero);
+        if (genero.getId_genero() == null)
+            return generoMapper.aGeneroDto(genero);
+        return generoMapper.aGeneroDto(generoRepository.save(genero));
     }
 }

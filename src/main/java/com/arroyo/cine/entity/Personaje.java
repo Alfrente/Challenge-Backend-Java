@@ -1,14 +1,18 @@
 package com.arroyo.cine.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
-public class Persona {
+@Table(name = "personaje")
+public class Personaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_persona;
+    private Integer id_personaje;
     @NotBlank
     @Column(length = 55)
     private String nombre;
@@ -20,15 +24,15 @@ public class Persona {
     private String imagen;
     private String historia;
 
-    @OneToMany(mappedBy = "persona", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "personaje", fetch = FetchType.LAZY)
     private List<PeliculaSerie> peliculaSeries;
 
-    public Integer getId_persona() {
-        return id_persona;
+    public Integer getId_personaje() {
+        return id_personaje;
     }
 
-    public void setId_persona(Integer id_persona) {
-        this.id_persona = id_persona;
+    public void setId_personaje(Integer id_personaje) {
+        this.id_personaje = id_personaje;
     }
 
     public String getNombre() {
@@ -77,5 +81,17 @@ public class Persona {
 
     public void setPeliculaSeries(List<PeliculaSerie> peliculaSeries) {
         this.peliculaSeries = peliculaSeries;
+    }
+
+    @Override
+    public String toString() {
+        return "Personaje{" +
+                "id_personaje=" + id_personaje +
+                ", nombre='" + nombre + '\'' +
+                ", edad=" + edad +
+                ", peso=" + peso +
+                ", imagen='" + imagen + '\'' +
+                ", historia='" + historia + '\'' +
+                '}';
     }
 }

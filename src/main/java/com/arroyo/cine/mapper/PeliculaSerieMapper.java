@@ -6,15 +6,16 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = PersonaMapper.class)
+import java.util.List;
+
+@Mapper(componentModel = "spring")
 public interface PeliculaSerieMapper {
 
-    @Mapping(target = "id_pelicula_serie", source = "peliculaSerie.id_pelicula_serie")
-    @Mapping(target = "id_genero", source = "peliculaSerie.id_genero")
-    @Mapping(target = "id_persona", source = "peliculaSerie.id_persona")
     PeliculaSerieDto aPeliculaSerieDto(PeliculaSerie peliculaSerie);
 
+    List<PeliculaSerieDto> aaPeliculaSerieDtoList(List<PeliculaSerie> peliculaSeries);
+
     @InheritInverseConfiguration
-    @Mapping(target = "persona", ignore = true)
+    @Mapping(target = "personaje", ignore = true)
     PeliculaSerie aPeliculaSerie(PeliculaSerieDto peliculaSerieDto);
 }

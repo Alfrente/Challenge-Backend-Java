@@ -1,39 +1,30 @@
 package com.arroyo.cine.dto;
 
-import com.sun.istack.NotNull;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-
 public class GeneroDto {
-    private int genero;
     @NotBlank
     @Size(min = 1)
-    private int  persona;
+    private Integer id_genero;
     @NotBlank
     @Size(min = 4, max = 50)
     private String nombre;
     private String imagen;
 
-    public int getGenero() {
-        return genero;
+    @NotBlank
+    @Size(min = 1)
+    private Integer id_pelicula_serie;
+
+    public Integer getId_genero() {
+        return id_genero;
     }
 
-    public void setGenero(int genero) {
-        this.genero = genero;
-    }
-
-    public int getPersona() {
-        return persona;
-    }
-
-    public void setPersona(int persona) {
-        this.persona = persona;
+    public void setId_genero(Integer id_genero) {
+        this.id_genero = id_genero;
     }
 
     public String getNombre() {
@@ -50,5 +41,23 @@ public class GeneroDto {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public Integer getId_pelicula_serie() {
+        return id_pelicula_serie;
+    }
+
+    public void setId_pelicula_serie(Integer id_pelicula_serie) {
+        this.id_pelicula_serie = id_pelicula_serie;
+    }
+
+    @Override
+    public String toString() {
+        return "GeneroDto{" +
+                "id_genero=" + id_genero +
+                ", nombre='" + nombre + '\'' +
+                ", imagen='" + imagen + '\'' +
+                ", id_pelicula_serie=" + id_pelicula_serie +
+                '}';
     }
 }
