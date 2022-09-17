@@ -24,15 +24,15 @@ public class GeneroService {
     }
 
     public GeneroDto delete(GeneroDto generoDto) {
-        Genero genero = generoRepository.findById(generoDto.getId_genero()).orElse(new Genero());
-        if (genero.getId_genero() != null && genero.getId_genero() > 0)
+        Genero genero = generoRepository.findById(generoDto.getIdeGenero()).orElse(new Genero());
+        if (genero.getIdGenero() != null && genero.getIdGenero() > 0)
             generoRepository.delete(generoMapper.aGenero(generoDto));
         return generoMapper.aGeneroDto(genero);
     }
 
     public GeneroDto deleteById(Integer idGenero) {
         Genero genero = generoRepository.findById(idGenero).orElse(new Genero());
-        generoRepository.deleteById(genero.getId_genero());
+        generoRepository.deleteById(genero.getIdGenero());
         return generoMapper.aGeneroDto(genero);
     }
 
@@ -47,7 +47,7 @@ public class GeneroService {
     public GeneroDto update(Integer idGenero, String nuevoGenero) {
         Genero genero = generoRepository.findById(idGenero).orElse(new Genero());
         genero.setNombre(nuevoGenero);
-        if (genero.getId_genero() == null)
+        if (genero.getIdGenero() == null)
             return generoMapper.aGeneroDto(genero);
         return generoMapper.aGeneroDto(generoRepository.save(genero));
     }

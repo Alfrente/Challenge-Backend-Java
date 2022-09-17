@@ -1,10 +1,9 @@
 package com.arroyo.cine.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -12,27 +11,36 @@ import java.util.List;
 public class Personaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_personaje;
+    @Column(name = "id_personaje")
+    private Integer idPersonaje;
+
     @NotBlank
-    @Column(length = 55)
+    @Size(min = 4, max = 50)
     private String nombre;
+
     @NotBlank
-    @Column(length = 2)
+    @Size(min = 1, max = 2)
     private Byte edad;
+
     @NotBlank
     private Float peso;
-    private String imagen;
-    private String historia;
 
-    @OneToMany(mappedBy = "personaje", fetch = FetchType.LAZY)
+    @Null
+    @Size(max = 255)
+    private String imagen;
+
+    @Null
+    private  String historia;
+
+    @OneToMany(mappedBy = "personaje", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PeliculaSerie> peliculaSeries;
 
-    public Integer getId_personaje() {
-        return id_personaje;
+    public Integer getIdPersonaje() {
+        return idPersonaje;
     }
 
-    public void setId_personaje(Integer id_personaje) {
-        this.id_personaje = id_personaje;
+    public void setIdPersonaje(Integer idPersonaje) {
+        this.idPersonaje = idPersonaje;
     }
 
     public String getNombre() {
@@ -81,17 +89,5 @@ public class Personaje {
 
     public void setPeliculaSeries(List<PeliculaSerie> peliculaSeries) {
         this.peliculaSeries = peliculaSeries;
-    }
-
-    @Override
-    public String toString() {
-        return "Personaje{" +
-                "id_personaje=" + id_personaje +
-                ", nombre='" + nombre + '\'' +
-                ", edad=" + edad +
-                ", peso=" + peso +
-                ", imagen='" + imagen + '\'' +
-                ", historia='" + historia + '\'' +
-                '}';
     }
 }

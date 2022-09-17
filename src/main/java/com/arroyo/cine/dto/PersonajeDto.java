@@ -1,95 +1,91 @@
 package com.arroyo.cine.dto;
 
 import com.arroyo.cine.entity.PeliculaSerie;
-import lombok.Getter;
-import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.util.List;
-
 
 public class PersonajeDto  {
 
-    private Integer id_personaje;
     @NotBlank
-    @Column(length = 55)
-    private String nombre;
+    @Size(min = 1)
+    private Integer idePersonaje;
+
     @NotBlank
-    @Column(length = 2)
-    private Byte edad;
+    @Size(min = 4, max = 50)
+    private String nombrePer;
+
     @NotBlank
-    private Float peso;
-    private String imagen;
-    private String historia;
+    @Size(min = 1, max = 2)
+    private Byte edadPer;
 
-    private List<PeliculaSerie> peliculaSeries;
+    @NotBlank
+    private Float pesoPer;
 
-    public Integer getId_personaje() {
-        return id_personaje;
+    @Null
+    @Size(max = 255)
+    private String imagenPer;
+
+    @Null
+    private  String historiaPer;
+
+    private List<PeliculaSerieDto> peliculaSeries;
+
+    public Integer getIdePersonaje() {
+        return idePersonaje;
     }
 
-    public void setId_personaje(Integer id_personaje) {
-        this.id_personaje = id_personaje;
+    public void setIdePersonaje(Integer idePersonaje) {
+        this.idePersonaje = idePersonaje;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombrePer() {
+        return nombrePer;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombrePer(String nombrePer) {
+        this.nombrePer = nombrePer;
     }
 
-    public Byte getEdad() {
-        return edad;
+    public Byte getEdadPer() {
+        return edadPer;
     }
 
-    public void setEdad(Byte edad) {
-        this.edad = edad;
+    public void setEdadPer(Byte edadPer) {
+        this.edadPer = edadPer;
     }
 
-    public Float getPeso() {
-        return peso;
+    public Float getPesoPer() {
+        return pesoPer;
     }
 
-    public void setPeso(Float peso) {
-        this.peso = peso;
+    public void setPesoPer(Float pesoPer) {
+        this.pesoPer = pesoPer;
     }
 
-    public String getImagen() {
-        return imagen;
+    public String getImagenPer() {
+        return imagenPer;
     }
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
+    public void setImagenPer(String imagenPer) {
+        this.imagenPer = imagenPer;
     }
 
-    public String getHistoria() {
-        return historia;
+    public String getHistoriaPer() {
+        return historiaPer;
     }
 
-    public void setHistoria(String historia) {
-        this.historia = historia;
+    public void setHistoriaPer(String historiaPer) {
+        this.historiaPer = historiaPer;
     }
 
-    public List<PeliculaSerie> getPeliculaSeries() {
+    public List<PeliculaSerieDto> getPeliculaSeries() {
         return peliculaSeries;
     }
 
-    public void setPeliculaSeries(List<PeliculaSerie> peliculaSeries) {
+    public void setPeliculaSeries(List<PeliculaSerieDto> peliculaSeries) {
         this.peliculaSeries = peliculaSeries;
-    }
-
-    @Override
-    public String toString() {
-        return "PersonajeDto{" +
-                "id_personaje=" + id_personaje +
-                ", nombre='" + nombre + '\'' +
-                ", edad=" + edad +
-                ", peso=" + peso +
-                ", imagen='" + imagen + '\'' +
-                ", historia='" + historia + '\'' +
-                '}';
     }
 }
