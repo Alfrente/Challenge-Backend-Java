@@ -12,12 +12,12 @@ import java.util.List;
 public interface PeliculaSerieMapper {
 
     @Mapping(target = "idPeliculaSerie", source = "peliculaSerie.idPeliculaSerie")
-    @Mapping(target = "tituloPeliSerie", source = "peliculaSerie.titulo")
+    @Mapping(target = "titulo", source = "peliculaSerie.titulo")
     @Mapping(target = "caratula", source = "peliculaSerie.imagen")
-    @Mapping(target = "fechaCreacionPeliSerie", source = "peliculaSerie.fechaCreacion")
-    @Mapping(target = "califiacionPeliSerie", source = "peliculaSerie.califiacion")
-    @Mapping(target = "idPersonajePeliSerie", source = "peliculaSerie.idPersonaje")
-    @Mapping(target = "idGeneroPeliSerie", source = "peliculaSerie.idGenero")
+    @Mapping(target = "fechaCreacion", source = "peliculaSerie.fechaCreacion")
+    @Mapping(target = "califiacion", source = "peliculaSerie.califiacion")
+    @Mapping(target = "idPersonaje", source = "peliculaSerie.idPersonaje")
+    @Mapping(target = "idGenero", source = "peliculaSerie.idGenero")
     PeliculaSerieDto aPeliculaSerieDto(PeliculaSerie peliculaSerie);
 
     List<PeliculaSerieDto> aaPeliculaSerieDtoList(List<PeliculaSerie> peliculaSeries);

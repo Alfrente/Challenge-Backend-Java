@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 
 public class PersonajeDto  {
 
@@ -15,21 +16,21 @@ public class PersonajeDto  {
 
     @NotBlank
     @Size(min = 4, max = 50)
-    private String nombrePer;
+    private String nombre;
 
     @NotBlank
     @Size(min = 1, max = 2)
-    private Byte edadPer;
+    private Byte edad;
 
     @NotBlank
-    private Float pesoPer;
+    private Float peso;
 
     @Null
     @Size(max = 255)
-    private String imagenPer;
+    private String imagen;
 
     @Null
-    private  String historiaPer;
+    private  String historia;
 
     private List<PeliculaSerieDto> peliculaSeries;
 
@@ -41,44 +42,44 @@ public class PersonajeDto  {
         this.idePersonaje = idePersonaje;
     }
 
-    public String getNombrePer() {
-        return nombrePer;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombrePer(String nombrePer) {
-        this.nombrePer = nombrePer;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public Byte getEdadPer() {
-        return edadPer;
+    public Byte getEdad() {
+        return edad;
     }
 
-    public void setEdadPer(Byte edadPer) {
-        this.edadPer = edadPer;
+    public void setEdad(Byte edad) {
+        this.edad = edad;
     }
 
-    public Float getPesoPer() {
-        return pesoPer;
+    public Float getPeso() {
+        return peso;
     }
 
-    public void setPesoPer(Float pesoPer) {
-        this.pesoPer = pesoPer;
+    public void setPeso(Float peso) {
+        this.peso = peso;
     }
 
-    public String getImagenPer() {
-        return imagenPer;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setImagenPer(String imagenPer) {
-        this.imagenPer = imagenPer;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
-    public String getHistoriaPer() {
-        return historiaPer;
+    public String getHistoria() {
+        return historia;
     }
 
-    public void setHistoriaPer(String historiaPer) {
-        this.historiaPer = historiaPer;
+    public void setHistoria(String historia) {
+        this.historia = historia;
     }
 
     public List<PeliculaSerieDto> getPeliculaSeries() {
@@ -87,5 +88,31 @@ public class PersonajeDto  {
 
     public void setPeliculaSeries(List<PeliculaSerieDto> peliculaSeries) {
         this.peliculaSeries = peliculaSeries;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonajeDto that = (PersonajeDto) o;
+        return Objects.equals(idePersonaje, that.idePersonaje) && Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia) && Objects.equals(peliculaSeries, that.peliculaSeries);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idePersonaje, nombre, edad, peso, imagen, historia, peliculaSeries);
+    }
+
+    @Override
+    public String toString() {
+        return "PersonajeDto{" +
+                "idePersonaje=" + idePersonaje +
+                ", nombre='" + nombre + '\'' +
+                ", edad=" + edad +
+                ", peso=" + peso +
+                ", imagen='" + imagen + '\'' +
+                ", historia='" + historia + '\'' +
+                ", peliculaSeries=" + peliculaSeries +
+                '}';
     }
 }

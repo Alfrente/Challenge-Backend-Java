@@ -39,8 +39,8 @@ public class PersonajeController {
         return personajeService.deleteById(idPersona);
     }
 
-    @PutMapping
-    public PersonajeDto update(PersonajeDto personajeDto){
-        return personajeService.update(personajeDto);
+    @PutMapping("/update/{idPersonaje}")
+    public PersonajeDto update(@PathVariable("idPersonaje") Integer idPersonaje, @RequestBody PersonajeDto personajeDto){
+        return personajeService.update(idPersonaje, personajeDto);
     }
 }

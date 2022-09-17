@@ -4,6 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class PeliculaSerieDto {
 
@@ -13,25 +14,25 @@ public class PeliculaSerieDto {
 
     @NotBlank
     @Size(min = 5, max = 50)
-    private String tituloPeliSerie;
+    private String titulo;
 
     @Null
     private String caratula;
 
     @NotBlank
-    private LocalDateTime fechaCreacionPeliSerie;
+    private LocalDateTime fechaCreacion;
 
     @Null
     @Size(min = 1, max = 5)
-    private Byte califiacionPeliSerie;
+    private Byte califiacion;
 
     @NotBlank
     @Size(min = 1)
-    private Integer idPersonajePeliSerie;
+    private Integer idPersonaje;
 
     @NotBlank
     @Size(min = 1)
-    private Integer idGeneroPeliSerie;
+    private Integer idGenero;
 
     public Integer getIdPeliculaSerie() {
         return idPeliculaSerie;
@@ -41,12 +42,12 @@ public class PeliculaSerieDto {
         this.idPeliculaSerie = idPeliculaSerie;
     }
 
-    public String getTituloPeliSerie() {
-        return tituloPeliSerie;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setTituloPeliSerie(String tituloPeliSerie) {
-        this.tituloPeliSerie = tituloPeliSerie;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getCaratula() {
@@ -57,35 +58,48 @@ public class PeliculaSerieDto {
         this.caratula = caratula;
     }
 
-    public LocalDateTime getFechaCreacionPeliSerie() {
-        return fechaCreacionPeliSerie;
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setFechaCreacionPeliSerie(LocalDateTime fechaCreacionPeliSerie) {
-        this.fechaCreacionPeliSerie = fechaCreacionPeliSerie;
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
-    public Byte getCalifiacionPeliSerie() {
-        return califiacionPeliSerie;
+    public Byte getCalifiacion() {
+        return califiacion;
     }
 
-    public void setCalifiacionPeliSerie(Byte califiacionPeliSerie) {
-        this.califiacionPeliSerie = califiacionPeliSerie;
+    public void setCalifiacion(Byte califiacion) {
+        this.califiacion = califiacion;
     }
 
-    public Integer getIdPersonajePeliSerie() {
-        return idPersonajePeliSerie;
+    public Integer getIdPersonaje() {
+        return idPersonaje;
     }
 
-    public void setIdPersonajePeliSerie(Integer idPersonajePeliSerie) {
-        this.idPersonajePeliSerie = idPersonajePeliSerie;
+    public void setIdPersonaje(Integer idPersonaje) {
+        this.idPersonaje = idPersonaje;
     }
 
-    public Integer getIdGeneroPeliSerie() {
-        return idGeneroPeliSerie;
+    public Integer getIdGenero() {
+        return idGenero;
     }
 
-    public void setIdGeneroPeliSerie(Integer idGeneroPeliSerie) {
-        this.idGeneroPeliSerie = idGeneroPeliSerie;
+    public void setIdGenero(Integer idGenero) {
+        this.idGenero = idGenero;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PeliculaSerieDto that = (PeliculaSerieDto) o;
+        return Objects.equals(idPeliculaSerie, that.idPeliculaSerie) && Objects.equals(titulo, that.titulo) && Objects.equals(caratula, that.caratula) && Objects.equals(fechaCreacion, that.fechaCreacion) && Objects.equals(califiacion, that.califiacion) && Objects.equals(idPersonaje, that.idPersonaje) && Objects.equals(idGenero, that.idGenero);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idPeliculaSerie, titulo, caratula, fechaCreacion, califiacion, idPersonaje, idGenero);
     }
 }

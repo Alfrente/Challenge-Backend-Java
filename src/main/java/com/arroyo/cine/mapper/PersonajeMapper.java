@@ -12,11 +12,11 @@ import java.util.List;
 public interface PersonajeMapper {
 
     @Mapping(target = "idePersonaje", source = "personaje.idPersonaje")
-    @Mapping(target = "nombrePer", source = "personaje.nombre")
-    @Mapping(target = "edadPer", source = "personaje.edad")
-    @Mapping(target = "pesoPer", source = "personaje.peso")
-    @Mapping(target = "imagenPer", source = "personaje.imagen")
-    @Mapping(target = "historiaPer", source = "personaje.historia")
+    @Mapping(target = "nombre", source = "personaje.nombre")
+    @Mapping(target = "edad", source = "personaje.edad")
+    @Mapping(target = "peso", source = "personaje.peso")
+    @Mapping(target = "imagen", source = "personaje.imagen")
+    @Mapping(target = "historia", source = "personaje.historia")
     @Mapping(target = "peliculaSeries", source = "personaje.peliculaSeries")
     PersonajeDto aPersonajeDto(Personaje personaje);
 
