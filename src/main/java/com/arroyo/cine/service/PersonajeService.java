@@ -24,7 +24,7 @@ public class PersonajeService {
 
     public PersonajeDto getById(Integer idPersonaje) {
         Personaje personaje = personajeRepository.findById(idPersonaje).orElse(new Personaje());
-        if (personaje.getId_personaje() == null)
+        if (personaje.getIdPersonaje() == null)
             return new PersonajeDto();
         return personajeMapper.aPersonajeDto(personaje);
     }
@@ -35,15 +35,15 @@ public class PersonajeService {
     }
 
     public PersonajeDto update(PersonajeDto personajeDto) {
-        Personaje personaje = personajeRepository.findById(personajeDto.getId_personaje()).orElse(new Personaje());
-        if (personaje.getId_personaje() == null)
+        Personaje personaje = personajeRepository.findById(personajeDto.getIdePersonaje()).orElse(new Personaje());
+        if (personaje.getIdPersonaje() == null)
             return new PersonajeDto();
         return personajeMapper.aPersonajeDto(personajeRepository.save(personajeMapper.aPersonaje(personajeDto)));
     }
 
     public PersonajeDto delete(PersonajeDto personajeDto) {
-        Personaje personaje = personajeRepository.findById(personajeDto.getId_personaje()).orElse(new Personaje());
-        if (personaje.getId_personaje() == null)
+        Personaje personaje = personajeRepository.findById(personajeDto.getIdePersonaje()).orElse(new Personaje());
+        if (personaje.getIdPersonaje() == null)
             return new PersonajeDto();
         personajeRepository.delete(personajeMapper.aPersonaje(personajeDto));
         return personajeMapper.aPersonajeDto(personaje);
@@ -51,7 +51,7 @@ public class PersonajeService {
 
     public PersonajeDto deleteById(Integer idPersonaje) {
         Personaje personaje = personajeRepository.findById(idPersonaje).orElse(new Personaje());
-        if (personaje.getId_personaje() == null)
+        if (personaje.getIdPersonaje() == null)
             return new PersonajeDto();
         personajeRepository.deleteById(idPersonaje);
         return personajeMapper.aPersonajeDto(personaje);

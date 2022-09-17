@@ -1,88 +1,91 @@
 package com.arroyo.cine.dto;
 
-import com.arroyo.cine.entity.Personaje;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-
 public class PeliculaSerieDto {
-
-    private Integer id_pelicula_serie ;
-    @NotBlank
-    @Column(length = 50)
-    private String titulo;
-    private LocalDateTime fecha_creacion;
-
-    @Column(length = 1)
-    private Byte califiacion;
 
     @NotBlank
     @Size(min = 1)
-    private Integer id_personaje;
+    private Integer idPeliculaSerie;
 
-    private Personaje personaje;
+    @NotBlank
+    @Size(min = 5, max = 50)
+    private String tituloPeliSerie;
 
-    public Integer getId_pelicula_serie() {
-        return id_pelicula_serie;
+    @Null
+    private String caratula;
+
+    @NotBlank
+    private LocalDateTime fechaCreacionPeliSerie;
+
+    @Null
+    @Size(min = 1, max = 5)
+    private Byte califiacionPeliSerie;
+
+    @NotBlank
+    @Size(min = 1)
+    private Integer idPersonajePeliSerie;
+
+    @NotBlank
+    @Size(min = 1)
+    private Integer idGeneroPeliSerie;
+
+    public Integer getIdPeliculaSerie() {
+        return idPeliculaSerie;
     }
 
-    public void setId_pelicula_serie(Integer id_pelicula_serie) {
-        this.id_pelicula_serie = id_pelicula_serie;
+    public void setIdPeliculaSerie(Integer idPeliculaSerie) {
+        this.idPeliculaSerie = idPeliculaSerie;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getTituloPeliSerie() {
+        return tituloPeliSerie;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setTituloPeliSerie(String tituloPeliSerie) {
+        this.tituloPeliSerie = tituloPeliSerie;
     }
 
-    public LocalDateTime getFecha_creacion() {
-        return fecha_creacion;
+    public String getCaratula() {
+        return caratula;
     }
 
-    public void setFecha_creacion(LocalDateTime fecha_creacion) {
-        this.fecha_creacion = fecha_creacion;
+    public void setCaratula(String caratula) {
+        this.caratula = caratula;
     }
 
-    public Byte getCalifiacion() {
-        return califiacion;
+    public LocalDateTime getFechaCreacionPeliSerie() {
+        return fechaCreacionPeliSerie;
     }
 
-    public void setCalifiacion(Byte califiacion) {
-        this.califiacion = califiacion;
+    public void setFechaCreacionPeliSerie(LocalDateTime fechaCreacionPeliSerie) {
+        this.fechaCreacionPeliSerie = fechaCreacionPeliSerie;
     }
 
-    public Integer getId_personaje() {
-        return id_personaje;
+    public Byte getCalifiacionPeliSerie() {
+        return califiacionPeliSerie;
     }
 
-    public void setId_personaje(Integer id_personaje) {
-        this.id_personaje = id_personaje;
+    public void setCalifiacionPeliSerie(Byte califiacionPeliSerie) {
+        this.califiacionPeliSerie = califiacionPeliSerie;
     }
 
-    public Personaje getPersonaje() {
-        return personaje;
+    public Integer getIdPersonajePeliSerie() {
+        return idPersonajePeliSerie;
     }
 
-    public void setPersonaje(Personaje personaje) {
-        this.personaje = personaje;
+    public void setIdPersonajePeliSerie(Integer idPersonajePeliSerie) {
+        this.idPersonajePeliSerie = idPersonajePeliSerie;
     }
 
-    @Override
-    public String toString() {
-        return "PeliculaSerieDto{" +
-                "id_pelicula_serie=" + id_pelicula_serie +
-                ", titulo='" + titulo + '\'' +
-                ", fecha_creacion=" + fecha_creacion +
-                ", califiacion=" + califiacion +
-                ", id_personaje=" + id_personaje +
-                '}';
+    public Integer getIdGeneroPeliSerie() {
+        return idGeneroPeliSerie;
+    }
+
+    public void setIdGeneroPeliSerie(Integer idGeneroPeliSerie) {
+        this.idGeneroPeliSerie = idGeneroPeliSerie;
     }
 }

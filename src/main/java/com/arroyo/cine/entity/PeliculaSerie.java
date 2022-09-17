@@ -1,10 +1,8 @@
 package com.arroyo.cine.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -13,29 +11,44 @@ import java.time.LocalDateTime;
 public class PeliculaSerie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_pelicula_serie ;
-    @NotBlank
-    @Column(length = 50)
-    private String titulo;
-    private LocalDateTime fecha_creacion;
+    @Column(name = "id_pelicula_serie")
+    private Integer idPeliculaSerie;
 
-    @Column(length = 1)
+    @NotBlank
+    @Size(min = 5, max = 50)
+    private String titulo;
+
+    @Null
+    private String imagen;
+
+    @NotBlank
+    @Column(name = "fecha_creacion")
+    private LocalDateTime fechaCreacion;
+
+    @Null
+    @Size(min = 1, max = 5)
     private Byte califiacion;
 
     @NotBlank
     @Size(min = 1)
-    private Integer id_personaje;
+    @Column(name = "id_personaje")
+    private Integer idPersonaje;
+
+    @NotBlank
+    @Size(min = 1)
+    @Column(name = "id_genero")
+    private Integer idGenero;
 
     @ManyToOne
     @JoinColumn(name = "id_personaje", insertable = false, updatable = false)
     private Personaje personaje;
 
-    public Integer getId_pelicula_serie() {
-        return id_pelicula_serie;
+    public Integer getIdPeliculaSerie() {
+        return idPeliculaSerie;
     }
 
-    public void setId_pelicula_serie(Integer id_pelicula_serie) {
-        this.id_pelicula_serie = id_pelicula_serie;
+    public void setIdPeliculaSerie(Integer idPeliculaSerie) {
+        this.idPeliculaSerie = idPeliculaSerie;
     }
 
     public String getTitulo() {
@@ -46,12 +59,20 @@ public class PeliculaSerie {
         this.titulo = titulo;
     }
 
-    public LocalDateTime getFecha_creacion() {
-        return fecha_creacion;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setFecha_creacion(LocalDateTime fecha_creacion) {
-        this.fecha_creacion = fecha_creacion;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     public Byte getCalifiacion() {
@@ -62,12 +83,20 @@ public class PeliculaSerie {
         this.califiacion = califiacion;
     }
 
-    public Integer getId_personaje() {
-        return id_personaje;
+    public Integer getIdPersonaje() {
+        return idPersonaje;
     }
 
-    public void setId_personaje(Integer id_personaje) {
-        this.id_personaje = id_personaje;
+    public void setIdPersonaje(Integer idPersonaje) {
+        this.idPersonaje = idPersonaje;
+    }
+
+    public Integer getIdGenero() {
+        return idGenero;
+    }
+
+    public void setIdGenero(Integer idGenero) {
+        this.idGenero = idGenero;
     }
 
     public Personaje getPersonaje() {
@@ -76,16 +105,5 @@ public class PeliculaSerie {
 
     public void setPersonaje(Personaje personaje) {
         this.personaje = personaje;
-    }
-
-    @Override
-    public String toString() {
-        return "PeliculaSerie{" +
-                "id_pelicula_serie=" + id_pelicula_serie +
-                ", titulo='" + titulo + '\'' +
-                ", fecha_creacion=" + fecha_creacion +
-                ", califiacion=" + califiacion +
-                ", id_personaje=" + id_personaje +
-                '}';
     }
 }
