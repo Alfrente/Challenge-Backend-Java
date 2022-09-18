@@ -13,42 +13,50 @@ import java.util.List;
 public class GeneroService {
 
     @Autowired
-    private GeneroRepository generoRepository;
+    private GeneroRepository repository;
 
     @Autowired
-    private GeneroMapper generoMapper;
+    private GeneroMapper mapper;
 
     public GeneroDto save(GeneroDto generoDto) {
-        Genero genero = generoMapper.aGenero(generoDto);
-        return generoMapper.aGeneroDto(generoRepository.save(genero));
+        Genero genero = mapper.aGenero(generoDto);
+        return mapper.aGeneroDto(repository.save(genero));
     }
 
     public GeneroDto delete(GeneroDto generoDto) {
-        Genero genero = generoRepository.findById(generoDto.getIdeGenero()).orElse(new Genero());
-        if (genero.getIdGenero() != null && genero.getIdGenero() > 0)
-            generoRepository.delete(generoMapper.aGenero(generoDto));
-        return generoMapper.aGeneroDto(genero);
+        Genero genero = repository.findById(generoDto.getIdeGenero()).orElse(new Genero());
+        if (genero.getIdGenero() == null || validarTodosLosDatos(generoDto))
+            return new GeneroDto();
+        repository.delete(mapper.aGenero(generoDto));
+        return mapper.aGeneroDto(genero);
     }
 
     public GeneroDto deleteById(Integer idGenero) {
-        Genero genero = generoRepository.findById(idGenero).orElse(new Genero());
-        generoRepository.deleteById(genero.getIdGenero());
-        return generoMapper.aGeneroDto(genero);
+        Genero genero = repository.findById(idGenero).orElse(new Genero());
+        if (genero.getIdGenero() == null)
+            return new GeneroDto();
+        repository.deleteById(genero.getIdGenero());
+        return mapper.aGeneroDto(genero);
     }
 
     public GeneroDto getById(Integer idGenero) {
-        return generoMapper.aGeneroDto(generoRepository.findById(idGenero).orElse(new Genero()));
+        return mapper.aGeneroDto(repository.findById(idGenero).orElse(new Genero()));
     }
 
     public List<GeneroDto> getAll() {
-        return generoMapper.aListGeneroDto(generoRepository.findAll());
+        return mapper.aListGeneroDto(repository.findAll());
     }
 
     public GeneroDto update(Integer idGenero, String nuevoGenero) {
-        Genero genero = generoRepository.findById(idGenero).orElse(new Genero());
+        Genero genero = repository.findById(idGenero).orElse(new Genero());
         genero.setNombre(nuevoGenero);
         if (genero.getIdGenero() == null)
-            return generoMapper.aGeneroDto(genero);
-        return generoMapper.aGeneroDto(generoRepository.save(genero));
+            return new GeneroDto();
+        return mapper.aGeneroDto(repository.save(genero));
+    }
+
+    private boolean validarTodosLosDatos(GeneroDto genero){
+        return genero.getIdeGenero() != null && genero.getIdeGenero() > 0 && genero.getNombreGenero() != null &&
+                (!genero.getNombreGenero().isBlank()) && genero.getImagenGenero() != null && (!genero.getImagenGenero().isBlank());
     }
 }

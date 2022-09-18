@@ -1,7 +1,5 @@
 package com.arroyo.cine.dto;
 
-import com.arroyo.cine.entity.PeliculaSerie;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;

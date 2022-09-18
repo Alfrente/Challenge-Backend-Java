@@ -3,7 +3,6 @@ package com.arroyo.cine.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class PeliculaSerieDto {
@@ -20,7 +19,7 @@ public class PeliculaSerieDto {
     private String caratula;
 
     @NotBlank
-    private LocalDateTime fechaCreacion;
+    private String fechaCreacion;
 
     @Null
     @Size(min = 1, max = 5)
@@ -58,11 +57,11 @@ public class PeliculaSerieDto {
         this.caratula = caratula;
     }
 
-    public LocalDateTime getFechaCreacion() {
+    public String getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+    public void setFechaCreacion(String fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
