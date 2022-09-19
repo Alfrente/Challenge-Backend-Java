@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/personaje")
 public class PersonajeController {
 
     @Autowired
     private PersonajeService personajeService;
 
-    @GetMapping
+    @GetMapping("characters")
     @Operation(summary = "Trae los personajes", description = "Este método trae todos los personajes", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición.")
     })
-    public List<PersonajeDto> getAll() {
-        return personajeService.getAll();
+    public List<PersonajeDto> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
+    Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
+        return personajeService.getAll(name, age, movies);
     }
 
-    @GetMapping("/getById/{idPersona}")
+    @GetMapping("/personaje/getById/{idPersona}")
     @Operation(summary = "Buscar con id", description = "Este método busca el personaje con el id", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición.")
@@ -36,7 +36,7 @@ public class PersonajeController {
         return personajeService.getById(idPersona);
     }
 
-    @PostMapping
+    @PostMapping("/personaje")
     @Operation(summary = "Guardar personaje", description = "Este método es para guarda un personaje", responses = {
             @ApiResponse(responseCode = "201", description = "Se creo el personaje."),
             @ApiResponse(responseCode = "404", description = "No se pudo crear el personaje.")
@@ -46,7 +46,7 @@ public class PersonajeController {
         return personajeService.save(personajeDto);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/personaje")
     @Operation(summary = "Eliminar personaje", description = "Este método es para eliminar el personaje", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el personaje."),
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar el personaje.")
@@ -56,7 +56,7 @@ public class PersonajeController {
         return personajeService.delete(personajeDto);
     }
 
-    @DeleteMapping("/deleteById/{idPersona}")
+    @DeleteMapping("/personaje/deleteById/{idPersona}")
     @Operation(summary = "Eliminar personaje con id", description = "Este método es para eliminar el personaje con el id", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el personaje."),
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar el personaje.")
@@ -66,7 +66,7 @@ public class PersonajeController {
         return personajeService.deleteById(idPersona);
     }
 
-    @PutMapping("/update/{idPersonaje}")
+    @PutMapping("/personaje/update/{idPersonaje}")
     @Operation(summary = "Actualizar personaje", description = "Este método es para actualizar el personaje", responses = {
             @ApiResponse(responseCode = "200", description = "Se actualizo el personaje."),
             @ApiResponse(responseCode = "404", description = "No se pudo actualizar el personaje.")

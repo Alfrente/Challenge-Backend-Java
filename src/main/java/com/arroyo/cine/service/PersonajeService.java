@@ -7,7 +7,10 @@ import com.arroyo.cine.repository.PersonajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Null;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonajeService {
@@ -18,8 +21,8 @@ public class PersonajeService {
     @Autowired
     private PersonajeMapper mapper;
 
-    public List<PersonajeDto> getAll() {
-        return mapper.aListPersonajeDto(repository.findAll());
+    public List<PersonajeDto> getAll(@Null String name, @Null Byte age, @Null Integer movie) {
+        return mapper.aListPersonajeDto(filtro(repository.findAll(), name, age, movie));
     }
 
     public PersonajeDto getById(Integer idPersonaje) {
@@ -90,4 +93,19 @@ public class PersonajeService {
         return personaje;
     }
 
+    private List<Personaje> filtro(List<Personaje> personajes, @Null String name, @Null Byte age, @Null Integer movie) {
+        List<Personaje> personajesFiltro = personajes;
+        if (name != null && !name.isBlank() && age != null && age > 0 && movie != null && movie > 0)
+            return personajesFiltro.stream().filter(personaje -> personaje.getNombre().equals(name) && personaje.getEdad() == age && personaje.getIdPersonaje() == movie).collect(Collectors.toList());
+        else if (name != null && !name.isBlank())
+            return personajesFiltro.stream().filter(personaje -> personaje.getNombre().equals(name)).collect(Collectors.toList());
+        else if (age != null && age > 0)
+            return personajesFiltro.stream().filter(personaje -> personaje.getEdad() == age).collect(Collectors.toList());
+        else if (movie != null && movie > 0)
+            return personajes.stream().filter(personaje -> personaje.getIdPersonaje() == movie).collect(Collectors.toList());
+        else if (name == null && age == null && movie == null)
+            return personajesFiltro;
+        else
+            return new ArrayList<>();
+    }
 }

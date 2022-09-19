@@ -1,17 +1,20 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.dto.PeliculaSerieDto;
+import com.arroyo.cine.dto.PeliculaSeriePersolizadaDto;
 import com.arroyo.cine.entity.PeliculaSerie;
 import com.arroyo.cine.mapper.PeliculaSerieMapper;
+import com.arroyo.cine.mapper.PeliculaSeriePersonalizadoMapper;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static com.arroyo.cine.util.ExpecionRegular.FECHA_CORTA;
-import static com.arroyo.cine.util.ExpecionRegular.FECHA_LARGA;
+import static com.arroyo.cine.util.InformacionEstatica.*;
 
 @Service
 public class PeliculaSerieService {
@@ -21,8 +24,15 @@ public class PeliculaSerieService {
     @Autowired
     private PeliculaSerieMapper mapper;
 
-    public List<PeliculaSerieDto> getAll() {
-        return mapper.aaPeliculaSerieDtoList(repository.findAll());
+    @Autowired
+    private PeliculaSeriePersonalizadoMapper mapperPersonalizado;
+
+    public List<PeliculaSerieDto> getAll(@Null String name, @Null Integer genre, @Null String order) {
+        return mapper.aaPeliculaSerieDtoList(filtro(repository.findAll(), name, genre, order));
+    }
+
+    public List<PeliculaSeriePersolizadaDto> getAllPersonalizado(@Null String name, @Null Integer genre, @Null String order) {
+        return mapperPersonalizado.aListPeliculaSeriePersolizadaDto(filtro(repository.findAll(), name, genre, order));
     }
 
     public PeliculaSerieDto getById(Integer id) {
@@ -38,8 +48,20 @@ public class PeliculaSerieService {
         return mapper.aPeliculaSerieDto(repository.save(mapper.aPeliculaSerie(peliculaSerie)));
     }
 
+    public void savePersonalizado(Integer idPeli, Integer idPersonaje) {
+        PeliculaSerie peliculaSerie = repository.findById(idPeli).orElse(null);
+        PeliculaSerie buscarPersonaje = repository.findByIdPersonaje(idPersonaje);
+        if (peliculaSerie != null && buscarPersonaje != null) {
+            peliculaSerie.setIdPersonaje(idPersonaje);
+            repository.insertByIdPeliculaSerieAndIdPersonaje(
+                    peliculaSerie.getTitulo(), peliculaSerie.getImagen(),peliculaSerie.getFechaCreacion(),
+                    peliculaSerie.getCalifiacion(), peliculaSerie.getIdPersonaje(), peliculaSerie.getIdGenero()
+            );
+        }
+    }
+
     public PeliculaSerieDto update(Integer id, PeliculaSerieDto peliculaSerieDto) {
-        PeliculaSerie peliculaSerie = repository.findById(id).orElse(new PeliculaSerie());
+        PeliculaSerie peliculaSerie = repository.findById(id).orElse(null);
         if (peliculaSerie == null || id <= 0)
             return new PeliculaSerieDto();
         return mapper.aPeliculaSerieDto(repository.save(validarParametros(peliculaSerie, peliculaSerieDto)));
@@ -51,6 +73,10 @@ public class PeliculaSerieService {
             return new PeliculaSerieDto();
         repository.delete(mapper.aPeliculaSerie(peliculaSerieDto));
         return mapper.aPeliculaSerieDto(peliculaSerie);
+    }
+
+    public void deletePersonalizado(Integer idPeli, Integer idPersonaje) {
+        repository.deleteByIdPeliculaSerieAndIdPersonaje(idPeli, idPersonaje);
     }
 
     public PeliculaSerieDto deleteById(Integer id) {
@@ -105,5 +131,30 @@ public class PeliculaSerieService {
         if (fecha.matches(FECHA_LARGA))
             return 2;
         return 0;
+    }
+
+    private List<PeliculaSerie> filtro(List<PeliculaSerie> peliculaSeries, @Null String name, @Null Integer genre, @Null String order) {
+
+        if (name != null && !name.isBlank() && genre != null && genre > 0) {
+            return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name) && peliculaSerie.getIdGenero().equals(genre)).collect(Collectors.toList());
+        } else if (name != null && !name.isBlank())
+            return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name)).collect(Collectors.toList());
+        else if (genre != null && genre > 0)
+            return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getIdGenero().equals(genre)).collect(Collectors.toList());
+        else if (order != null && !order.isBlank())
+            return ordenarLista(peliculaSeries, order);
+        else if (name == null && genre == null && order == null)
+            return peliculaSeries;
+        else
+            return new ArrayList<>();
+    }
+
+    private List<PeliculaSerie> ordenarLista(List<PeliculaSerie> peliculaSeries, String orden) {
+        if (orden.equalsIgnoreCase(ASC)) {
+            peliculaSeries.sort(Comparator.comparing(PeliculaSerie::getFechaCreacion));
+        } else if (orden.equalsIgnoreCase(DESC)) {
+            peliculaSeries.sort(Comparator.comparing(PeliculaSerie::getFechaCreacion).reversed());
+        }
+        return peliculaSeries;
     }
 }
