@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +23,9 @@ public class PersonajeController {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición.")
     })
-    public List<PersonajeDto> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
+    public ResponseEntity<List<PersonajeDto>> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
     Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
-        return personajeService.getAll(name, age, movies);
+        return new ResponseEntity<>(personajeService.getAll(name, age, movies), HttpStatus.OK);
     }
 
     @GetMapping("/personaje/getById/{idPersona}")
@@ -32,8 +34,8 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
-    public PersonajeDto getById(@PathVariable("idPersona") Integer idPersona) {
-        return personajeService.getById(idPersona);
+    public ResponseEntity<PersonajeDto> getById(@PathVariable("idPersona") Integer idPersona) {
+        return new ResponseEntity<>(personajeService.getById(idPersona), HttpStatus.OK);
     }
 
     @PostMapping("/personaje")
@@ -42,8 +44,8 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "No se pudo crear el personaje.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public PersonajeDto save(@RequestBody PersonajeDto personajeDto) {
-        return personajeService.save(personajeDto);
+    public ResponseEntity<PersonajeDto> save(@RequestBody PersonajeDto personajeDto) {
+        return new ResponseEntity<>(personajeService.save(personajeDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/personaje")
@@ -52,8 +54,8 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar el personaje.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public PersonajeDto delete(PersonajeDto personajeDto) {
-        return personajeService.delete(personajeDto);
+    public ResponseEntity<PersonajeDto> delete(PersonajeDto personajeDto) {
+        return new ResponseEntity<>(personajeService.delete(personajeDto), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/personaje/deleteById/{idPersona}")
@@ -62,18 +64,18 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar el personaje.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
-    public PersonajeDto deleteById(@PathVariable("idPersona") Integer idPersona) {
-        return personajeService.deleteById(idPersona);
+    public ResponseEntity<PersonajeDto> deleteById(@PathVariable("idPersona") Integer idPersona) {
+        return new ResponseEntity<>(personajeService.deleteById(idPersona), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/personaje/update/{idPersonaje}")
     @Operation(summary = "Actualizar personaje", description = "Este método es para actualizar el personaje", responses = {
-            @ApiResponse(responseCode = "200", description = "Se actualizo el personaje."),
+            @ApiResponse(responseCode = "202", description = "Se actualizo el personaje."),
             @ApiResponse(responseCode = "404", description = "No se pudo actualizar el personaje.")
     })
     @Parameter(required = true, description = "Id personaje", example = "1")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public PersonajeDto update(@PathVariable("idPersonaje") Integer idPersonaje, @RequestBody PersonajeDto personajeDto) {
-        return personajeService.update(idPersonaje, personajeDto);
+    public ResponseEntity<PersonajeDto> update(@PathVariable("idPersonaje") Integer idPersonaje, @RequestBody PersonajeDto personajeDto) {
+        return new ResponseEntity<>(personajeService.update(idPersonaje, personajeDto), HttpStatus.ACCEPTED);
     }
 }

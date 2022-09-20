@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
 
 import java.util.List;
 
@@ -24,9 +24,9 @@ public class PeliculaSerieController {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición."),
     })
-    public List<PeliculaSeriePersolizadaDto> getAllPersonalizado(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "genre")
+    public ResponseEntity<List<PeliculaSeriePersolizadaDto>> getAllPersonalizado(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "genre")
     Integer genre, @RequestParam(required = false, name = "order") String order) {
-        return service.getAllPersonalizado(name, genre, order);
+        return new ResponseEntity<>(service.getAllPersonalizado(name, genre, order), HttpStatus.OK);
     }
 
     @GetMapping("/peliculaSerie/getAll")
@@ -34,9 +34,9 @@ public class PeliculaSerieController {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición."),
     })
-    public List<PeliculaSerieDto> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "genre")
+    public ResponseEntity<List<PeliculaSerieDto>> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "genre")
     Integer genre, @RequestParam(required = false, name = "order") String order) {
-        return service.getAll(name, genre, order);
+        return new ResponseEntity<>(service.getAll(name, genre, order), HttpStatus.OK);
     }
 
     @GetMapping("/peliculaSerie/getById/{id}")
@@ -45,8 +45,8 @@ public class PeliculaSerieController {
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición."),
     })
     @Parameter(required = true, description = "Id", example = "1")
-    public PeliculaSerieDto getById(@PathVariable("id") Integer id) {
-        return service.getById(id);
+    public ResponseEntity<PeliculaSerieDto> getById(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
     }
 
     @PostMapping("/peliculaSerie")
@@ -55,8 +55,8 @@ public class PeliculaSerieController {
             @ApiResponse(responseCode = "404", description = "No se pudo crear la serie o pelicula."),
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad pelicula_serie")
-    public PeliculaSerieDto save(@RequestBody PeliculaSerieDto peliculaSerieDto) {
-        return service.save(peliculaSerieDto);
+    public ResponseEntity<PeliculaSerieDto> save(@RequestBody PeliculaSerieDto peliculaSerieDto) {
+        return new ResponseEntity<>(service.save(peliculaSerieDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/movies/{idMovie}/characters/{idCharacter}")
@@ -110,7 +110,7 @@ public class PeliculaSerieController {
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar la serie o pelicula.")
     })
     @Parameter(required = true, description = "Id", example = "1")
-    public PeliculaSerieDto deleteById(@PathVariable("id") Integer id) {
-        return service.deleteById(id);
+    public ResponseEntity<PeliculaSerieDto> deleteById(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(service.deleteById(id), HttpStatus.ACCEPTED);
     }
 }

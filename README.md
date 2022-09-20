@@ -8,10 +8,9 @@
 6. Detalle de Película / Serie con sus personajes
    Devolverá todos los campos de la película o serie junto a los personajes asociados a la
    misma
-7. Creación, Edición y Eliminación de Película / Serie.
+7. Creación, Edición y Eliminación de Película / Serie -> Al crear una Película, crearla con sus personajes asociados
 8. 
-9. 
-10. Autenticación de Usuarios
-11. Envío de emails
-12. Tests
+9. Autenticación de Usuarios
+10. Envío de emails
+11. Tests
 
