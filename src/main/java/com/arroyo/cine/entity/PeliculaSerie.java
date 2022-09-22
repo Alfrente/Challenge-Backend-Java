@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "pelicula_serie")
@@ -31,7 +32,7 @@ public class PeliculaSerie {
 
     @NotBlank
     @Size(min = 1)
-    @Column(name = "id_personaje")
+    @Column(name = "personaje_id")
     private Integer idPersonaje;
 
     @NotBlank
@@ -39,9 +40,12 @@ public class PeliculaSerie {
     @Column(name = "id_genero")
     private Integer idGenero;
 
-    @ManyToOne
-    @JoinColumn(name = "id_personaje", insertable = false, updatable = false)
-    private Personaje personaje;
+    @ManyToMany
+    @JoinTable(name = "pelicula_serie_personajes",
+            joinColumns = @JoinColumn(name = "personaje_id"),
+            inverseJoinColumns = @JoinColumn(name = "id_personaje")
+    )
+    private List<Personaje> personajes;
 
     public Integer getIdPeliculaSerie() {
         return idPeliculaSerie;
@@ -99,11 +103,11 @@ public class PeliculaSerie {
         this.idGenero = idGenero;
     }
 
-    public Personaje getPersonaje() {
-        return personaje;
+    public List<Personaje> getPersonajes() {
+        return personajes;
     }
 
-    public void setPersonaje(Personaje personaje) {
-        this.personaje = personaje;
+    public void setPersonajes(List<Personaje> personajes) {
+        this.personajes = personajes;
     }
 }

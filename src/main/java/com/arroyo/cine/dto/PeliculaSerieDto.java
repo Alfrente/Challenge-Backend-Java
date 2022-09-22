@@ -1,8 +1,11 @@
 package com.arroyo.cine.dto;
 
+import com.arroyo.cine.entity.Personaje;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 
 public class PeliculaSerieDto {
@@ -32,6 +35,8 @@ public class PeliculaSerieDto {
     @NotBlank
     @Size(min = 1)
     private Integer idGenero;
+
+    private List<PersonajeDto> personajes;
 
     public Integer getIdPeliculaSerie() {
         return idPeliculaSerie;
@@ -87,6 +92,14 @@ public class PeliculaSerieDto {
 
     public void setIdGenero(Integer idGenero) {
         this.idGenero = idGenero;
+    }
+
+    public List<PersonajeDto> getPersonajes() {
+        return personajes;
+    }
+
+    public void setPersonajes(List<PersonajeDto> personajes) {
+        this.personajes = personajes;
     }
 
     @Override

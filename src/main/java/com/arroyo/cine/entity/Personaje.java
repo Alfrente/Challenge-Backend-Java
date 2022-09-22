@@ -32,7 +32,7 @@ public class Personaje {
     @Null
     private  String historia;
 
-    @OneToMany(mappedBy = "personaje", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "personajes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PeliculaSerie> peliculaSeries;
 
     public Integer getIdPersonaje() {

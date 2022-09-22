@@ -7,6 +7,7 @@ import com.arroyo.cine.mapper.PeliculaSerieMapper;
 import com.arroyo.cine.mapper.PeliculaSeriePersonalizadoMapper;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Null;
@@ -18,14 +19,18 @@ import static com.arroyo.cine.util.InformacionEstatica.*;
 
 @Service
 public class PeliculaSerieService {
-    @Autowired
+
     private PeliculaSerieRepository repository;
 
-    @Autowired
     private PeliculaSerieMapper mapper;
 
-    @Autowired
     private PeliculaSeriePersonalizadoMapper mapperPersonalizado;
+
+    public PeliculaSerieService(PeliculaSerieRepository repository, @Lazy PeliculaSerieMapper mapper, PeliculaSeriePersonalizadoMapper mapperPersonalizado) {
+        this.repository = repository;
+        this.mapper = mapper;
+        this.mapperPersonalizado = mapperPersonalizado;
+    }
 
     public List<PeliculaSerieDto> getAll(@Null String name, @Null Integer genre, @Null String order) {
         return mapper.aaPeliculaSerieDtoList(filtro(repository.findAll(), name, genre, order));
