@@ -1,6 +1,6 @@
-package com.arroyo.cine.dto;
+package com.arroyo.cine.dto.personaje;
 
-import com.arroyo.cine.entity.PeliculaSerie;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
@@ -8,12 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
-public class PersonajeDto  {
-
-    @NotBlank
-    @Size(min = 1)
-    private Integer idePersonaje;
-
+public class PersonajePersonalizadoPDto {
     @NotBlank
     @Size(min = 4, max = 50)
     private String nombre;
@@ -32,15 +27,8 @@ public class PersonajeDto  {
     @Null
     private  String historia;
 
-    private List<PeliculaSerieDto> peliculaSeries;
-
-    public Integer getIdePersonaje() {
-        return idePersonaje;
-    }
-
-    public void setIdePersonaje(Integer idePersonaje) {
-        this.idePersonaje = idePersonaje;
-    }
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PeliculaSeriePersolizadaPDto> peliculaSeries;
 
     public String getNombre() {
         return nombre;
@@ -82,11 +70,11 @@ public class PersonajeDto  {
         this.historia = historia;
     }
 
-    public List<PeliculaSerieDto> getPeliculaSeries() {
+    public List<PeliculaSeriePersolizadaPDto> getPeliculaSeries() {
         return peliculaSeries;
     }
 
-    public void setPeliculaSeries(List<PeliculaSerieDto> peliculaSeries) {
+    public void setPeliculaSeries(List<PeliculaSeriePersolizadaPDto> peliculaSeries) {
         this.peliculaSeries = peliculaSeries;
     }
 
@@ -94,25 +82,12 @@ public class PersonajeDto  {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PersonajeDto that = (PersonajeDto) o;
-        return Objects.equals(idePersonaje, that.idePersonaje) && Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia) && Objects.equals(peliculaSeries, that.peliculaSeries);
+        PersonajePersonalizadoPDto that = (PersonajePersonalizadoPDto) o;
+        return Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia) && Objects.equals(peliculaSeries, that.peliculaSeries);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idePersonaje, nombre, edad, peso, imagen, historia, peliculaSeries);
-    }
-
-    @Override
-    public String toString() {
-        return "PersonajeDto{" +
-                "idePersonaje=" + idePersonaje +
-                ", nombre='" + nombre + '\'' +
-                ", edad=" + edad +
-                ", peso=" + peso +
-                ", imagen='" + imagen + '\'' +
-                ", historia='" + historia + '\'' +
-                ", peliculaSeries=" + peliculaSeries +
-                '}';
+        return Objects.hash(nombre, edad, peso, imagen, historia, peliculaSeries);
     }
 }

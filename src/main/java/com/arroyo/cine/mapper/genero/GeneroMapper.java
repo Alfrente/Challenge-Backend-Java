@@ -1,6 +1,6 @@
-package com.arroyo.cine.mapper;
+package com.arroyo.cine.mapper.genero;
 
-import com.arroyo.cine.dto.GeneroDto;
+import com.arroyo.cine.dto.genero.GeneroDto;
 import com.arroyo.cine.entity.Genero;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;

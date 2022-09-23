@@ -1,21 +1,10 @@
-package com.arroyo.cine.entity;
+package com.arroyo.cine.dto.pelicula_serie;
 
-import org.hibernate.annotations.Cascade;
-
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.util.List;
 
-@Entity
-@Table(name = "personaje")
-public class Personaje {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_personaje")
-    private Integer idPersonaje;
-
+public class PersonajePersonalizadoPsDto {
     @NotBlank
     @Size(min = 4, max = 50)
     private String nombre;
@@ -33,19 +22,6 @@ public class Personaje {
 
     @Null
     private  String historia;
-
-    @ManyToMany(mappedBy = "personajes", fetch = FetchType.LAZY)
-    //{CascadeType.MERGE, CascadeType.PERSIST}
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
-    private List<PeliculaSerie> peliculaSeries;
-
-    public Integer getIdPersonaje() {
-        return idPersonaje;
-    }
-
-    public void setIdPersonaje(Integer idPersonaje) {
-        this.idPersonaje = idPersonaje;
-    }
 
     public String getNombre() {
         return nombre;
@@ -85,13 +61,5 @@ public class Personaje {
 
     public void setHistoria(String historia) {
         this.historia = historia;
-    }
-
-    public List<PeliculaSerie> getPeliculaSeries() {
-        return peliculaSeries;
-    }
-
-    public void setPeliculaSeries(List<PeliculaSerie> peliculaSeries) {
-        this.peliculaSeries = peliculaSeries;
     }
 }

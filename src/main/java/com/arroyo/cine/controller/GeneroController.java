@@ -1,6 +1,6 @@
 package com.arroyo.cine.controller;
 
-import com.arroyo.cine.dto.GeneroDto;
+import com.arroyo.cine.dto.genero.GeneroDto;
 import com.arroyo.cine.service.GeneroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,7 +33,7 @@ public class GeneroController {
     @Operation(summary = "Buscar con id", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición."),
-    }, description = "Este método sirve para eliminar un genero")
+    }, description = "Este método sirve para buscar un genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") Integer idGenero) {
         return new ResponseEntity<>(generoService.getById(idGenero), HttpStatus.CREATED);
@@ -44,7 +44,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "201", description = "Se creo el genero."),
             @ApiResponse(responseCode = "404", description = "No se pudo crear el genero."),
     }, description = "Este método es para guarda el genero ")
-    @Parameter(required = true, description = "Entidad genero", example = "{\"genero\": 1, \"nombre\": Acción, \"imagen\": c:\\imagen\\terror.jpg, \"pelicula_serie\": 1}")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
     public ResponseEntity<GeneroDto> save(@RequestBody GeneroDto generoDto) {
         return new ResponseEntity<>(generoService.save(generoDto), HttpStatus.CREATED);
     }
@@ -53,8 +53,8 @@ public class GeneroController {
     @Operation(summary = "Eliminar genero", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el genero."),
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar el genero."),
-    }, description = "Este método sirve para eliminar un genero")
-    @Parameter(required = true, description = "Entidad genero", example = "{\"genero\": 1, \"nombre\": Acción, \"imagen\": c:\\imagen\\terror.jpg, \"pelicula_serie\": 1}")
+    }, description = "Este método sirve para eliminar el genero")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
     public ResponseEntity<GeneroDto> delete(@RequestBody GeneroDto generoDto) {
         return new ResponseEntity<>(generoService.delete(generoDto), HttpStatus.ACCEPTED);
     }
@@ -63,7 +63,7 @@ public class GeneroController {
     @Operation(summary = "Eliminar genero con id", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el genero."),
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar el genero."),
-    }, description = "Este método sirve para eliminar el genero")
+    }, description = "Este método sirve para eliminar el genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> deleteById(@PathVariable("idGenero") Integer idGenero) {
         return new ResponseEntity<>(generoService.deleteById(idGenero), HttpStatus.ACCEPTED);
@@ -71,7 +71,7 @@ public class GeneroController {
 
     @PutMapping("/update/{idGenero}/{nuevoGenero}")
     @Operation(summary = "Actualizar genero", responses = {
-            @ApiResponse(responseCode = "200", description = "Se modifico el genero."),
+            @ApiResponse(responseCode = "202", description = "Se modifico el genero."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición."),
     }, description = "Este método sirve para actualiza el genero")
     @Parameters({

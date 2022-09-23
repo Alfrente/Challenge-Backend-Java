@@ -1,15 +1,19 @@
-package com.arroyo.cine.dto;
+package com.arroyo.cine.dto.pelicula_serie;
+
+import com.arroyo.cine.dto.personaje.PersonajeDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class PeliculaSerieDto {
 
     @NotBlank
     @Size(min = 1)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idPeliculaSerie;
 
     @NotBlank
@@ -20,19 +24,26 @@ public class PeliculaSerieDto {
     private String caratula;
 
     @NotBlank
-    private LocalDateTime fechaCreacion;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String fechaCreacion;
 
     @Null
     @Size(min = 1, max = 5)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Byte califiacion;
 
     @NotBlank
     @Size(min = 1)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idPersonaje;
 
     @NotBlank
     @Size(min = 1)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idGenero;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PersonajeDto> personajes;
 
     public Integer getIdPeliculaSerie() {
         return idPeliculaSerie;
@@ -58,11 +69,11 @@ public class PeliculaSerieDto {
         this.caratula = caratula;
     }
 
-    public LocalDateTime getFechaCreacion() {
+    public String getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+    public void setFechaCreacion(String fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
@@ -88,6 +99,14 @@ public class PeliculaSerieDto {
 
     public void setIdGenero(Integer idGenero) {
         this.idGenero = idGenero;
+    }
+
+    public List<PersonajeDto> getPersonajes() {
+        return personajes;
+    }
+
+    public void setPersonajes(List<PersonajeDto> personajes) {
+        this.personajes = personajes;
     }
 
     @Override

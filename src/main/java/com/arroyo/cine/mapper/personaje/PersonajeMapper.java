@@ -1,6 +1,6 @@
-package com.arroyo.cine.mapper;
+package com.arroyo.cine.mapper.personaje;
 
-import com.arroyo.cine.dto.PersonajeDto;
+import com.arroyo.cine.dto.personaje.PersonajeDto;
 import com.arroyo.cine.entity.Personaje;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {PeliculaSerieMapper.class})
+@Mapper(componentModel = "spring", uses = {PeliculaSerieComplementoPMapper.class})
 public interface PersonajeMapper {
 
     @Mapping(target = "idePersonaje", source = "personaje.idPersonaje")
