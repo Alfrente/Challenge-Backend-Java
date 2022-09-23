@@ -1,6 +1,7 @@
 package com.arroyo.cine.dto.pelicula_serie;
 
 import com.arroyo.cine.dto.personaje.PersonajeDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
@@ -12,6 +13,7 @@ public class PeliculaSerieDto {
 
     @NotBlank
     @Size(min = 1)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idPeliculaSerie;
 
     @NotBlank
@@ -22,20 +24,25 @@ public class PeliculaSerieDto {
     private String caratula;
 
     @NotBlank
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String fechaCreacion;
 
     @Null
     @Size(min = 1, max = 5)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Byte califiacion;
 
     @NotBlank
     @Size(min = 1)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idPersonaje;
 
     @NotBlank
     @Size(min = 1)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idGenero;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PersonajeDto> personajes;
 
     public Integer getIdPeliculaSerie() {

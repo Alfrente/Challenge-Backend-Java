@@ -1,5 +1,7 @@
 package com.arroyo.cine.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
@@ -32,7 +34,9 @@ public class Personaje {
     @Null
     private  String historia;
 
-    @ManyToMany(mappedBy = "personajes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "personajes", fetch = FetchType.LAZY)
+    //{CascadeType.MERGE, CascadeType.PERSIST}
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
     private List<PeliculaSerie> peliculaSeries;
 
     public Integer getIdPersonaje() {

@@ -5,10 +5,9 @@
 * [Link de la pagina ALKEMY](https://campus.alkemy.org/login)
 
 ## Me falta
-6. Detalle de Película / Serie con sus personajes
-   Devolverá todos los campos de la película o serie junto a los personajes asociados a la
-   misma
-7. Creación, Edición y Eliminación de Película / Serie -> Al crear una Película, crearla con sus personajes asociados
+
+5. Búsqueda de Personajes -> El listado deberá mostrar:
+7. Creación, Edición y Eliminación de Película / Serie -> Al crear una Película, crearla con sus personajes asociados error con el id en pelicula s
 8. 
 9. Autenticación de Usuarios
 10. Envío de emails
