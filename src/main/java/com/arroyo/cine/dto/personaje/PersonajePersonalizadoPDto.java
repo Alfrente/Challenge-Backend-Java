@@ -1,12 +1,14 @@
 package com.arroyo.cine.dto.personaje;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
-public class PersonajePersonalizadoDto {
+public class PersonajePersonalizadoPDto {
     @NotBlank
     @Size(min = 4, max = 50)
     private String nombre;
@@ -25,7 +27,8 @@ public class PersonajePersonalizadoDto {
     @Null
     private  String historia;
 
-    private List<PeliculaSeriePersolizadaDto> peliculaSeries;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PeliculaSeriePersolizadaPDto> peliculaSeries;
 
     public String getNombre() {
         return nombre;
@@ -67,11 +70,11 @@ public class PersonajePersonalizadoDto {
         this.historia = historia;
     }
 
-    public List<PeliculaSeriePersolizadaDto> getPeliculaSeries() {
+    public List<PeliculaSeriePersolizadaPDto> getPeliculaSeries() {
         return peliculaSeries;
     }
 
-    public void setPeliculaSeries(List<PeliculaSeriePersolizadaDto> peliculaSeries) {
+    public void setPeliculaSeries(List<PeliculaSeriePersolizadaPDto> peliculaSeries) {
         this.peliculaSeries = peliculaSeries;
     }
 
@@ -79,7 +82,7 @@ public class PersonajePersonalizadoDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PersonajePersonalizadoDto that = (PersonajePersonalizadoDto) o;
+        PersonajePersonalizadoPDto that = (PersonajePersonalizadoPDto) o;
         return Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia) && Objects.equals(peliculaSeries, that.peliculaSeries);
     }
 

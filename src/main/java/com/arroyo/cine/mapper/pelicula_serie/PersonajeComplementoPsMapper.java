@@ -16,7 +16,7 @@ public interface PersonajeComplementoPsMapper {
     @Mapping(target = "peso", source = "personaje.peso")
     @Mapping(target = "imagen", source = "personaje.imagen")
     @Mapping(target = "historia", source = "personaje.historia")
-    @Mapping(target = "peliculaSeries", source = "personaje.peliculaSeries")
+    @Mapping(target = "peliculaSeries", ignore = true)
     PersonajeDto aPersonajeDto(Personaje personaje);
 
     List<PersonajeDto> aListPersonajeDto(List<Personaje> personajes);

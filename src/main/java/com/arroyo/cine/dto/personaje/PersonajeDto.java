@@ -1,6 +1,7 @@
 package com.arroyo.cine.dto.personaje;
 
 import com.arroyo.cine.dto.pelicula_serie.PeliculaSerieDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
@@ -32,6 +33,7 @@ public class PersonajeDto  {
     @Null
     private  String historia;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PeliculaSerieDto> peliculaSeries;
 
     public Integer getIdePersonaje() {

@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
-public class PeliculaSeriePersolizadaDto {
+public class PeliculaSeriePersolizadaPDto {
     @NotBlank
     @Size(min = 5, max = 50)
     private String titulo;

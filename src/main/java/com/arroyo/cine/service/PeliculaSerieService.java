@@ -1,12 +1,12 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.dto.pelicula_serie.PeliculaSerieDto;
-import com.arroyo.cine.dto.personaje.PeliculaSeriePersolizadaDto;
+import com.arroyo.cine.dto.pelicula_serie.PeliculaSeriePersonalizadoPsDto;
 import com.arroyo.cine.entity.PeliculaSerie;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSerieMapper;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSeriePersonalizadoMapper;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Null;
@@ -20,25 +20,19 @@ import static com.arroyo.cine.util.InformacionEstatica.*;
 
 @Service
 public class PeliculaSerieService {
-
+    @Autowired
     private PeliculaSerieRepository repository;
-
+    @Autowired
     private PeliculaSerieMapper mapper;
+    @Autowired
+    private PeliculaSeriePersonalizadoMapper mapperP;
 
-    private PeliculaSeriePersonalizadoMapper mapperPersonalizado;
-
-    public PeliculaSerieService(PeliculaSerieRepository repository, @Lazy PeliculaSerieMapper mapper, PeliculaSeriePersonalizadoMapper mapperPersonalizado) {
-        this.repository = repository;
-        this.mapper = mapper;
-        this.mapperPersonalizado = mapperPersonalizado;
+    public List<PeliculaSeriePersonalizadoPsDto> getAll(@Null String name, @Null Integer genre, @Null String order) {
+        return mapperP.aListPeliculaSeriePersolizadaDto(filtro(repository.findAll(), name, genre, order));
     }
 
-    public List<PeliculaSerieDto> getAll(@Null String name, @Null Integer genre, @Null String order) {
+    public List<PeliculaSerieDto> getAllPersonalizado(@Null String name, @Null Integer genre, @Null String order) {
         return mapper.aListPeliculaSerieDto(filtro(repository.findAll(), name, genre, order));
-    }
-
-    public List<PeliculaSeriePersolizadaDto> getAllPersonalizado(@Null String name, @Null Integer genre, @Null String order) {
-        return mapperPersonalizado.aListPeliculaSeriePersolizadaDto(filtro(repository.findAll(), name, genre, order));
     }
 
     public PeliculaSerieDto getById(Integer id) {
@@ -60,7 +54,7 @@ public class PeliculaSerieService {
         if (peliculaSerie != null && buscarPersonaje != null) {
             peliculaSerie.setIdPersonaje(idPersonaje);
             repository.insertByIdPeliculaSerieAndIdPersonaje(
-                    peliculaSerie.getTitulo(), peliculaSerie.getImagen(),peliculaSerie.getFechaCreacion(),
+                    peliculaSerie.getTitulo(), peliculaSerie.getImagen(), peliculaSerie.getFechaCreacion(),
                     peliculaSerie.getCalifiacion(), peliculaSerie.getIdPersonaje(), peliculaSerie.getIdGenero()
             );
         }
@@ -140,7 +134,6 @@ public class PeliculaSerieService {
     }
 
     private List<PeliculaSerie> filtro(List<PeliculaSerie> peliculaSeries, @Null String name, @Null Integer genre, @Null String order) {
-
         if (name != null && !name.isBlank() && genre != null && genre > 0) {
             return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name) && peliculaSerie.getIdGenero().equals(genre)).collect(Collectors.toList());
         } else if (name != null && !name.isBlank())

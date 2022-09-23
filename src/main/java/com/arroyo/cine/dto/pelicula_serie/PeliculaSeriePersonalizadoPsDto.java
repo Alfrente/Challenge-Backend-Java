@@ -1,13 +1,13 @@
 package com.arroyo.cine.dto.pelicula_serie;
 
-import com.arroyo.cine.dto.personaje.PersonajeDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-public class PeliculaSeriePersonalizadoDto {
+public class PeliculaSeriePersonalizadoPsDto {
     @NotBlank
     @Size(min = 5, max = 50)
     private String titulo;
@@ -26,7 +26,8 @@ public class PeliculaSeriePersonalizadoDto {
     @Size(min = 1)
     private Integer idGenero;
 
-    private List<PersonajeDto> personajes;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PersonajePersonalizadoPsDto> personajes;
 
     public String getTitulo() {
         return titulo;
@@ -68,11 +69,11 @@ public class PeliculaSeriePersonalizadoDto {
         this.idGenero = idGenero;
     }
 
-    public List<PersonajeDto> getPersonajes() {
+    public List<PersonajePersonalizadoPsDto> getPersonajes() {
         return personajes;
     }
 
-    public void setPersonajes(List<PersonajeDto> personajes) {
+    public void setPersonajes(List<PersonajePersonalizadoPsDto> personajes) {
         this.personajes = personajes;
     }
 }

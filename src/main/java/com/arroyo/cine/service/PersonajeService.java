@@ -1,7 +1,7 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.dto.personaje.PersonajeDto;
-import com.arroyo.cine.dto.personaje.PersonajePersonalizadoDto;
+import com.arroyo.cine.dto.personaje.PersonajePersonalizadoPDto;
 import com.arroyo.cine.entity.Personaje;
 import com.arroyo.cine.mapper.personaje.PersonajeMapper;
 import com.arroyo.cine.mapper.personaje.PersonajePersonalizadoMapper;
@@ -24,8 +24,8 @@ public class PersonajeService {
     @Autowired
     private PersonajePersonalizadoMapper mapperP;
 
-    public List<PersonajePersonalizadoDto> getAll(@Null String name, @Null Byte age, @Null Integer movie) {
-        return mapperP.aListPersonajeDto(filtro(repository.findAll(), name, age, movie));
+    public List<PersonajePersonalizadoPDto> getAll(@Null String name, @Null Byte age, @Null Integer movie) {
+        return mapperP.aListPersonajePersonalizadoDto(filtro(repository.findAll(), name, age, movie));
     }
 
     public PersonajeDto getById(Integer idPersonaje) {

@@ -1,7 +1,7 @@
 package com.arroyo.cine.controller;
 
 import com.arroyo.cine.dto.personaje.PersonajeDto;
-import com.arroyo.cine.dto.personaje.PersonajePersonalizadoDto;
+import com.arroyo.cine.dto.personaje.PersonajePersonalizadoPDto;
 import com.arroyo.cine.service.PersonajeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,7 +24,7 @@ public class PersonajeController {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición.")
     })
-    public ResponseEntity<List<PersonajePersonalizadoDto>> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
+    public ResponseEntity<List<PersonajePersonalizadoPDto>> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
     Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
         return new ResponseEntity<>(personajeService.getAll(name, age, movies), HttpStatus.OK);
     }

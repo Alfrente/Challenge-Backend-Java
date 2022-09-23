@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
-public class PersonajePersonalizadoDto {
+public class PersonajePersonalizadoPsDto {
     @NotBlank
     @Size(min = 4, max = 50)
     private String nombre;

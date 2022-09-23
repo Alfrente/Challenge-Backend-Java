@@ -1,6 +1,6 @@
 package com.arroyo.cine.mapper.personaje;
 
-import com.arroyo.cine.dto.personaje.PersonajePersonalizadoDto;
+import com.arroyo.cine.dto.personaje.PersonajePersonalizadoPDto;
 import com.arroyo.cine.entity.Personaje;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,7 +16,7 @@ public interface PersonajePersonalizadoMapper {
     @Mapping(target = "imagen", source = "personaje.imagen")
     @Mapping(target = "historia", source = "personaje.historia")
     @Mapping(target = "peliculaSeries", source = "personaje.peliculaSeries")
-    PersonajePersonalizadoDto aPersonajeDto(Personaje personaje);
+    PersonajePersonalizadoPDto aPersonajePersonalizadoDto(Personaje personaje);
 
-    List<PersonajePersonalizadoDto> aListPersonajeDto(List<Personaje> personajes);
+    List<PersonajePersonalizadoPDto> aListPersonajePersonalizadoDto(List<Personaje> personajes);
 }
