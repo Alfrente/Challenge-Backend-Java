@@ -42,8 +42,8 @@ public class PeliculaSerie {
 
     @ManyToMany
     @JoinTable(name = "pelicula_serie_personajes",
-            joinColumns = @JoinColumn(name = "personaje_id"),
-            inverseJoinColumns = @JoinColumn(name = "id_personaje")
+            joinColumns = @JoinColumn(name = "personaje_id", updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "id_personaje", updatable = false, insertable = false)
     )
     private List<Personaje> personajes;
 

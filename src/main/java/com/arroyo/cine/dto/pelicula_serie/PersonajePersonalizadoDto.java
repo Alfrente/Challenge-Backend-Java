@@ -1,10 +1,8 @@
-package com.arroyo.cine.dto;
+package com.arroyo.cine.dto.pelicula_serie;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.util.List;
-import java.util.Objects;
 
 public class PersonajePersonalizadoDto {
     @NotBlank
@@ -24,8 +22,6 @@ public class PersonajePersonalizadoDto {
 
     @Null
     private  String historia;
-
-    private List<PeliculaSeriePersolizadaDto> peliculaSeries;
 
     public String getNombre() {
         return nombre;
@@ -65,26 +61,5 @@ public class PersonajePersonalizadoDto {
 
     public void setHistoria(String historia) {
         this.historia = historia;
-    }
-
-    public List<PeliculaSeriePersolizadaDto> getPeliculaSeries() {
-        return peliculaSeries;
-    }
-
-    public void setPeliculaSeries(List<PeliculaSeriePersolizadaDto> peliculaSeries) {
-        this.peliculaSeries = peliculaSeries;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PersonajePersonalizadoDto that = (PersonajePersonalizadoDto) o;
-        return Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia) && Objects.equals(peliculaSeries, that.peliculaSeries);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nombre, edad, peso, imagen, historia, peliculaSeries);
     }
 }

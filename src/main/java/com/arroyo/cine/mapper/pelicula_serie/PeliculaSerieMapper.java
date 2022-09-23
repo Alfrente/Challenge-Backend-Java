@@ -1,6 +1,6 @@
-package com.arroyo.cine.mapper;
+package com.arroyo.cine.mapper.pelicula_serie;
 
-import com.arroyo.cine.dto.PeliculaSerieDto;
+import com.arroyo.cine.dto.pelicula_serie.PeliculaSerieDto;
 import com.arroyo.cine.entity.PeliculaSerie;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -8,8 +8,8 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
-public interface PeliculaSerieV3Mapper {
+@Mapper(componentModel = "spring", uses = {PersonajeComplementoPsMapper.class})
+public interface PeliculaSerieMapper {
 
     @Mapping(target = "idPeliculaSerie", source = "peliculaSerie.idPeliculaSerie")
     @Mapping(target = "titulo", source = "peliculaSerie.titulo")
@@ -18,12 +18,11 @@ public interface PeliculaSerieV3Mapper {
     @Mapping(target = "califiacion", source = "peliculaSerie.califiacion")
     @Mapping(target = "idPersonaje", source = "peliculaSerie.idPersonaje")
     @Mapping(target = "idGenero", source = "peliculaSerie.idGenero")
-    @Mapping(target = "personajes", ignore = true)
+    @Mapping(target = "personajes", source = "peliculaSerie.personajes")
     PeliculaSerieDto aPeliculaSerieDto(PeliculaSerie peliculaSerie);
 
-    List<PeliculaSerieDto> aaPeliculaSerieDtoList(List<PeliculaSerie> peliculaSeries);
+    List<PeliculaSerieDto> aListPeliculaSerieDto(List<PeliculaSerie> peliculaSeries);
 
     @InheritInverseConfiguration
-    @Mapping(target = "personajes", ignore = true)
     PeliculaSerie aPeliculaSerie(PeliculaSerieDto peliculaSerieDto);
 }

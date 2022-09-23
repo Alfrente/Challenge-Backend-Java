@@ -1,6 +1,6 @@
 package com.arroyo.cine.controller;
 
-import com.arroyo.cine.dto.GeneroDto;
+import com.arroyo.cine.dto.genero.GeneroDto;
 import com.arroyo.cine.service.GeneroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

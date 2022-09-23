@@ -1,8 +1,8 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.dto.GeneroDto;
+import com.arroyo.cine.dto.genero.GeneroDto;
 import com.arroyo.cine.entity.Genero;
-import com.arroyo.cine.mapper.GeneroMapper;
+import com.arroyo.cine.mapper.genero.GeneroMapper;
 import com.arroyo.cine.repository.GeneroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

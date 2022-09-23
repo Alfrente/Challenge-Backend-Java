@@ -1,6 +1,6 @@
-package com.arroyo.cine.dto;
+package com.arroyo.cine.dto.pelicula_serie;
 
-import com.arroyo.cine.entity.Personaje;
+import com.arroyo.cine.dto.personaje.PersonajeDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;

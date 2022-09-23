@@ -1,4 +1,4 @@
-package com.arroyo.cine.dto;
+package com.arroyo.cine.dto.personaje;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
@@ -14,8 +14,6 @@ public class PeliculaSeriePersolizadaDto {
 
     @NotBlank
     private String fechaCreacion;
-
-
 
     public String getTitulo() {
         return titulo;

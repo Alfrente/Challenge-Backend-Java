@@ -1,18 +1,19 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.dto.PeliculaSerieDto;
-import com.arroyo.cine.dto.PeliculaSeriePersolizadaDto;
+import com.arroyo.cine.dto.pelicula_serie.PeliculaSerieDto;
+import com.arroyo.cine.dto.personaje.PeliculaSeriePersolizadaDto;
 import com.arroyo.cine.entity.PeliculaSerie;
-import com.arroyo.cine.mapper.PeliculaSerieMapper;
-import com.arroyo.cine.mapper.PeliculaSeriePersonalizadoMapper;
+import com.arroyo.cine.mapper.pelicula_serie.PeliculaSerieMapper;
+import com.arroyo.cine.mapper.pelicula_serie.PeliculaSeriePersonalizadoMapper;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.arroyo.cine.util.InformacionEstatica.*;
@@ -33,7 +34,7 @@ public class PeliculaSerieService {
     }
 
     public List<PeliculaSerieDto> getAll(@Null String name, @Null Integer genre, @Null String order) {
-        return mapper.aaPeliculaSerieDtoList(filtro(repository.findAll(), name, genre, order));
+        return mapper.aListPeliculaSerieDto(filtro(repository.findAll(), name, genre, order));
     }
 
     public List<PeliculaSeriePersolizadaDto> getAllPersonalizado(@Null String name, @Null Integer genre, @Null String order) {

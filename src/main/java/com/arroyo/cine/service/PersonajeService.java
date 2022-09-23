@@ -1,13 +1,12 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.dto.PersonajeDto;
-import com.arroyo.cine.dto.PersonajePersonalizadoDto;
+import com.arroyo.cine.dto.personaje.PersonajeDto;
+import com.arroyo.cine.dto.personaje.PersonajePersonalizadoDto;
 import com.arroyo.cine.entity.Personaje;
-import com.arroyo.cine.mapper.PersonajeMapper;
-import com.arroyo.cine.mapper.PersonajePersonalizadoMapper;
+import com.arroyo.cine.mapper.personaje.PersonajeMapper;
+import com.arroyo.cine.mapper.personaje.PersonajePersonalizadoMapper;
 import com.arroyo.cine.repository.PersonajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Null;

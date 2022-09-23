@@ -1,4 +1,4 @@
-package com.arroyo.cine.dto;
+package com.arroyo.cine.dto.genero;
 
 import com.arroyo.cine.entity.PeliculaSerie;
 

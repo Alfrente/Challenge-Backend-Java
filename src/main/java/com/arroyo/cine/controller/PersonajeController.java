@@ -1,7 +1,7 @@
 package com.arroyo.cine.controller;
 
-import com.arroyo.cine.dto.PersonajeDto;
-import com.arroyo.cine.dto.PersonajePersonalizadoDto;
+import com.arroyo.cine.dto.personaje.PersonajeDto;
+import com.arroyo.cine.dto.personaje.PersonajePersonalizadoDto;
 import com.arroyo.cine.service.PersonajeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
