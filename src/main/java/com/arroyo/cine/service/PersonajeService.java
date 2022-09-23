@@ -1,8 +1,10 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.dto.PersonajeDto;
+import com.arroyo.cine.dto.PersonajePersonalizadoDto;
 import com.arroyo.cine.entity.Personaje;
 import com.arroyo.cine.mapper.PersonajeMapper;
+import com.arroyo.cine.mapper.PersonajePersonalizadoMapper;
 import com.arroyo.cine.repository.PersonajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -15,17 +17,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class PersonajeService {
-
+    @Autowired
     private PersonajeRepository repository;
+    @Autowired
     private PersonajeMapper mapper;
 
-    public PersonajeService(PersonajeRepository repository, @Lazy PersonajeMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
+    @Autowired
+    private PersonajePersonalizadoMapper mapperP;
 
-    public List<PersonajeDto> getAll(@Null String name, @Null Byte age, @Null Integer movie) {
-        return mapper.aListPersonajeDto(filtro(repository.findAll(), name, age, movie));
+    public List<PersonajePersonalizadoDto> getAll(@Null String name, @Null Byte age, @Null Integer movie) {
+        return mapperP.aListPersonajeDto(filtro(repository.findAll(), name, age, movie));
     }
 
     public PersonajeDto getById(Integer idPersonaje) {

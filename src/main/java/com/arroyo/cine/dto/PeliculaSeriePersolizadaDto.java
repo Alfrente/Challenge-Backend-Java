@@ -15,6 +15,8 @@ public class PeliculaSeriePersolizadaDto {
     @NotBlank
     private String fechaCreacion;
 
+
+
     public String getTitulo() {
         return titulo;
     }
