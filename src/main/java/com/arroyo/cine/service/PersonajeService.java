@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +26,12 @@ public class PersonajeService {
     @Autowired
     private PersonajePersonalizadoMapper mapperP;
 
-    public List<PersonajePersonalizadoPDto> getAll(@Null String name, @Null Byte age, @Null Integer movie) {
-        return mapperP.aListPersonajePersonalizadoDto(filtro(repository.findAll(), name, age, movie));
+    public List<PersonajeDto> getAll(String name, Byte age, Integer movie) {
+        return mapper.aListPersonajeDto(filtro(repository.findAll(), name, age, movie, true));
+    }
+
+    public List<PersonajePersonalizadoPDto> getAllPersonalizado(String name, Byte age, Integer movie) {
+        return mapperP.aListPersonajePersonalizadoDto(filtro(repository.findAll(), name, age, movie, false));
     }
 
     public PersonajeDto getById(Integer idPersonaje) {
@@ -96,19 +102,29 @@ public class PersonajeService {
         return personaje;
     }
 
-    private List<Personaje> filtro(List<Personaje> personajes, @Null String name, @Null Byte age, @Null Integer movie) {
-        List<Personaje> personajesFiltro = personajes;
+    private List<Personaje> filtro(List<Personaje> personajes, @Null String name, @Null Byte age, @Null Integer movie, Boolean setear) {
         if (name != null && !name.isBlank() && age != null && age > 0 && movie != null && movie > 0)
-            return personajesFiltro.stream().filter(personaje -> personaje.getNombre().equals(name) && personaje.getEdad() == age && personaje.getIdPersonaje() == movie).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> personaje.getNombre().equals(name) && Objects.equals(personaje.getEdad(), age) && Objects.equals(personaje.getIdPersonaje(), movie)).map(personaje -> setearNull.apply(personaje,setear)).collect(Collectors.toList());
         else if (name != null && !name.isBlank())
-            return personajesFiltro.stream().filter(personaje -> personaje.getNombre().equals(name)).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> personaje.getNombre().equals(name)).map(personaje -> setearNull.apply(personaje,setear)).collect(Collectors.toList());
         else if (age != null && age > 0)
-            return personajesFiltro.stream().filter(personaje -> personaje.getEdad() == age).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> Objects.equals(personaje.getEdad(), age)).map(personaje -> setearNull.apply(personaje,setear)).collect(Collectors.toList());
         else if (movie != null && movie > 0)
-            return personajes.stream().filter(personaje -> personaje.getIdPersonaje() == movie).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> Objects.equals(personaje.getIdPersonaje(), movie)).map(personaje -> setearNull.apply(personaje,setear)).collect(Collectors.toList());
         else if (name == null && age == null && movie == null)
-            return personajesFiltro;
+            return personajes;
         else
             return new ArrayList<>();
     }
+
+    private final BiFunction<Personaje, Boolean, Personaje> setearNull = (personaje, setear) -> {
+        if (Boolean.TRUE.equals(setear)) {
+            personaje.setIdPersonaje(null);
+            personaje.setHistoria(null);
+            personaje.setPeso(null);
+            personaje.setPeliculaSeries(null);
+            personaje.setEdad(null);
+        }
+        return personaje;
+    };
 }

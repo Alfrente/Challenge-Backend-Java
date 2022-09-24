@@ -10,7 +10,6 @@ import com.arroyo.cine.repository.PeliculaSerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,11 +28,11 @@ public class PeliculaSerieService {
     @Autowired
     private PeliculaSeriePersonalizadoMapper mapperP;
 
-    public List<PeliculaSeriePersonalizadoPsDto> getAll(@Null String name, @Null Integer genre, @Null String order) {
+    public List<PeliculaSeriePersonalizadoPsDto> getAll( String name, Integer genre, String order) {
         return mapperP.aListPeliculaSeriePersolizadaDto(filtro(repository.findAll(), name, genre, order));
     }
 
-    public List<PeliculaSerieDto> getAllPersonalizado(@Null String name, @Null Integer genre, @Null String order) {
+    public List<PeliculaSerieDto> getAllPersonalizado( String name, Integer genre, String order) {
         return mapper.aListPeliculaSerieDto(filtro(repository.findAll(), name, genre, order));
     }
 
@@ -131,7 +130,6 @@ public class PeliculaSerieService {
     private boolean validarDatosPersonajes(List<PersonajeDto> personajesRecivodos) {
         if (personajesRecivodos == null)
             return false;
-
         List<PersonajeDto> personajes = personajesRecivodos;
         int index = personajesRecivodos.size();
         int personajesValido = 0;
@@ -147,7 +145,6 @@ public class PeliculaSerieService {
     private boolean validarDatosGuardarPeliculaSerieConPersonajes(PeliculaSerieDto dto) {
         if (dto == null || dto.getPersonajes() == null)
             return false;
-
         return validarDatosPeliculaSerie(dto) && validarDatosPersonajes(dto.getPersonajes());
     }
 
@@ -159,7 +156,7 @@ public class PeliculaSerieService {
         return 0;
     }
 
-    private List<PeliculaSerie> filtro(List<PeliculaSerie> peliculaSeries, @Null String name, @Null Integer genre, @Null String order) {
+    private List<PeliculaSerie> filtro(List<PeliculaSerie> peliculaSeries, String name, Integer genre, String order) {
         if (name != null && !name.isBlank() && genre != null && genre > 0) {
             return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name) && peliculaSerie.getIdGenero().equals(genre)).map(setearNull).collect(Collectors.toList());
         } else if (name != null && !name.isBlank())

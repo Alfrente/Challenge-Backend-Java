@@ -19,8 +19,7 @@ public class GeneroService {
     private GeneroMapper mapper;
 
     public GeneroDto save(GeneroDto generoDto) {
-        Genero genero = mapper.aGenero(generoDto);
-        return mapper.aGeneroDto(repository.save(genero));
+        return mapper.aGeneroDto(repository.save(mapper.aGenero(generoDto)));
     }
 
     public GeneroDto delete(GeneroDto generoDto) {

@@ -13,24 +13,30 @@ public class PersonajeDto  {
 
     @NotBlank
     @Size(min = 1)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idePersonaje;
 
     @NotBlank
     @Size(min = 4, max = 50)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String nombre;
 
     @NotBlank
     @Size(min = 1, max = 2)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Byte edad;
 
     @NotBlank
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Float peso;
 
     @Null
     @Size(max = 255)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String imagen;
 
     @Null
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private  String historia;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
