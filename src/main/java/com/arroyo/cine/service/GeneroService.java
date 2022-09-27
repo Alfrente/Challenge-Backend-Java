@@ -6,6 +6,7 @@ import com.arroyo.cine.mapper.genero.GeneroMapper;
 import com.arroyo.cine.repository.GeneroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,10 +19,12 @@ public class GeneroService {
     @Autowired
     private GeneroMapper mapper;
 
+    @Transactional
     public GeneroDto save(GeneroDto generoDto) {
         return mapper.aGeneroDto(repository.save(mapper.aGenero(generoDto)));
     }
 
+    @Transactional
     public GeneroDto delete(GeneroDto generoDto) {
         Genero genero = repository.findById(generoDto.getIdeGenero()).orElse(new Genero());
         if (genero.getIdGenero() == null || validarTodosLosDatos(generoDto))
@@ -30,6 +33,7 @@ public class GeneroService {
         return mapper.aGeneroDto(genero);
     }
 
+    @Transactional
     public GeneroDto deleteById(Integer idGenero) {
         Genero genero = repository.findById(idGenero).orElse(new Genero());
         if (genero.getIdGenero() == null)
@@ -39,13 +43,14 @@ public class GeneroService {
     }
 
     public GeneroDto getById(Integer idGenero) {
-        return mapper.aGeneroDto(repository.findById(idGenero).orElse(new Genero()));
+        return mapper.aGeneroDto(repository.findById(idGenero).orElse(null));
     }
 
     public List<GeneroDto> getAll() {
         return mapper.aListGeneroDto(repository.findAll());
     }
 
+    @Transactional
     public GeneroDto update(Integer idGenero, String nuevoGenero) {
         Genero genero = repository.findById(idGenero).orElse(new Genero());
         genero.setNombre(nuevoGenero);

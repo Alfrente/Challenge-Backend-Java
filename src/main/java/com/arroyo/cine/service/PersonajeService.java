@@ -8,6 +8,7 @@ import com.arroyo.cine.mapper.personaje.PersonajePersonalizadoMapper;
 import com.arroyo.cine.repository.PersonajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Null;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class PersonajeService {
         return mapper.aPersonajeDto(personaje);
     }
 
+    @Transactional
     public PersonajeDto save(PersonajeDto personajeDto) {
         if (personajeDto == null || validarDatosGuardar(personajeDto))
             return new PersonajeDto();
@@ -48,6 +50,7 @@ public class PersonajeService {
         return mapper.aPersonajeDto(personaje);
     }
 
+    @Transactional
     public PersonajeDto update(Integer idPersonaje, PersonajeDto personajeDto) {
         Personaje personaje = repository.findById(idPersonaje).orElse(new Personaje());
         if (personaje.getIdPersonaje() == null) {
@@ -57,6 +60,7 @@ public class PersonajeService {
         return repository.findById(idPersonaje).map(personaje1 -> mapper.aPersonajeDto(personaje1)).orElse(new PersonajeDto());
     }
 
+    @Transactional
     public PersonajeDto delete(PersonajeDto personajeDto) {
         Personaje personaje = repository.findById(personajeDto.getIdePersonaje()).orElse(new Personaje());
         if (personaje.getIdPersonaje() == null || validarTodosLosDatos(personajeDto))
@@ -65,6 +69,7 @@ public class PersonajeService {
         return mapper.aPersonajeDto(personaje);
     }
 
+    @Transactional
     public PersonajeDto deleteById(Integer idPersonaje) {
         Personaje personaje = repository.findById(idPersonaje).orElse(new Personaje());
         if (personaje.getIdPersonaje() == null)

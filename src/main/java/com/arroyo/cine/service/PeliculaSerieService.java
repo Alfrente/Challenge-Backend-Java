@@ -9,6 +9,7 @@ import com.arroyo.cine.mapper.pelicula_serie.PeliculaSeriePersonalizadoMapper;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class PeliculaSerieService {
         return mapper.aPeliculaSerieDto(repository.findById(id).orElse(new PeliculaSerie()));
     }
 
+    @Transactional
     public PeliculaSerieDto save(PeliculaSerieDto peliculaSerie) {
         String fechaCreacion = peliculaSerie.getFechaCreacion();
         if (!validarDatosGuardarPeliculaSerieConPersonajes(peliculaSerie))
@@ -49,6 +51,7 @@ public class PeliculaSerieService {
         return mapper.aPeliculaSerieDto(repository.save(mapper.aPeliculaSerie(peliculaSerie)));
     }
 
+    @Transactional
     public void savePersonalizado(Integer idPeli, Integer idPersonaje) {
         PeliculaSerie peliculaSerie = repository.findById(idPeli).orElse(null);
         PeliculaSerie buscarPersonaje = repository.findByIdPersonaje(idPersonaje);
@@ -61,6 +64,7 @@ public class PeliculaSerieService {
         }
     }
 
+    @Transactional
     public PeliculaSerieDto update(Integer id, PeliculaSerieDto peliculaSerieDto) {
         PeliculaSerie peliculaSerie = repository.findById(id).orElse(null);
         if (peliculaSerie == null || id <= 0)
@@ -76,10 +80,12 @@ public class PeliculaSerieService {
         return mapper.aPeliculaSerieDto(peliculaSerie);
     }
 
+    @Transactional
     public void deletePersonalizado(Integer idPeli, Integer idPersonaje) {
         repository.deleteByIdPeliculaSerieAndIdPersonaje(idPeli, idPersonaje);
     }
 
+    @Transactional
     public PeliculaSerieDto deleteById(Integer id) {
         PeliculaSerie peliculaSerie = repository.findById(id).orElse(new PeliculaSerie());
         if (peliculaSerie.getIdPeliculaSerie() == null)
@@ -98,23 +104,18 @@ public class PeliculaSerieService {
         if (dto.getTitulo() != null && !dto.getTitulo().isBlank()) {
             entity.setTitulo(dto.getTitulo());
         }
-
         if (dto.getCaratula() != null && !dto.getCaratula().isBlank()) {
             entity.setImagen(dto.getCaratula());
         }
-
         if (dto.getFechaCreacion() != null && !dto.getFechaCreacion().isBlank()) {
             entity.setFechaCreacion(LocalDateTime.parse(dto.getFechaCreacion()));
         }
-
         if (dto.getCalifiacion() != null && dto.getCalifiacion() > 0 && dto.getCalifiacion() < 6) {
             entity.setCalifiacion(dto.getCalifiacion());
         }
-
         if (dto.getIdPersonaje() != null && dto.getIdPersonaje() > 0) {
             entity.setIdPersonaje(dto.getIdPersonaje());
         }
-
         if (dto.getIdGenero() != null && dto.getIdGenero() > 0) {
             entity.setIdGenero(dto.getIdGenero());
         }
