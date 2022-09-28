@@ -4,33 +4,44 @@ import com.arroyo.cine.dto.genero.GeneroDto;
 import com.arroyo.cine.entity.Genero;
 import com.arroyo.cine.mapper.genero.GeneroMapper;
 import com.arroyo.cine.repository.GeneroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
 public class GeneroService {
 
-    @Autowired
-    private GeneroRepository repository;
 
-    @Autowired
-    private GeneroMapper mapper;
+    private  final GeneroRepository repository;
 
-    public GeneroDto save(GeneroDto generoDto) {
-        Genero genero = mapper.aGenero(generoDto);
-        return mapper.aGeneroDto(repository.save(genero));
+    private  final GeneroMapper mapper;
+
+    public GeneroService(GeneroRepository repository, GeneroMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
     }
 
-    public GeneroDto delete(GeneroDto generoDto) {
+    @Transactional
+    public GeneroDto save(@NotNull GeneroDto generoDto) {
+        if (generoDto.getIdeGenero() != null || generoDto.getNombreGenero() == null)
+            return new GeneroDto();
+        return mapper.aGeneroDto(repository.save(mapper.aGenero(generoDto)));
+    }
+
+    @Transactional
+    public GeneroDto delete(@NotNull GeneroDto generoDto) {
+        if (generoDto.getIdeGenero() == null)
+            return new GeneroDto();
         Genero genero = repository.findById(generoDto.getIdeGenero()).orElse(new Genero());
-        if (genero.getIdGenero() == null || validarTodosLosDatos(generoDto))
+        if (genero.getIdGenero() == null || !validarTodosLosDatos(generoDto))
             return new GeneroDto();
         repository.delete(mapper.aGenero(generoDto));
         return mapper.aGeneroDto(genero);
     }
 
+    @Transactional
     public GeneroDto deleteById(Integer idGenero) {
         Genero genero = repository.findById(idGenero).orElse(new Genero());
         if (genero.getIdGenero() == null)
@@ -39,15 +50,16 @@ public class GeneroService {
         return mapper.aGeneroDto(genero);
     }
 
-    public GeneroDto getById(Integer idGenero) {
-        return mapper.aGeneroDto(repository.findById(idGenero).orElse(new Genero()));
+    public GeneroDto getById(@NotNull Integer idGenero) {
+        return mapper.aGeneroDto(repository.findById(idGenero).orElse(null));
     }
 
     public List<GeneroDto> getAll() {
         return mapper.aListGeneroDto(repository.findAll());
     }
 
-    public GeneroDto update(Integer idGenero, String nuevoGenero) {
+    @Transactional
+    public GeneroDto update(@NotNull Integer idGenero, @NotNull String nuevoGenero) {
         Genero genero = repository.findById(idGenero).orElse(new Genero());
         genero.setNombre(nuevoGenero);
         if (genero.getIdGenero() == null)

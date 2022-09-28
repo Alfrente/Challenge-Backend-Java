@@ -6,27 +6,46 @@ import com.arroyo.cine.service.PersonajeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
 public class PersonajeController {
 
-    @Autowired
-    private PersonajeService personajeService;
+    private  final PersonajeService personajeService;
+
+    public PersonajeController(PersonajeService personajeService) {
+        this.personajeService = personajeService;
+    }
 
     @GetMapping("characters")
-    @Operation(summary = "Trae los personajes", description = "Este método trae todos los personajes", responses = {
+    @Operation(summary = "Trae los personajes", description = "Este método trae todos los personajes tiene la opción de filtrar el resultado", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición.")
     })
-    public ResponseEntity<List<PersonajePersonalizadoPDto>> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
+    @Parameter(description = "name", example = "Guerra z")
+    @Parameter(description = "age", example = "15")
+    @Parameter(description = "movies", example = "1")
+    public ResponseEntity<List<PersonajeDto>> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
     Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
         return new ResponseEntity<>(personajeService.getAll(name, age, movies), HttpStatus.OK);
+    }
+
+    @GetMapping("/personaje/getAll")
+    @Operation(summary = "Trae los personajes", description = "Este método trae todos los personajes tiene la opción de filtrar el resultado", responses = {
+            @ApiResponse(responseCode = "200", description = "Petición exitosa."),
+            @ApiResponse(responseCode = "404", description = "No se pudo completar la petición.")
+    })
+    @Parameter(description = "name", example = "Guerra z")
+    @Parameter(description = "age", example = "15")
+    @Parameter(description = "movies", example = "1")
+    public ResponseEntity<List<PersonajePersonalizadoPDto>> getAllPersonalizado(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
+    Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
+        return new ResponseEntity<>(personajeService.getAllPersonalizado(name, age, movies), HttpStatus.OK);
     }
 
     @GetMapping("/personaje/getById/{idPersona}")
@@ -35,7 +54,7 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
-    public ResponseEntity<PersonajeDto> getById(@PathVariable("idPersona") Integer idPersona) {
+    public ResponseEntity<PersonajeDto> getById(@PathVariable("idPersona") @NotBlank Integer idPersona) {
         return new ResponseEntity<>(personajeService.getById(idPersona), HttpStatus.OK);
     }
 
@@ -45,7 +64,7 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "No se pudo crear el personaje.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public ResponseEntity<PersonajeDto> save(@RequestBody PersonajeDto personajeDto) {
+    public ResponseEntity<PersonajeDto> save(@RequestBody @NotBlank PersonajeDto personajeDto) {
         return new ResponseEntity<>(personajeService.save(personajeDto), HttpStatus.CREATED);
     }
 
@@ -55,7 +74,7 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar el personaje.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public ResponseEntity<PersonajeDto> delete(PersonajeDto personajeDto) {
+    public ResponseEntity<PersonajeDto> delete(@RequestBody @NotBlank PersonajeDto personajeDto) {
         return new ResponseEntity<>(personajeService.delete(personajeDto), HttpStatus.ACCEPTED);
     }
 
@@ -65,7 +84,7 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar el personaje.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
-    public ResponseEntity<PersonajeDto> deleteById(@PathVariable("idPersona") Integer idPersona) {
+    public ResponseEntity<PersonajeDto> deleteById(@PathVariable("idPersona") @NotBlank Integer idPersona) {
         return new ResponseEntity<>(personajeService.deleteById(idPersona), HttpStatus.ACCEPTED);
     }
 
@@ -76,7 +95,7 @@ public class PersonajeController {
     })
     @Parameter(required = true, description = "Id personaje", example = "1")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public ResponseEntity<PersonajeDto> update(@PathVariable("idPersonaje") Integer idPersonaje, @RequestBody PersonajeDto personajeDto) {
+    public ResponseEntity<PersonajeDto> update(@PathVariable("idPersonaje") @NotBlank Integer idPersonaje, @RequestBody @NotBlank PersonajeDto personajeDto) {
         return new ResponseEntity<>(personajeService.update(idPersonaje, personajeDto), HttpStatus.ACCEPTED);
     }
 }

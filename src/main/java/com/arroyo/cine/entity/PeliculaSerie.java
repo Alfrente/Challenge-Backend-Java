@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -18,6 +18,7 @@ public class PeliculaSerie {
     private Integer idPeliculaSerie;
 
     @NotBlank
+    @Column(length = 50, nullable = false)
     @Size(min = 5, max = 50)
     private String titulo;
 
@@ -25,28 +26,29 @@ public class PeliculaSerie {
     private String imagen;
 
     @NotBlank
-    @Column(name = "fecha_creacion")
-    private LocalDateTime fechaCreacion;
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDate fechaCreacion;
 
     @Null
+    @Column(length = 5, nullable = false)
     @Size(min = 1, max = 5)
     private Byte califiacion;
 
     @NotBlank
     @Size(min = 1)
-    @Column(name = "personaje_id")
+    @Column(name = "personaje_id", nullable = false)
     private Integer idPersonaje;
 
     @NotBlank
     @Size(min = 1)
-    @Column(name = "id_genero")
+    @Column(name = "id_genero", nullable = false)
     private Integer idGenero;
 
     @ManyToMany
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(name = "pelicula_serie_personajes",
             joinColumns = @JoinColumn(name = "personaje_id"),
-            inverseJoinColumns = @JoinColumn(name = "id_personaje")
+            inverseJoinColumns = @JoinColumn(name = "id_personaje", updatable = false)
     )
     private List<Personaje> personajes;
 
@@ -74,11 +76,11 @@ public class PeliculaSerie {
         this.imagen = imagen;
     }
 
-    public LocalDateTime getFechaCreacion() {
+    public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+    public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 

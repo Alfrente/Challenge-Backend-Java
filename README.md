@@ -1,15 +1,14 @@
-# CINE
-### El proyecto es un reto de:
-### Alkemy CHALLENGE BACKEND - Java Spring Boot (API) 🚀.
-* [Link del documento del reto.](https://drive.google.com/file/d/1ICHCzERR_tC9yB9crJyxVoqtNXsduOky/view?usp=sharing)
-* [Link de la pagina ALKEMY](https://campus.alkemy.org/login)
+# POROYECTO CINE
 
-## Me falta
+### El proyecto es un desafío en Alkemy.
+### `Alkemy CHALLENGE BACKEND - Java Spring Boot (API).` 
+🚀 El siguiente link es de CHALLENGE BACKEND - Java Spring Boot (API) -> [CHALLENGE BACKEND.pdf](https://drive.google.com/file/d/1ICHCzERR_tC9yB9crJyxVoqtNXsduOky/view?usp=sharing)  
+🎯 El siguiente link es de la ->  [pagina ALKEMY](https://campus.alkemy.org/login). 
 
-5. Búsqueda de Personajes -> El listado deberá mostrar:
-7. Creación, Edición y Eliminación de Película / Serie -> Al crear una Película, crearla con sus personajes asociados error con el id en pelicula s
-8. 
-9. Autenticación de Usuarios
-10. Envío de emails
-11. Tests
+## Me falta lo siguiente para completar el proyecto
+#### 9. Agregar/Remover personajes a una película -> agrego la pelicule pero no guardo la informacion del personaje.
+#### 10. Autenticación de Usuarios.
+#### 11. Envío de emails -> sin implementar dependiente del paso 10. 
+#### 12. Tests.
+
 

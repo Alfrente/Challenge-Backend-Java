@@ -17,14 +17,17 @@ public class Personaje {
     private Integer idPersonaje;
 
     @NotBlank
+    @Column(length = 50, nullable = false)
     @Size(min = 4, max = 50)
     private String nombre;
 
     @NotBlank
+    @Column(length = 2, nullable = false)
     @Size(min = 1, max = 2)
     private Byte edad;
 
     @NotBlank
+    @Column(nullable = false)
     private Float peso;
 
     @Null
@@ -35,7 +38,6 @@ public class Personaje {
     private  String historia;
 
     @ManyToMany(mappedBy = "personajes", fetch = FetchType.LAZY)
-    //{CascadeType.MERGE, CascadeType.PERSIST}
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
     private List<PeliculaSerie> peliculaSeries;
 

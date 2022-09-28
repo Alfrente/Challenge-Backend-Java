@@ -1,6 +1,7 @@
 package com.arroyo.cine.dto.genero;
 
 import com.arroyo.cine.entity.PeliculaSerie;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
@@ -18,9 +19,11 @@ public class GeneroDto {
     private String nombreGenero;
 
     @Null
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String imagenGenero;
 
     @Null
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PeliculaSerie> peliculaSeries;
 
     public Integer getIdeGenero() {

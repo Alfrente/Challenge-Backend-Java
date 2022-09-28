@@ -14,6 +14,7 @@ public class Genero {
     private Integer idGenero;
 
     @NotBlank
+    @Column(length = 50, nullable = false)
     @Size(min = 5, max = 50)
     private String nombre;
 

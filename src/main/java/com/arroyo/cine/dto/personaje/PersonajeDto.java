@@ -13,24 +13,30 @@ public class PersonajeDto  {
 
     @NotBlank
     @Size(min = 1)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idePersonaje;
 
     @NotBlank
     @Size(min = 4, max = 50)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String nombre;
 
     @NotBlank
     @Size(min = 1, max = 2)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Byte edad;
 
     @NotBlank
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Float peso;
 
     @Null
     @Size(max = 255)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String imagen;
 
     @Null
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private  String historia;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -97,11 +103,11 @@ public class PersonajeDto  {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonajeDto that = (PersonajeDto) o;
-        return Objects.equals(idePersonaje, that.idePersonaje) && Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia) && Objects.equals(peliculaSeries, that.peliculaSeries);
+        return Objects.equals(idePersonaje, that.idePersonaje) && Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idePersonaje, nombre, edad, peso, imagen, historia, peliculaSeries);
+        return Objects.hash(idePersonaje, nombre, edad, peso, imagen, historia);
     }
 }

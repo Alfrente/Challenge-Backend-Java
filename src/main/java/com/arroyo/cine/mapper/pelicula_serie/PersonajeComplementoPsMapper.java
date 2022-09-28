@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {PeliculaSerieComplementoPsMapper.class})
+@Mapper(componentModel = "spring")
 public interface PersonajeComplementoPsMapper {
 
     @Mapping(target = "idePersonaje", source = "personaje.idPersonaje")

@@ -18,9 +18,11 @@ public class PeliculaSerieDto {
 
     @NotBlank
     @Size(min = 5, max = 50)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String titulo;
 
     @Null
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String caratula;
 
     @NotBlank

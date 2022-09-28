@@ -6,60 +6,77 @@ import com.arroyo.cine.entity.Personaje;
 import com.arroyo.cine.mapper.personaje.PersonajeMapper;
 import com.arroyo.cine.mapper.personaje.PersonajePersonalizadoMapper;
 import com.arroyo.cine.repository.PersonajeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Null;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @Service
 public class PersonajeService {
-    @Autowired
-    private PersonajeRepository repository;
-    @Autowired
-    private PersonajeMapper mapper;
 
-    @Autowired
-    private PersonajePersonalizadoMapper mapperP;
+    private final PersonajeRepository repository;
 
-    public List<PersonajePersonalizadoPDto> getAll(@Null String name, @Null Byte age, @Null Integer movie) {
-        return mapperP.aListPersonajePersonalizadoDto(filtro(repository.findAll(), name, age, movie));
+    private final PersonajeMapper mapper;
+
+    private final PersonajePersonalizadoMapper mapperP;
+
+    public PersonajeService(PersonajeRepository repository, PersonajeMapper mapper, PersonajePersonalizadoMapper mapperP) {
+        this.repository = repository;
+        this.mapper = mapper;
+        this.mapperP = mapperP;
     }
 
-    public PersonajeDto getById(Integer idPersonaje) {
+    public List<PersonajeDto> getAll(String name, Byte age, Integer movie) {
+        return mapper.aListPersonajeDto(filtro(repository.findAll(), name, age, movie, true));
+    }
+
+    public List<PersonajePersonalizadoPDto> getAllPersonalizado(String name, Byte age, Integer movie) {
+        return mapperP.aListPersonajePersonalizadoDto(filtro(repository.findAll(), name, age, movie, false));
+    }
+
+    public PersonajeDto getById(@NotNull Integer idPersonaje) {
         Personaje personaje = repository.findById(idPersonaje).orElse(new Personaje());
         if (personaje.getIdPersonaje() == null || idPersonaje <= 0)
             return new PersonajeDto();
         return mapper.aPersonajeDto(personaje);
     }
 
-    public PersonajeDto save(PersonajeDto personajeDto) {
-        if (personajeDto == null || validarDatosGuardar(personajeDto))
+    @Transactional
+    public PersonajeDto save(@NotNull PersonajeDto personajeDto) {
+        if (personajeDto == null || !validarDatosGuardar(personajeDto) && personajeDto.getIdePersonaje() != null)
             return new PersonajeDto();
         Personaje personaje = repository.save(mapper.aPersonaje(personajeDto));
         return mapper.aPersonajeDto(personaje);
     }
 
-    public PersonajeDto update(Integer idPersonaje, PersonajeDto personajeDto) {
+    @Transactional
+    public PersonajeDto update(@NotNull Integer idPersonaje, @NotNull PersonajeDto personajeDto) {
         Personaje personaje = repository.findById(idPersonaje).orElse(new Personaje());
         if (personaje.getIdPersonaje() == null) {
             return new PersonajeDto();
         }
         repository.save(validarParametros(personaje, personajeDto));
-        return repository.findById(idPersonaje).map(personaje1 -> mapper.aPersonajeDto(personaje1)).orElse(new PersonajeDto());
+        return repository.findById(idPersonaje).map(mapper::aPersonajeDto).orElse(new PersonajeDto());
     }
 
-    public PersonajeDto delete(PersonajeDto personajeDto) {
+    @Transactional
+    public PersonajeDto delete(@NotNull PersonajeDto personajeDto) {
+        if (personajeDto.getIdePersonaje() == null)
+            return new PersonajeDto();
         Personaje personaje = repository.findById(personajeDto.getIdePersonaje()).orElse(new Personaje());
-        if (personaje.getIdPersonaje() == null || validarTodosLosDatos(personajeDto))
+        if (personaje.getIdPersonaje() == null || !validarTodosLosDatos(personajeDto))
             return new PersonajeDto();
         repository.delete(mapper.aPersonaje(personajeDto));
         return mapper.aPersonajeDto(personaje);
     }
 
-    public PersonajeDto deleteById(Integer idPersonaje) {
+    @Transactional
+    public PersonajeDto deleteById(@NotNull Integer idPersonaje) {
         Personaje personaje = repository.findById(idPersonaje).orElse(new Personaje());
         if (personaje.getIdPersonaje() == null)
             return new PersonajeDto();
@@ -68,13 +85,18 @@ public class PersonajeService {
     }
 
     private boolean validarDatosGuardar(PersonajeDto personaje) {
-        return personaje.getNombre() != null && personaje.getEdad() != null && personaje.getPeso() != null &&
-                (!personaje.getNombre().isBlank()) && personaje.getEdad() > 0 && personaje.getPeso() > 0;
+        return personaje.getNombre() != null && personaje.getEdad() != null &&
+                personaje.getPeso() != null && !personaje.getNombre().isBlank()
+                && personaje.getEdad() > 0 && personaje.getPeso() > 0;
     }
 
     private boolean validarTodosLosDatos(PersonajeDto dto) {
-        return dto.getIdePersonaje() != null && dto.getIdePersonaje() > 0 && dto.getNombre() != null && !dto.getNombre().isBlank() && dto.getEdad() != null && dto.getEdad() > 0 && dto.getPeso() != null && dto.getPeso() > 0
-                && dto.getImagen() != null && !dto.getImagen().isBlank() && dto.getHistoria() != null && !dto.getHistoria().isBlank();
+        return dto.getIdePersonaje() != null && dto.getIdePersonaje() > 0
+                && dto.getNombre() != null && !dto.getNombre().isBlank()
+                && dto.getEdad() != null && dto.getEdad() > 0
+                && dto.getPeso() != null && dto.getPeso() > 0
+                && dto.getImagen() != null && !dto.getImagen().isBlank()
+                && dto.getHistoria() != null && !dto.getHistoria().isBlank();
     }
 
     private Personaje validarParametros(Personaje personaje, PersonajeDto dto) {
@@ -96,19 +118,29 @@ public class PersonajeService {
         return personaje;
     }
 
-    private List<Personaje> filtro(List<Personaje> personajes, @Null String name, @Null Byte age, @Null Integer movie) {
-        List<Personaje> personajesFiltro = personajes;
+    private List<Personaje> filtro(List<Personaje> personajes, String name, Byte age, Integer movie, Boolean setear) {
         if (name != null && !name.isBlank() && age != null && age > 0 && movie != null && movie > 0)
-            return personajesFiltro.stream().filter(personaje -> personaje.getNombre().equals(name) && personaje.getEdad() == age && personaje.getIdPersonaje() == movie).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> personaje.getNombre().equals(name) && Objects.equals(personaje.getEdad(), age) && Objects.equals(personaje.getIdPersonaje(), movie)).map(personaje -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (name != null && !name.isBlank())
-            return personajesFiltro.stream().filter(personaje -> personaje.getNombre().equals(name)).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> personaje.getNombre().equals(name)).map(personaje -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (age != null && age > 0)
-            return personajesFiltro.stream().filter(personaje -> personaje.getEdad() == age).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> Objects.equals(personaje.getEdad(), age)).map(personaje -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (movie != null && movie > 0)
-            return personajes.stream().filter(personaje -> personaje.getIdPersonaje() == movie).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> Objects.equals(personaje.getIdPersonaje(), movie)).map(personaje -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (name == null && age == null && movie == null)
-            return personajesFiltro;
+            return personajes;
         else
             return new ArrayList<>();
     }
+
+    private final BiFunction<Personaje, Boolean, Personaje> setearNull = (personaje, setear) -> {
+        if (Boolean.TRUE.equals(setear)) {
+            personaje.setIdPersonaje(null);
+            personaje.setHistoria(null);
+            personaje.setPeso(null);
+            personaje.setPeliculaSeries(null);
+            personaje.setEdad(null);
+        }
+        return personaje;
+    };
 }

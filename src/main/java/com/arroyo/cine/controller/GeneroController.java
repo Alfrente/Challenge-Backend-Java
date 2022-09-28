@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +16,19 @@ import java.util.List;
 @RequestMapping("/genero")
 public class GeneroController {
 
-    @Autowired
-    private GeneroService generoService;
+    private final GeneroService generoService;
+
+    public GeneroController(GeneroService generoService) {
+        this.generoService = generoService;
+    }
 
     @GetMapping
     @Operation(summary = "Trae los genero", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición."),
     }, description = "Este método trae todos los genero")
-    public List<GeneroDto> getAll() {
-        return generoService.getAll();
+    public ResponseEntity<List<GeneroDto>> getAll() {
+        return new ResponseEntity<>(generoService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/getById/{idGenero}")
@@ -36,7 +38,7 @@ public class GeneroController {
     }, description = "Este método sirve para buscar un genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") Integer idGenero) {
-        return new ResponseEntity<>(generoService.getById(idGenero), HttpStatus.CREATED);
+        return new ResponseEntity<>(generoService.getById(idGenero), HttpStatus.OK);
     }
 
     @PostMapping
