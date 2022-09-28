@@ -7,11 +7,10 @@ import com.arroyo.cine.entity.PeliculaSerie;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSerieMapper;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSeriePersonalizadoMapper;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -22,18 +21,24 @@ import static com.arroyo.cine.util.InformacionEstatica.*;
 
 @Service
 public class PeliculaSerieService {
-    @Autowired
-    private PeliculaSerieRepository repository;
-    @Autowired
-    private PeliculaSerieMapper mapper;
-    @Autowired
-    private PeliculaSeriePersonalizadoMapper mapperP;
 
-    public List<PeliculaSeriePersonalizadoPsDto> getAll( String name, Integer genre, String order) {
+    private final PeliculaSerieRepository repository;
+
+    private final PeliculaSerieMapper mapper;
+
+    private final PeliculaSeriePersonalizadoMapper mapperP;
+
+    public PeliculaSerieService(PeliculaSerieRepository repository, PeliculaSerieMapper mapper, PeliculaSeriePersonalizadoMapper mapperP) {
+        this.repository = repository;
+        this.mapper = mapper;
+        this.mapperP = mapperP;
+    }
+
+    public List<PeliculaSeriePersonalizadoPsDto> getAll(String name, Integer genre, String order) {
         return mapperP.aListPeliculaSeriePersolizadaDto(filtro(repository.findAll(), name, genre, order));
     }
 
-    public List<PeliculaSerieDto> getAllPersonalizado( String name, Integer genre, String order) {
+    public List<PeliculaSerieDto> getAllPersonalizado(String name, Integer genre, String order) {
         return mapper.aListPeliculaSerieDto(filtro(repository.findAll(), name, genre, order));
     }
 
@@ -43,11 +48,8 @@ public class PeliculaSerieService {
 
     @Transactional
     public PeliculaSerieDto save(PeliculaSerieDto peliculaSerie) {
-        String fechaCreacion = peliculaSerie.getFechaCreacion();
-        if (!validarDatosGuardarPeliculaSerieConPersonajes(peliculaSerie))
+        if (!validarDatosGuardarPeliculaSerieConPersonajes(peliculaSerie) && !validarDatosPeliculaSerie(peliculaSerie) && peliculaSerie.getIdPeliculaSerie() != null)
             return new PeliculaSerieDto();
-        if (validarFecha(fechaCreacion) == 1)
-            peliculaSerie.setFechaCreacion(fechaCreacion.concat("T00:00:00"));
         return mapper.aPeliculaSerieDto(repository.save(mapper.aPeliculaSerie(peliculaSerie)));
     }
 
@@ -73,6 +75,8 @@ public class PeliculaSerieService {
     }
 
     public PeliculaSerieDto delete(PeliculaSerieDto peliculaSerieDto) {
+        if (peliculaSerieDto.getIdPeliculaSerie() == null)
+            return new PeliculaSerieDto();
         PeliculaSerie peliculaSerie = repository.findById(peliculaSerieDto.getIdPeliculaSerie()).orElse(new PeliculaSerie());
         if (peliculaSerie.getIdPeliculaSerie() == null || !validarTodosLosDatos(peliculaSerieDto))
             return new PeliculaSerieDto();
@@ -96,7 +100,7 @@ public class PeliculaSerieService {
 
     private boolean validarTodosLosDatos(PeliculaSerieDto dto) {
         return dto.getIdPeliculaSerie() != null && dto.getIdPeliculaSerie() > 0 && dto.getTitulo() != null && (!dto.getTitulo().isBlank()) && dto.getFechaCreacion() != null &&
-                (validarFecha(dto.getFechaCreacion()) == 1 || validarFecha(dto.getFechaCreacion()) == 2) && dto.getIdPersonaje() != null
+                validarFecha(dto.getFechaCreacion()) && dto.getIdPersonaje() != null
                 && dto.getIdPersonaje() > 0 && dto.getIdGenero() != null && dto.getIdGenero() > 0;
     }
 
@@ -108,7 +112,7 @@ public class PeliculaSerieService {
             entity.setImagen(dto.getCaratula());
         }
         if (dto.getFechaCreacion() != null && !dto.getFechaCreacion().isBlank()) {
-            entity.setFechaCreacion(LocalDateTime.parse(dto.getFechaCreacion()));
+            entity.setFechaCreacion(LocalDate.parse(dto.getFechaCreacion()));
         }
         if (dto.getCalifiacion() != null && dto.getCalifiacion() > 0 && dto.getCalifiacion() < 6) {
             entity.setCalifiacion(dto.getCalifiacion());
@@ -124,18 +128,17 @@ public class PeliculaSerieService {
 
     private boolean validarDatosPeliculaSerie(PeliculaSerieDto dto) {
         return dto.getTitulo() != null && (!dto.getTitulo().isBlank()) && dto.getFechaCreacion() != null &&
-                (validarFecha(dto.getFechaCreacion()) == 1 || validarFecha(dto.getFechaCreacion()) == 2) &&
+                validarFecha(dto.getFechaCreacion()) &&
                 dto.getIdPersonaje() != null && dto.getIdPersonaje() > 0 && dto.getIdGenero() != null && dto.getIdGenero() > 0;
     }
 
     private boolean validarDatosPersonajes(List<PersonajeDto> personajesRecivodos) {
         if (personajesRecivodos == null)
             return false;
-        List<PersonajeDto> personajes = personajesRecivodos;
         int index = personajesRecivodos.size();
         int personajesValido = 0;
 
-        for (var personaje : personajes) {
+        for (var personaje : personajesRecivodos) {
             if (personaje.getEdad() != null && personaje.getEdad() > 0 && personaje.getNombre() != null &&
                     (!personaje.getNombre().isBlank()) && personaje.getPeso() != null && personaje.getPeso() > 0)
                 personajesValido++;
@@ -146,15 +149,11 @@ public class PeliculaSerieService {
     private boolean validarDatosGuardarPeliculaSerieConPersonajes(PeliculaSerieDto dto) {
         if (dto == null || dto.getPersonajes() == null)
             return false;
-        return validarDatosPeliculaSerie(dto) && validarDatosPersonajes(dto.getPersonajes());
+        return validarDatosPeliculaSerie(dto) && validarDatosPersonajes(dto.getPersonajes()) && validarFecha(dto.getFechaCreacion());
     }
 
-    private byte validarFecha(String fecha) {
-        if (fecha.matches(FECHA_CORTA))
-            return 1;
-        if (fecha.matches(FECHA_LARGA))
-            return 2;
-        return 0;
+    private boolean validarFecha(String fecha) {
+        return fecha.matches(REGEX_FECHA);
     }
 
     private List<PeliculaSerie> filtro(List<PeliculaSerie> peliculaSeries, String name, Integer genre, String order) {

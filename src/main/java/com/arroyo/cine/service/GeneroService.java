@@ -4,7 +4,6 @@ import com.arroyo.cine.dto.genero.GeneroDto;
 import com.arroyo.cine.entity.Genero;
 import com.arroyo.cine.mapper.genero.GeneroMapper;
 import com.arroyo.cine.repository.GeneroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,11 +12,15 @@ import java.util.List;
 @Service
 public class GeneroService {
 
-    @Autowired
-    private GeneroRepository repository;
 
-    @Autowired
-    private GeneroMapper mapper;
+    private  final GeneroRepository repository;
+
+    private  final GeneroMapper mapper;
+
+    public GeneroService(GeneroRepository repository, GeneroMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
     @Transactional
     public GeneroDto save(GeneroDto generoDto) {

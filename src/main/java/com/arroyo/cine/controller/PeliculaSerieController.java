@@ -6,7 +6,6 @@ import com.arroyo.cine.service.PeliculaSerieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,11 @@ import java.util.List;
 @RestController
 public class PeliculaSerieController {
 
-    @Autowired
-    private PeliculaSerieService service;
+    private  final PeliculaSerieService service;
+
+    public PeliculaSerieController(PeliculaSerieService service) {
+        this.service = service;
+    }
 
     @GetMapping("/movies")
     @Operation(summary = "Trae las peliculas y series", description = "Este método trae todas las peliculas y series tiene la opción de filtrar el resultado", responses = {

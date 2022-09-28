@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Repository
@@ -23,6 +24,6 @@ public interface PeliculaSerieRepository extends JpaRepository<PeliculaSerie, In
     @Transactional
     @Query(value = "INSERT INTO pelicula_serie(titulo, imagen, fecha_creacion, califiacion, id_personaje, id_genero)  VALUES (?1, ?2, ?3, ?4, ?5, ?6);", nativeQuery = true)
     void insertByIdPeliculaSerieAndIdPersonaje(@Param("titulo") String titulo, @Param("imagen") String imagen,
-                                                        @Param("fecha_creacion") LocalDateTime fecha_creacion, @Param("califiacion") Byte califiacion,
-                                                        @Param("id_personaje") Integer id_personaje, @Param("id_genero") Integer id_genero);
+                                               @Param("fecha_creacion") LocalDate fecha_creacion, @Param("califiacion") Byte califiacion,
+                                               @Param("id_personaje") Integer id_personaje, @Param("id_genero") Integer id_genero);
 }

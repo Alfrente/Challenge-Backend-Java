@@ -6,7 +6,6 @@ import com.arroyo.cine.entity.Personaje;
 import com.arroyo.cine.mapper.personaje.PersonajeMapper;
 import com.arroyo.cine.mapper.personaje.PersonajePersonalizadoMapper;
 import com.arroyo.cine.repository.PersonajeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,13 +18,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class PersonajeService {
-    @Autowired
-    private PersonajeRepository repository;
-    @Autowired
-    private PersonajeMapper mapper;
 
-    @Autowired
-    private PersonajePersonalizadoMapper mapperP;
+    private final PersonajeRepository repository;
+
+    private final PersonajeMapper mapper;
+
+    private final PersonajePersonalizadoMapper mapperP;
+
+    public PersonajeService(PersonajeRepository repository, PersonajeMapper mapper, PersonajePersonalizadoMapper mapperP) {
+        this.repository = repository;
+        this.mapper = mapper;
+        this.mapperP = mapperP;
+    }
 
     public List<PersonajeDto> getAll(String name, Byte age, Integer movie) {
         return mapper.aListPersonajeDto(filtro(repository.findAll(), name, age, movie, true));
@@ -44,7 +48,7 @@ public class PersonajeService {
 
     @Transactional
     public PersonajeDto save(PersonajeDto personajeDto) {
-        if (personajeDto == null || !validarDatosGuardar(personajeDto))
+        if (personajeDto == null || !validarDatosGuardar(personajeDto) && personajeDto.getIdePersonaje() != null)
             return new PersonajeDto();
         Personaje personaje = repository.save(mapper.aPersonaje(personajeDto));
         return mapper.aPersonajeDto(personaje);
