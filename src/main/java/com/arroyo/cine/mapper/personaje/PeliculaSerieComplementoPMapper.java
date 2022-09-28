@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring" , uses = {PersonajeComplementoPMapper.class})
+@Mapper(componentModel = "spring")
 public interface PeliculaSerieComplementoPMapper {
 
     @Mapping(target = "idPeliculaSerie", source = "peliculaSerie.idPeliculaSerie")
@@ -18,7 +18,7 @@ public interface PeliculaSerieComplementoPMapper {
     @Mapping(target = "califiacion", source = "peliculaSerie.califiacion")
     @Mapping(target = "idPersonaje", source = "peliculaSerie.idPersonaje")
     @Mapping(target = "idGenero", source = "peliculaSerie.idGenero")
-    @Mapping(target = "personajes", source = "peliculaSerie.personajes")
+    @Mapping(target = "personajes", ignore = true)
     PeliculaSerieDto aPeliculaSerieDto(PeliculaSerie peliculaSerie);
 
     List<PeliculaSerieDto> aListPeliculaSerieDto(List<PeliculaSerie> peliculaSeries);

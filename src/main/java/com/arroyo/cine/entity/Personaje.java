@@ -35,7 +35,6 @@ public class Personaje {
     private  String historia;
 
     @ManyToMany(mappedBy = "personajes", fetch = FetchType.LAZY)
-    //{CascadeType.MERGE, CascadeType.PERSIST}
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
     private List<PeliculaSerie> peliculaSeries;
 

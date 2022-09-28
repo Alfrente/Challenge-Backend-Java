@@ -103,11 +103,11 @@ public class PersonajeDto  {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonajeDto that = (PersonajeDto) o;
-        return Objects.equals(idePersonaje, that.idePersonaje) && Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia) && Objects.equals(peliculaSeries, that.peliculaSeries);
+        return Objects.equals(idePersonaje, that.idePersonaje) && Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idePersonaje, nombre, edad, peso, imagen, historia, peliculaSeries);
+        return Objects.hash(idePersonaje, nombre, edad, peso, imagen, historia);
     }
 }

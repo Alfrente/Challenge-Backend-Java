@@ -44,7 +44,7 @@ public class PersonajeService {
 
     @Transactional
     public PersonajeDto save(PersonajeDto personajeDto) {
-        if (personajeDto == null || validarDatosGuardar(personajeDto))
+        if (personajeDto == null || !validarDatosGuardar(personajeDto))
             return new PersonajeDto();
         Personaje personaje = repository.save(mapper.aPersonaje(personajeDto));
         return mapper.aPersonajeDto(personaje);
@@ -62,8 +62,10 @@ public class PersonajeService {
 
     @Transactional
     public PersonajeDto delete(PersonajeDto personajeDto) {
+        if (personajeDto.getIdePersonaje() == null)
+            return new PersonajeDto();
         Personaje personaje = repository.findById(personajeDto.getIdePersonaje()).orElse(new Personaje());
-        if (personaje.getIdPersonaje() == null || validarTodosLosDatos(personajeDto))
+        if (personaje.getIdPersonaje() == null || !validarTodosLosDatos(personajeDto))
             return new PersonajeDto();
         repository.delete(mapper.aPersonaje(personajeDto));
         return mapper.aPersonajeDto(personaje);
@@ -79,13 +81,18 @@ public class PersonajeService {
     }
 
     private boolean validarDatosGuardar(PersonajeDto personaje) {
-        return personaje.getNombre() != null && personaje.getEdad() != null && personaje.getPeso() != null &&
-                (!personaje.getNombre().isBlank()) && personaje.getEdad() > 0 && personaje.getPeso() > 0;
+        return personaje.getNombre() != null && personaje.getEdad() != null &&
+                personaje.getPeso() != null && !personaje.getNombre().isBlank()
+                && personaje.getEdad() > 0 && personaje.getPeso() > 0;
     }
 
     private boolean validarTodosLosDatos(PersonajeDto dto) {
-        return dto.getIdePersonaje() != null && dto.getIdePersonaje() > 0 && dto.getNombre() != null && !dto.getNombre().isBlank() && dto.getEdad() != null && dto.getEdad() > 0 && dto.getPeso() != null && dto.getPeso() > 0
-                && dto.getImagen() != null && !dto.getImagen().isBlank() && dto.getHistoria() != null && !dto.getHistoria().isBlank();
+        return dto.getIdePersonaje() != null && dto.getIdePersonaje() > 0
+                && dto.getNombre() != null && !dto.getNombre().isBlank()
+                && dto.getEdad() != null && dto.getEdad() > 0
+                && dto.getPeso() != null && dto.getPeso() > 0
+                && dto.getImagen() != null && !dto.getImagen().isBlank()
+                && dto.getHistoria() != null && !dto.getHistoria().isBlank();
     }
 
     private Personaje validarParametros(Personaje personaje, PersonajeDto dto) {
@@ -109,13 +116,13 @@ public class PersonajeService {
 
     private List<Personaje> filtro(List<Personaje> personajes, @Null String name, @Null Byte age, @Null Integer movie, Boolean setear) {
         if (name != null && !name.isBlank() && age != null && age > 0 && movie != null && movie > 0)
-            return personajes.stream().filter(personaje -> personaje.getNombre().equals(name) && Objects.equals(personaje.getEdad(), age) && Objects.equals(personaje.getIdPersonaje(), movie)).map(personaje -> setearNull.apply(personaje,setear)).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> personaje.getNombre().equals(name) && Objects.equals(personaje.getEdad(), age) && Objects.equals(personaje.getIdPersonaje(), movie)).map(personaje -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (name != null && !name.isBlank())
-            return personajes.stream().filter(personaje -> personaje.getNombre().equals(name)).map(personaje -> setearNull.apply(personaje,setear)).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> personaje.getNombre().equals(name)).map(personaje -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (age != null && age > 0)
-            return personajes.stream().filter(personaje -> Objects.equals(personaje.getEdad(), age)).map(personaje -> setearNull.apply(personaje,setear)).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> Objects.equals(personaje.getEdad(), age)).map(personaje -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (movie != null && movie > 0)
-            return personajes.stream().filter(personaje -> Objects.equals(personaje.getIdPersonaje(), movie)).map(personaje -> setearNull.apply(personaje,setear)).collect(Collectors.toList());
+            return personajes.stream().filter(personaje -> Objects.equals(personaje.getIdPersonaje(), movie)).map(personaje -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (name == null && age == null && movie == null)
             return personajes;
         else

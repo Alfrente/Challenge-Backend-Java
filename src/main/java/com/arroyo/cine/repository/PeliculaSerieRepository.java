@@ -16,7 +16,7 @@ public interface PeliculaSerieRepository extends JpaRepository<PeliculaSerie, In
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM pelicula_serie WHERE id_pelicula_serie =?1 AND id_personaje = ?2 LIMIT 1", nativeQuery = true)
+    @Query(value = "DELETE FROM pelicula_serie WHERE id_pelicula_serie =?1 AND personaje_id = ?2 LIMIT 1", nativeQuery = true)
     void deleteByIdPeliculaSerieAndIdPersonaje(@Param("idPeliculaSerie") Integer idPeliculaSerie, @Param("idPersonaje") Integer idPersonaje);
 
     @Modifying

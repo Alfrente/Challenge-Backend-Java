@@ -21,13 +21,17 @@ public class GeneroService {
 
     @Transactional
     public GeneroDto save(GeneroDto generoDto) {
+        if (generoDto.getIdeGenero() != null || generoDto.getNombreGenero() == null)
+            return new GeneroDto();
         return mapper.aGeneroDto(repository.save(mapper.aGenero(generoDto)));
     }
 
     @Transactional
     public GeneroDto delete(GeneroDto generoDto) {
+        if (generoDto.getIdeGenero() == null)
+            return new GeneroDto();
         Genero genero = repository.findById(generoDto.getIdeGenero()).orElse(new Genero());
-        if (genero.getIdGenero() == null || validarTodosLosDatos(generoDto))
+        if (genero.getIdGenero() == null || !validarTodosLosDatos(generoDto))
             return new GeneroDto();
         repository.delete(mapper.aGenero(generoDto));
         return mapper.aGeneroDto(genero);

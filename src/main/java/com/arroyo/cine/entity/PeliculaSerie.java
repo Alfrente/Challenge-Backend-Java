@@ -46,7 +46,7 @@ public class PeliculaSerie {
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(name = "pelicula_serie_personajes",
             joinColumns = @JoinColumn(name = "personaje_id"),
-            inverseJoinColumns = @JoinColumn(name = "id_personaje")
+            inverseJoinColumns = @JoinColumn(name = "id_personaje", updatable = false)
     )
     private List<Personaje> personajes;
 
