@@ -6,12 +6,9 @@
 🎯 El siguiente link es de la ->  [pagina ALKEMY](https://campus.alkemy.org/login). 
 
 ## Me falta lo siguiente para completar el proyecto
-### Debo comprobar el funcionamiento de todo el desarrollo para saber si funiona bien.
-
-7. Creación, Edición y Eliminación de Película / Serie -> Al crear una Película, crearla con sus personajes asociados error con el id en pelicula s
-8. 
-9. Autenticación de Usuarios
-10. Envío de emails
-11. Tests
+#### 9. Agregar/Remover personajes a una película -> agrego la pelicule pero no guardo la informacion del personaje.
+#### 10. Autenticación de Usuarios.
+#### 11. Envío de emails -> sin implementar dependiente del paso 10. 
+#### 12. Tests.
 
 

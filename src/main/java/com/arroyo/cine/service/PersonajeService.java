@@ -9,7 +9,7 @@ import com.arroyo.cine.repository.PersonajeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Null;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +39,7 @@ public class PersonajeService {
         return mapperP.aListPersonajePersonalizadoDto(filtro(repository.findAll(), name, age, movie, false));
     }
 
-    public PersonajeDto getById(Integer idPersonaje) {
+    public PersonajeDto getById(@NotNull Integer idPersonaje) {
         Personaje personaje = repository.findById(idPersonaje).orElse(new Personaje());
         if (personaje.getIdPersonaje() == null || idPersonaje <= 0)
             return new PersonajeDto();
@@ -47,7 +47,7 @@ public class PersonajeService {
     }
 
     @Transactional
-    public PersonajeDto save(PersonajeDto personajeDto) {
+    public PersonajeDto save(@NotNull PersonajeDto personajeDto) {
         if (personajeDto == null || !validarDatosGuardar(personajeDto) && personajeDto.getIdePersonaje() != null)
             return new PersonajeDto();
         Personaje personaje = repository.save(mapper.aPersonaje(personajeDto));
@@ -55,17 +55,17 @@ public class PersonajeService {
     }
 
     @Transactional
-    public PersonajeDto update(Integer idPersonaje, PersonajeDto personajeDto) {
+    public PersonajeDto update(@NotNull Integer idPersonaje, @NotNull PersonajeDto personajeDto) {
         Personaje personaje = repository.findById(idPersonaje).orElse(new Personaje());
         if (personaje.getIdPersonaje() == null) {
             return new PersonajeDto();
         }
         repository.save(validarParametros(personaje, personajeDto));
-        return repository.findById(idPersonaje).map(personaje1 -> mapper.aPersonajeDto(personaje1)).orElse(new PersonajeDto());
+        return repository.findById(idPersonaje).map(mapper::aPersonajeDto).orElse(new PersonajeDto());
     }
 
     @Transactional
-    public PersonajeDto delete(PersonajeDto personajeDto) {
+    public PersonajeDto delete(@NotNull PersonajeDto personajeDto) {
         if (personajeDto.getIdePersonaje() == null)
             return new PersonajeDto();
         Personaje personaje = repository.findById(personajeDto.getIdePersonaje()).orElse(new Personaje());
@@ -76,7 +76,7 @@ public class PersonajeService {
     }
 
     @Transactional
-    public PersonajeDto deleteById(Integer idPersonaje) {
+    public PersonajeDto deleteById(@NotNull Integer idPersonaje) {
         Personaje personaje = repository.findById(idPersonaje).orElse(new Personaje());
         if (personaje.getIdPersonaje() == null)
             return new PersonajeDto();
@@ -118,7 +118,7 @@ public class PersonajeService {
         return personaje;
     }
 
-    private List<Personaje> filtro(List<Personaje> personajes, @Null String name, @Null Byte age, @Null Integer movie, Boolean setear) {
+    private List<Personaje> filtro(List<Personaje> personajes, String name, Byte age, Integer movie, Boolean setear) {
         if (name != null && !name.isBlank() && age != null && age > 0 && movie != null && movie > 0)
             return personajes.stream().filter(personaje -> personaje.getNombre().equals(name) && Objects.equals(personaje.getEdad(), age) && Objects.equals(personaje.getIdPersonaje(), movie)).map(personaje -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (name != null && !name.isBlank())

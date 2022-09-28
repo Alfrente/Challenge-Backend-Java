@@ -10,6 +10,7 @@ import com.arroyo.cine.repository.PeliculaSerieRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,50 +48,53 @@ public class PeliculaSerieService {
     }
 
     @Transactional
-    public PeliculaSerieDto save(PeliculaSerieDto peliculaSerie) {
-        if (!validarDatosGuardarPeliculaSerieConPersonajes(peliculaSerie) && !validarDatosPeliculaSerie(peliculaSerie) && peliculaSerie.getIdPeliculaSerie() != null)
+    public PeliculaSerieDto save(@NotNull PeliculaSerieDto peliculaSerie) {
+        if (peliculaSerie.getIdPersonaje() == null)
+            return new PeliculaSerieDto();
+        PeliculaSerie buscarPersonaje = bucarPersonaje(peliculaSerie.getIdPersonaje());
+        if (!validarDatosGuardarPeliculaSerieConPersonajes(peliculaSerie) && !validarDatosPeliculaSerie(peliculaSerie) && buscarPersonaje == null)
             return new PeliculaSerieDto();
         return mapper.aPeliculaSerieDto(repository.save(mapper.aPeliculaSerie(peliculaSerie)));
     }
 
     @Transactional
-    public void savePersonalizado(Integer idPeli, Integer idPersonaje) {
-        PeliculaSerie peliculaSerie = repository.findById(idPeli).orElse(null);
-        PeliculaSerie buscarPersonaje = repository.findByIdPersonaje(idPersonaje);
-        if (peliculaSerie != null && buscarPersonaje != null) {
-            peliculaSerie.setIdPersonaje(idPersonaje);
-            repository.insertByIdPeliculaSerieAndIdPersonaje(
-                    peliculaSerie.getTitulo(), peliculaSerie.getImagen(), peliculaSerie.getFechaCreacion(),
-                    peliculaSerie.getCalifiacion(), peliculaSerie.getIdPersonaje(), peliculaSerie.getIdGenero()
-            );
+    public void savePersonalizado(@NotNull Integer idPeli, @NotNull Integer idPersonaje) {
+        PeliculaSerie peliculaSerie = bucarPeliculaSerie(idPeli);
+        if (peliculaSerie != null) {
+            PeliculaSerieDto peliculaSerieDto = guardar(peliculaSerie);
+            peliculaSerieDto.setIdPeliculaSerie(null);
+            peliculaSerieDto.setPersonajes(null);
+            peliculaSerieDto.setIdPersonaje(idPersonaje);
+            save(peliculaSerieDto);
         }
     }
 
     @Transactional
-    public PeliculaSerieDto update(Integer id, PeliculaSerieDto peliculaSerieDto) {
+    public PeliculaSerieDto update(@NotNull Integer id, @NotNull PeliculaSerieDto peliculaSerieDto) {
         PeliculaSerie peliculaSerie = repository.findById(id).orElse(null);
         if (peliculaSerie == null || id <= 0)
             return new PeliculaSerieDto();
         return mapper.aPeliculaSerieDto(repository.save(validarParametros(peliculaSerie, peliculaSerieDto)));
     }
 
-    public PeliculaSerieDto delete(PeliculaSerieDto peliculaSerieDto) {
+    @Transactional
+    public PeliculaSerieDto delete(@NotNull PeliculaSerieDto peliculaSerieDto) {
         if (peliculaSerieDto.getIdPeliculaSerie() == null)
             return new PeliculaSerieDto();
         PeliculaSerie peliculaSerie = repository.findById(peliculaSerieDto.getIdPeliculaSerie()).orElse(new PeliculaSerie());
         if (peliculaSerie.getIdPeliculaSerie() == null || !validarTodosLosDatos(peliculaSerieDto))
             return new PeliculaSerieDto();
-        repository.delete(mapper.aPeliculaSerie(peliculaSerieDto));
+        repository.delete(mapper.aPeliculaSerie(personajesNull(peliculaSerieDto)));
         return mapper.aPeliculaSerieDto(peliculaSerie);
     }
 
     @Transactional
-    public void deletePersonalizado(Integer idPeli, Integer idPersonaje) {
+    public void deletePersonalizado(@NotNull Integer idPeli, @NotNull Integer idPersonaje) {
         repository.deleteByIdPeliculaSerieAndIdPersonaje(idPeli, idPersonaje);
     }
 
     @Transactional
-    public PeliculaSerieDto deleteById(Integer id) {
+    public PeliculaSerieDto deleteById(@NotNull Integer id) {
         PeliculaSerie peliculaSerie = repository.findById(id).orElse(new PeliculaSerie());
         if (peliculaSerie.getIdPeliculaSerie() == null)
             return new PeliculaSerieDto();
@@ -129,16 +133,16 @@ public class PeliculaSerieService {
     private boolean validarDatosPeliculaSerie(PeliculaSerieDto dto) {
         return dto.getTitulo() != null && (!dto.getTitulo().isBlank()) && dto.getFechaCreacion() != null &&
                 validarFecha(dto.getFechaCreacion()) &&
-                dto.getIdPersonaje() != null && dto.getIdPersonaje() > 0 && dto.getIdGenero() != null && dto.getIdGenero() > 0;
+                dto.getIdPersonaje() != null && dto.getIdPersonaje() > 0;
     }
 
-    private boolean validarDatosPersonajes(List<PersonajeDto> personajesRecivodos) {
-        if (personajesRecivodos == null)
+    private boolean validarDatosPersonajes(List<PersonajeDto> personajesRecibidos) {
+        if (personajesRecibidos == null)
             return false;
-        int index = personajesRecivodos.size();
+        int index = personajesRecibidos.size();
         int personajesValido = 0;
 
-        for (var personaje : personajesRecivodos) {
+        for (var personaje : personajesRecibidos) {
             if (personaje.getEdad() != null && personaje.getEdad() > 0 && personaje.getNombre() != null &&
                     (!personaje.getNombre().isBlank()) && personaje.getPeso() != null && personaje.getPeso() > 0)
                 personajesValido++;
@@ -189,5 +193,22 @@ public class PeliculaSerieService {
         peliculaSerie.setIdPersonaje(null);
         return peliculaSerie;
     };
+
+    private PeliculaSerieDto personajesNull(PeliculaSerieDto peliculaSerieDto) {
+        peliculaSerieDto.setPersonajes(null);
+        return peliculaSerieDto;
+    }
+
+    private PeliculaSerieDto guardar(PeliculaSerie peliculaSerie) {
+        return mapper.aPeliculaSerieDto(peliculaSerie);
+    }
+
+    private PeliculaSerie bucarPersonaje(Integer idPersonaje) {
+        return repository.buscarConIdPersonaje(idPersonaje);
+    }
+
+    private PeliculaSerie bucarPeliculaSerie(Integer idPeli) {
+        return repository.findById(idPeli).orElse(null);
+    }
 
 }

@@ -17,14 +17,17 @@ public class Personaje {
     private Integer idPersonaje;
 
     @NotBlank
+    @Column(length = 50, nullable = false)
     @Size(min = 4, max = 50)
     private String nombre;
 
     @NotBlank
+    @Column(length = 2, nullable = false)
     @Size(min = 1, max = 2)
     private Byte edad;
 
     @NotBlank
+    @Column(nullable = false)
     private Float peso;
 
     @Null

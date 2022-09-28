@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -19,6 +18,7 @@ public class PeliculaSerie {
     private Integer idPeliculaSerie;
 
     @NotBlank
+    @Column(length = 50, nullable = false)
     @Size(min = 5, max = 50)
     private String titulo;
 
@@ -26,21 +26,22 @@ public class PeliculaSerie {
     private String imagen;
 
     @NotBlank
-    @Column(name = "fecha_creacion")
+    @Column(name = "fecha_creacion", nullable = false)
     private LocalDate fechaCreacion;
 
     @Null
+    @Column(length = 5, nullable = false)
     @Size(min = 1, max = 5)
     private Byte califiacion;
 
     @NotBlank
     @Size(min = 1)
-    @Column(name = "personaje_id")
+    @Column(name = "personaje_id", nullable = false)
     private Integer idPersonaje;
 
     @NotBlank
     @Size(min = 1)
-    @Column(name = "id_genero")
+    @Column(name = "id_genero", nullable = false)
     private Integer idGenero;
 
     @ManyToMany
