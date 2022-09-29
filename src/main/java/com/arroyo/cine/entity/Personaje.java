@@ -41,6 +41,10 @@ public class Personaje {
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
     private List<PeliculaSerie> peliculaSeries;
 
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinTable(name = "pelicula_serie_personajes", joinColumns = @JoinColumn(name = "id_personaje"), inverseJoinColumns = @JoinColumn(name = "id_personaje", insertable = false, updatable = false))
+    private PeliculaSeriePersonaje peliculaSeriePersonaje;
+
     public Integer getIdPersonaje() {
         return idPersonaje;
     }

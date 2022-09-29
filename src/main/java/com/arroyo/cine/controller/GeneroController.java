@@ -28,7 +28,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "No se pudo completar la petición."),
     }, description = "Este método trae todos los genero")
     public ResponseEntity<List<GeneroDto>> getAll() {
-        return new ResponseEntity<>(generoService.getAll(), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(generoService.getAll());
     }
 
     @GetMapping("/getById/{idGenero}")
@@ -38,7 +38,7 @@ public class GeneroController {
     }, description = "Este método sirve para buscar un genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") Integer idGenero) {
-        return new ResponseEntity<>(generoService.getById(idGenero), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(generoService.getById(idGenero));
     }
 
     @PostMapping
@@ -48,7 +48,7 @@ public class GeneroController {
     }, description = "Este método es para guarda el genero ")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
     public ResponseEntity<GeneroDto> save(@RequestBody GeneroDto generoDto) {
-        return new ResponseEntity<>(generoService.save(generoDto), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generoService.save(generoDto));
     }
 
     @DeleteMapping
@@ -58,7 +58,7 @@ public class GeneroController {
     }, description = "Este método sirve para eliminar el genero")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
     public ResponseEntity<GeneroDto> delete(@RequestBody GeneroDto generoDto) {
-        return new ResponseEntity<>(generoService.delete(generoDto), HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(generoService.delete(generoDto));
     }
 
     @DeleteMapping("/deleteById/{idGenero}")
@@ -68,7 +68,7 @@ public class GeneroController {
     }, description = "Este método sirve para eliminar el genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> deleteById(@PathVariable("idGenero") Integer idGenero) {
-        return new ResponseEntity<>(generoService.deleteById(idGenero), HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(generoService.deleteById(idGenero));
     }
 
     @PutMapping("/update/{idGenero}/{nuevoGenero}")
@@ -81,7 +81,7 @@ public class GeneroController {
             @Parameter(required = true, description = "Nuevo genero", example = "Acción")
     })
     public ResponseEntity<GeneroDto> update(@PathVariable("idGenero") Integer idGenero, @PathVariable("nuevoGenero") String nuevoGenero) {
-        return new ResponseEntity<>(generoService.update(idGenero, nuevoGenero), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(generoService.update(idGenero, nuevoGenero));
     }
 
 }

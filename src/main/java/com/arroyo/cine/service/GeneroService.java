@@ -13,10 +13,9 @@ import java.util.List;
 @Service
 public class GeneroService {
 
+    private final GeneroRepository repository;
 
-    private  final GeneroRepository repository;
-
-    private  final GeneroMapper mapper;
+    private final GeneroMapper mapper;
 
     public GeneroService(GeneroRepository repository, GeneroMapper mapper) {
         this.repository = repository;
@@ -25,8 +24,8 @@ public class GeneroService {
 
     @Transactional
     public GeneroDto save(@NotNull GeneroDto generoDto) {
-        if (generoDto.getIdeGenero() != null || generoDto.getNombreGenero() == null)
-            return new GeneroDto();
+        if (validarIdGeneroNombre(generoDto))
+            return generoDto;
         return mapper.aGeneroDto(repository.save(mapper.aGenero(generoDto)));
     }
 
@@ -35,7 +34,7 @@ public class GeneroService {
         if (generoDto.getIdeGenero() == null)
             return new GeneroDto();
         Genero genero = repository.findById(generoDto.getIdeGenero()).orElse(new Genero());
-        if (genero.getIdGenero() == null || !validarTodosLosDatos(generoDto))
+        if (validarIdGenero(genero.getIdGenero()) || !validarDatosObligatorios(generoDto))
             return new GeneroDto();
         repository.delete(mapper.aGenero(generoDto));
         return mapper.aGeneroDto(genero);
@@ -44,7 +43,7 @@ public class GeneroService {
     @Transactional
     public GeneroDto deleteById(Integer idGenero) {
         Genero genero = repository.findById(idGenero).orElse(new Genero());
-        if (genero.getIdGenero() == null)
+        if (validarIdGenero(genero.getIdGenero()))
             return new GeneroDto();
         repository.deleteById(genero.getIdGenero());
         return mapper.aGeneroDto(genero);
@@ -67,8 +66,20 @@ public class GeneroService {
         return mapper.aGeneroDto(repository.save(genero));
     }
 
-    private boolean validarTodosLosDatos(GeneroDto genero){
+    private boolean validarDatosObligatorios(GeneroDto genero) {
         return genero.getIdeGenero() != null && genero.getIdeGenero() > 0 && genero.getNombreGenero() != null &&
-                (!genero.getNombreGenero().isBlank()) && genero.getImagenGenero() != null && (!genero.getImagenGenero().isBlank());
+                (!genero.getNombreGenero().isBlank());
+    }
+
+    private boolean validarIdGeneroNombre(GeneroDto generoDto) {
+        return generoDto.getIdeGenero() != null && generoDto.getNombreGenero() == null;
+    }
+
+    private boolean validarIdGenero(Integer idGenero) {
+        return idGenero == null;
+    }
+
+    private boolean validarEntidad(Genero genero) {
+        return genero == null;
     }
 }

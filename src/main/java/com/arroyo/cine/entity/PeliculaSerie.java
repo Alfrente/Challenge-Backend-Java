@@ -46,11 +46,13 @@ public class PeliculaSerie {
 
     @ManyToMany
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
-    @JoinTable(name = "pelicula_serie_personajes",
-            joinColumns = @JoinColumn(name = "personaje_id"),
-            inverseJoinColumns = @JoinColumn(name = "id_personaje", updatable = false)
-    )
+    @JoinTable(name = "pelicula_serie_personajes", joinColumns = @JoinColumn(name = "personaje_id"), inverseJoinColumns = @JoinColumn(name = "id_personaje"))
     private List<Personaje> personajes;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "personaje_id", insertable = false, updatable = false)
+    @JoinTable(name = "pelicula_serie_personajes", joinColumns = @JoinColumn(name = "id_personaje"))
+    private PeliculaSeriePersonaje peliculaSeriePersonaje;
 
     public Integer getIdPeliculaSerie() {
         return idPeliculaSerie;

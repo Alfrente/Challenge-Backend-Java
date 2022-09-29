@@ -21,6 +21,11 @@ public class Genero {
     @Null
     private String imagen;
 
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "id_genero")
+    @JoinTable(name = "pelicula_serie", joinColumns = @JoinColumn(name = "id_genero"))
+    PeliculaSerie peliculaSerie;
+
     public Integer getIdGenero() {
         return idGenero;
     }
