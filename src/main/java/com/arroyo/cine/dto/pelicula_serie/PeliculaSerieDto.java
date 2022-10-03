@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class PeliculaSerieDto {
 
-    @NotBlank
+    @Null
     @Size(min = 1)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idPeliculaSerie;

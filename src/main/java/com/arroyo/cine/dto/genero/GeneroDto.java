@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class GeneroDto {
-    @NotBlank
+    @Null
     @Size(min = 1)
     private Integer ideGenero;
 
