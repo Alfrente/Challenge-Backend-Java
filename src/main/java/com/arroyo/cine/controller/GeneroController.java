@@ -26,6 +26,7 @@ public class GeneroController {
     @Operation(summary = "Trae los genero", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método trae todos los genero")
     public ResponseEntity<List<GeneroDto>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(generoService.getAll());
@@ -35,6 +36,7 @@ public class GeneroController {
     @Operation(summary = "Buscar con id", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método sirve para buscar un genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") Integer idGenero) {
@@ -45,6 +47,7 @@ public class GeneroController {
     @Operation(summary = "Guardar genero", responses = {
             @ApiResponse(responseCode = "201", description = "Se creo el genero."),
             @ApiResponse(responseCode = "400", description = "No se pudo crear el genero."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método es para guarda el genero ")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
     public ResponseEntity<GeneroDto> save(@NotNull @RequestBody GeneroDto generoDto) {
@@ -55,6 +58,7 @@ public class GeneroController {
     @Operation(summary = "Eliminar genero", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el genero."),
             @ApiResponse(responseCode = "400", description = "No se pudo eliminar el genero."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método sirve para eliminar el genero")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
     public ResponseEntity<GeneroDto> delete(@RequestBody GeneroDto generoDto) {
@@ -65,6 +69,7 @@ public class GeneroController {
     @Operation(summary = "Eliminar genero con id", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el genero."),
             @ApiResponse(responseCode = "400", description = "No se pudo eliminar el genero."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método sirve para eliminar el genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> deleteById(@PathVariable("idGenero") Integer idGenero) {
@@ -75,6 +80,7 @@ public class GeneroController {
     @Operation(summary = "Actualizar genero", responses = {
             @ApiResponse(responseCode = "202", description = "Se modifico el genero."),
             @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método sirve para actualiza el genero")
     @Parameter(required = true, description = "Id genero", example = "1")
     @Parameter(required = true, description = "Nuevo genero", example = "Acción")
