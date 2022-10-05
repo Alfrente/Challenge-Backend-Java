@@ -16,10 +16,10 @@ import java.util.List;
 @RequestMapping("/genero")
 public class GeneroController {
 
-    private final GeneroService generoService;
+    private final GeneroService service;
 
-    public GeneroController(GeneroService generoService) {
-        this.generoService = generoService;
+    public GeneroController(GeneroService service) {
+        this.service = service;
     }
 
     @GetMapping
@@ -29,7 +29,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método trae todos los genero")
     public ResponseEntity<List<GeneroDto>> getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(generoService.getAll());
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
     }
 
     @GetMapping("/getById/{idGenero}")
@@ -40,7 +40,7 @@ public class GeneroController {
     }, description = "Este método sirve para buscar un genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") Integer idGenero) {
-        return ResponseEntity.status(HttpStatus.OK).body(generoService.getById(idGenero));
+        return ResponseEntity.status(HttpStatus.OK).body(service.getById(idGenero));
     }
 
     @PostMapping
@@ -50,8 +50,8 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método es para guarda el genero ")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
-    public ResponseEntity<GeneroDto> save(@NotNull @RequestBody GeneroDto generoDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(generoService.save(generoDto));
+    public ResponseEntity<GeneroDto> save(@RequestBody @NotNull GeneroDto generoDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(generoDto));
     }
 
     @DeleteMapping
@@ -61,8 +61,8 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método sirve para eliminar el genero")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
-    public ResponseEntity<GeneroDto> delete(@RequestBody GeneroDto generoDto) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(generoService.delete(generoDto));
+    public ResponseEntity<GeneroDto> delete(@RequestBody @NotNull GeneroDto generoDto) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.delete(generoDto));
     }
 
     @DeleteMapping("/deleteById/{idGenero}")
@@ -73,7 +73,7 @@ public class GeneroController {
     }, description = "Este método sirve para eliminar el genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> deleteById(@PathVariable("idGenero") Integer idGenero) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(generoService.deleteById(idGenero));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteById(idGenero));
     }
 
     @PutMapping("/update/{idGenero}/{nuevoGenero}")
@@ -85,6 +85,6 @@ public class GeneroController {
     @Parameter(required = true, description = "Id genero", example = "1")
     @Parameter(required = true, description = "Nuevo genero", example = "Acción")
     public ResponseEntity<GeneroDto> update(@PathVariable("idGenero") Integer idGenero, @PathVariable("nuevoGenero") String nuevoGenero) {
-        return ResponseEntity.status(HttpStatus.OK).body(generoService.update(idGenero, nuevoGenero));
+        return ResponseEntity.status(HttpStatus.OK).body(service.update(idGenero, nuevoGenero));
     }
 }

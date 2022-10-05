@@ -1,15 +1,15 @@
-package com.arroyo.cine.exception.custom.genero;
+package com.arroyo.cine.exception.custom.personaje;
 
 import org.springframework.http.HttpStatus;
 
-public class GeneroExcepcionGenerico extends RuntimeException{
+public class PersonajeExcepcionGenerico extends RuntimeException {
     private String mensaje;
     private HttpStatus codigo;
 
-    public GeneroExcepcionGenerico() {
+    public PersonajeExcepcionGenerico() {
     }
 
-    public GeneroExcepcionGenerico(String mensaje, HttpStatus codigo) {
+    public PersonajeExcepcionGenerico(String mensaje, HttpStatus codigo) {
         this.mensaje = mensaje;
         this.codigo = codigo;
     }

@@ -24,11 +24,11 @@ public class PersonajeDto  {
     @NotBlank
     @Size(min = 1, max = 2)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Byte edad;
+    private String edad;
 
     @NotBlank
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Float peso;
+    private String peso;
 
     @Null
     @Size(max = 255)
@@ -58,19 +58,19 @@ public class PersonajeDto  {
         this.nombre = nombre;
     }
 
-    public Byte getEdad() {
+    public String getEdad() {
         return edad;
     }
 
-    public void setEdad(Byte edad) {
+    public void setEdad(String edad) {
         this.edad = edad;
     }
 
-    public Float getPeso() {
+    public String getPeso() {
         return peso;
     }
 
-    public void setPeso(Float peso) {
+    public void setPeso(String peso) {
         this.peso = peso;
     }
 

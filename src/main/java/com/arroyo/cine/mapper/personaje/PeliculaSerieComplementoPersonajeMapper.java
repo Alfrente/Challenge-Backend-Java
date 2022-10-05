@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface PeliculaSerieComplementoPMapper {
+public interface PeliculaSerieComplementoPersonajeMapper {
 
     @Mapping(target = "idPeliculaSerie", source = "peliculaSerie.idPeliculaSerie")
     @Mapping(target = "titulo", source = "peliculaSerie.titulo")

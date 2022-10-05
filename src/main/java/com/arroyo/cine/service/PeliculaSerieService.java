@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
-import static com.arroyo.cine.util.InformacionEstatica.*;
+import static com.arroyo.cine.service.ValidacionCompartida.convertirByte;
+import static com.arroyo.cine.service.ValidacionCompartida.convertirFloat;
+import static com.arroyo.cine.util.statico.ExprecionRegular.*;
 
 @Service
 public class PeliculaSerieService {
@@ -35,12 +37,12 @@ public class PeliculaSerieService {
         this.mapperP = mapperP;
     }
 
-    public List<PeliculaSeriePersonalizadoPsDto> getAll(String name, Integer genre, String order) {
-        return mapperP.aListPeliculaSeriePersolizadaDto(filtro(repository.findAll(), name, genre, order));
+    public List<PeliculaSerieDto> getAll(String name, Integer genre, String order) {
+        return mapper.aListPeliculaSerieDto(filtro(repository.findAll(), name, genre, order));
     }
 
-    public List<PeliculaSerieDto> getAllPersonalizado(String name, Integer genre, String order) {
-        return mapper.aListPeliculaSerieDto(filtro(repository.findAll(), name, genre, order));
+    public List<PeliculaSeriePersonalizadoPsDto> getAllParameter(String name, Integer genre, String order) {
+        return mapperP.aListPeliculaSeriePersolizadaDto(filtro(repository.findAll(), name, genre, order));
     }
 
     public PeliculaSerieDto getById(Integer id) {
@@ -102,97 +104,9 @@ public class PeliculaSerieService {
         return mapper.aPeliculaSerieDto(peliculaSerie);
     }
 
-    private boolean validarTodosLosDatos(PeliculaSerieDto dto) {
-        return dto.getIdPeliculaSerie() != null && dto.getIdPeliculaSerie() > 0 && dto.getTitulo() != null && (!dto.getTitulo().isBlank()) && dto.getFechaCreacion() != null &&
-                validarFecha(dto.getFechaCreacion()) && dto.getIdPersonaje() != null
-                && dto.getIdPersonaje() > 0 && dto.getIdGenero() != null && dto.getIdGenero() > 0;
-    }
-
-    private PeliculaSerie validarParametros(PeliculaSerie entity, PeliculaSerieDto dto) {
-        if (dto.getTitulo() != null && !dto.getTitulo().isBlank()) {
-            entity.setTitulo(dto.getTitulo());
-        }
-        if (dto.getCaratula() != null && !dto.getCaratula().isBlank()) {
-            entity.setImagen(dto.getCaratula());
-        }
-        if (dto.getFechaCreacion() != null && !dto.getFechaCreacion().isBlank()) {
-            entity.setFechaCreacion(LocalDate.parse(dto.getFechaCreacion()));
-        }
-        if (dto.getCalifiacion() != null && dto.getCalifiacion() > 0 && dto.getCalifiacion() < 6) {
-            entity.setCalifiacion(dto.getCalifiacion());
-        }
-        if (dto.getIdPersonaje() != null && dto.getIdPersonaje() > 0) {
-            entity.setIdPersonaje(dto.getIdPersonaje());
-        }
-        if (dto.getIdGenero() != null && dto.getIdGenero() > 0) {
-            entity.setIdGenero(dto.getIdGenero());
-        }
-        return entity;
-    }
-
-    private boolean validarDatosPeliculaSerie(PeliculaSerieDto dto) {
-        return dto.getTitulo() != null && (!dto.getTitulo().isBlank()) && dto.getFechaCreacion() != null &&
-                validarFecha(dto.getFechaCreacion()) &&
-                dto.getIdPersonaje() != null && dto.getIdPersonaje() > 0;
-    }
-
-    private boolean validarDatosPersonajes(List<PersonajeDto> personajesRecibidos) {
-        if (personajesRecibidos == null)
-            return false;
-        int index = personajesRecibidos.size();
-        int personajesValido = 0;
-
-        for (var personaje : personajesRecibidos) {
-            if (personaje.getEdad() != null && personaje.getEdad() > 0 && personaje.getNombre() != null &&
-                    (!personaje.getNombre().isBlank()) && personaje.getPeso() != null && personaje.getPeso() > 0)
-                personajesValido++;
-        }
-        return personajesValido == index;
-    }
-
-    private boolean validarDatosGuardarPeliculaSerieConPersonajes(PeliculaSerieDto dto) {
-        if (dto == null || dto.getPersonajes() == null)
-            return false;
-        return validarDatosPeliculaSerie(dto) && validarDatosPersonajes(dto.getPersonajes()) && validarFecha(dto.getFechaCreacion());
-    }
-
     private boolean validarFecha(String fecha) {
-        return fecha.matches(REGEX_FECHA);
+        return fecha.matches(EXPRECION_FECHA);
     }
-
-    private List<PeliculaSerie> filtro(List<PeliculaSerie> peliculaSeries, String name, Integer genre, String order) {
-        if (name != null && !name.isBlank() && genre != null && genre > 0) {
-            return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name) && peliculaSerie.getIdGenero().equals(genre)).map(setearNull).collect(Collectors.toList());
-        } else if (name != null && !name.isBlank())
-            return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name)).map(setearNull).collect(Collectors.toList());
-        else if (genre != null && genre > 0)
-            return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getIdGenero().equals(genre)).map(setearNull).collect(Collectors.toList());
-        else if (order != null && !order.isBlank())
-            return ordenarLista(peliculaSeries, order).stream().map(setearNull).collect(Collectors.toList());
-        else if (name == null && genre == null && order == null)
-            return peliculaSeries;
-        else
-            return new ArrayList<>();
-    }
-
-    private List<PeliculaSerie> ordenarLista(List<PeliculaSerie> peliculaSeries, String orden) {
-        if (orden.equalsIgnoreCase(ASC)) {
-            peliculaSeries.sort(Comparator.comparing(PeliculaSerie::getFechaCreacion));
-        } else if (orden.equalsIgnoreCase(DESC)) {
-            peliculaSeries.sort(Comparator.comparing(PeliculaSerie::getFechaCreacion).reversed());
-        }
-        return peliculaSeries;
-    }
-
-    private final UnaryOperator<PeliculaSerie> setearNull = peliculaSerie -> {
-        peliculaSerie.setIdPeliculaSerie(null);
-        peliculaSerie.setPersonajes(null);
-        peliculaSerie.setCalifiacion(null);
-        peliculaSerie.setIdGenero(null);
-        peliculaSerie.setIdPersonaje(null);
-        peliculaSerie.setIdPersonaje(null);
-        return peliculaSerie;
-    };
 
     private PeliculaSerieDto personajesNull(PeliculaSerieDto peliculaSerieDto) {
         peliculaSerieDto.setPersonajes(null);
@@ -211,4 +125,84 @@ public class PeliculaSerieService {
         return repository.findById(idPeli).orElse(null);
     }
 
+    private boolean validarDatosGuardarPeliculaSerieConPersonajes(PeliculaSerieDto dto) {
+        if (dto == null || dto.getPersonajes() == null)
+            return false;
+        return validarDatosPeliculaSerie(dto) && validarDatosPersonajes(dto.getPersonajes()) && validarFecha(dto.getFechaCreacion());
+    }
+
+    private boolean validarTodosLosDatos(PeliculaSerieDto dto) {
+        return dto.getIdPeliculaSerie() != null && dto.getIdPeliculaSerie() > 0 && dto.getTitulo() != null && (!dto.getTitulo().isBlank()) && dto.getFechaCreacion() != null &&
+                validarFecha(dto.getFechaCreacion()) && dto.getIdPersonaje() != null
+                && dto.getIdPersonaje() > 0 && dto.getIdGenero() != null && dto.getIdGenero() > 0;
+    }
+
+    private boolean validarDatosPeliculaSerie(PeliculaSerieDto dto) {
+        return dto.getTitulo() != null && (!dto.getTitulo().isBlank()) && dto.getFechaCreacion() != null &&
+                validarFecha(dto.getFechaCreacion()) &&
+                dto.getIdPersonaje() != null && dto.getIdPersonaje() > 0;
+    }
+
+    private List<PeliculaSerie> ordenarLista(List<PeliculaSerie> peliculaSeries, String orden) {
+        if (orden.equalsIgnoreCase(ASC))
+            peliculaSeries.sort(Comparator.comparing(PeliculaSerie::getFechaCreacion));
+        else if (orden.equalsIgnoreCase(DESC))
+            peliculaSeries.sort(Comparator.comparing(PeliculaSerie::getFechaCreacion).reversed());
+        return peliculaSeries;
+    }
+
+    private final UnaryOperator<PeliculaSerie> setearNull = peliculaSerie -> {
+        peliculaSerie.setIdPeliculaSerie(null);
+        peliculaSerie.setPersonajes(null);
+        peliculaSerie.setCalifiacion(null);
+        peliculaSerie.setIdGenero(null);
+        peliculaSerie.setIdPersonaje(null);
+        peliculaSerie.setIdPersonaje(null);
+        return peliculaSerie;
+    };
+
+    private boolean validarDatosPersonajes(List<PersonajeDto> personajesRecibidos) {
+        if (personajesRecibidos == null)
+            return false;
+        int index = personajesRecibidos.size();
+        int personajesValido = 0;
+
+        for (var personaje : personajesRecibidos) {
+            if (personaje.getEdad() != null && convertirByte(personaje.getEdad()) > 0 && personaje.getNombre() != null &&
+                    (!personaje.getNombre().isBlank()) && personaje.getPeso() != null && convertirFloat(personaje.getPeso()) > 0)
+                personajesValido++;
+        }
+        return personajesValido == index;
+    }
+
+    private List<PeliculaSerie> filtro(List<PeliculaSerie> peliculaSeries, String name, Integer genre, String order) {
+        if (name != null && !name.isBlank() && genre != null && genre > 0) {
+            return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name) && peliculaSerie.getIdGenero().equals(genre)).map(setearNull).collect(Collectors.toList());
+        } else if (name != null && !name.isBlank())
+            return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name)).map(setearNull).collect(Collectors.toList());
+        else if (genre != null && genre > 0)
+            return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getIdGenero().equals(genre)).map(setearNull).collect(Collectors.toList());
+        else if (order != null && !order.isBlank())
+            return ordenarLista(peliculaSeries, order).stream().map(setearNull).collect(Collectors.toList());
+        else if (name == null && genre == null && order == null)
+            return peliculaSeries;
+        else
+            return new ArrayList<>();
+    }
+
+    private PeliculaSerie validarParametros(PeliculaSerie entity, PeliculaSerieDto dto) {
+        if (dto.getTitulo() != null && !dto.getTitulo().isBlank())
+            entity.setTitulo(dto.getTitulo());
+        if (dto.getCaratula() != null && !dto.getCaratula().isBlank())
+            entity.setImagen(dto.getCaratula());
+        if (dto.getFechaCreacion() != null && !dto.getFechaCreacion().isBlank())
+            entity.setFechaCreacion(LocalDate.parse(dto.getFechaCreacion()));
+        if (dto.getCalifiacion() != null && dto.getCalifiacion() > 0 && dto.getCalifiacion() < 6)
+            entity.setCalifiacion(dto.getCalifiacion());
+        if (dto.getIdPersonaje() != null && dto.getIdPersonaje() > 0)
+            entity.setIdPersonaje(dto.getIdPersonaje());
+        if (dto.getIdGenero() != null && dto.getIdGenero() > 0)
+            entity.setIdGenero(dto.getIdGenero());
+        return entity;
+    }
 }

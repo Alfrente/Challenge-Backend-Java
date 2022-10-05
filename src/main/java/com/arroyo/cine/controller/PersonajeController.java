@@ -15,11 +15,10 @@ import java.util.List;
 
 @RestController
 public class PersonajeController {
+    private  final PersonajeService service;
 
-    private  final PersonajeService personajeService;
-
-    public PersonajeController(PersonajeService personajeService) {
-        this.personajeService = personajeService;
+    public PersonajeController(PersonajeService service) {
+        this.service = service;
     }
 
     @GetMapping("characters")
@@ -32,7 +31,7 @@ public class PersonajeController {
     @Parameter(description = "movies", example = "1")
     public ResponseEntity<List<PersonajeDto>> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
     Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
-        return new ResponseEntity<>(personajeService.getAll(name, age, movies), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAll(name, age, movies), HttpStatus.OK);
     }
 
     @GetMapping("/personaje/getAll")
@@ -45,7 +44,7 @@ public class PersonajeController {
     @Parameter(description = "movies", example = "1")
     public ResponseEntity<List<PersonajePersonalizadoPDto>> getAllPersonalizado(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
     Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
-        return new ResponseEntity<>(personajeService.getAllPersonalizado(name, age, movies), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllPersonalizado(name, age, movies), HttpStatus.OK);
     }
 
     @GetMapping("/personaje/getById/{idPersona}")
@@ -54,8 +53,8 @@ public class PersonajeController {
             @ApiResponse(responseCode = "400", description = "No se pudo completar la petición.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
-    public ResponseEntity<PersonajeDto> getById(@PathVariable("idPersona") @NotBlank Integer idPersona) {
-        return new ResponseEntity<>(personajeService.getById(idPersona), HttpStatus.OK);
+    public ResponseEntity<PersonajeDto> getById(@PathVariable("idPersona") Integer idPersona) {
+        return new ResponseEntity<>(service.getById(idPersona), HttpStatus.OK);
     }
 
     @PostMapping("/personaje")
@@ -65,7 +64,7 @@ public class PersonajeController {
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
     public ResponseEntity<PersonajeDto> save(@RequestBody @NotBlank PersonajeDto personajeDto) {
-        return new ResponseEntity<>(personajeService.save(personajeDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.save(personajeDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/personaje")
@@ -75,7 +74,7 @@ public class PersonajeController {
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
     public ResponseEntity<PersonajeDto> delete(@RequestBody @NotBlank PersonajeDto personajeDto) {
-        return new ResponseEntity<>(personajeService.delete(personajeDto), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(service.delete(personajeDto), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/personaje/deleteById/{idPersona}")
@@ -84,8 +83,8 @@ public class PersonajeController {
             @ApiResponse(responseCode = "400", description = "No se pudo eliminar el personaje.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
-    public ResponseEntity<PersonajeDto> deleteById(@PathVariable("idPersona") @NotBlank Integer idPersona) {
-        return new ResponseEntity<>(personajeService.deleteById(idPersona), HttpStatus.ACCEPTED);
+    public ResponseEntity<PersonajeDto> deleteById(@PathVariable("idPersona") Integer idPersona) {
+        return new ResponseEntity<>(service.deleteById(idPersona), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/personaje/update/{idPersonaje}")
@@ -95,7 +94,7 @@ public class PersonajeController {
     })
     @Parameter(required = true, description = "Id personaje", example = "1")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public ResponseEntity<PersonajeDto> update(@PathVariable("idPersonaje") @NotBlank Integer idPersonaje, @RequestBody @NotBlank PersonajeDto personajeDto) {
-        return new ResponseEntity<>(personajeService.update(idPersonaje, personajeDto), HttpStatus.ACCEPTED);
+    public ResponseEntity<PersonajeDto> update(@PathVariable("idPersonaje") Integer idPersonaje, @RequestBody @NotBlank PersonajeDto personajeDto) {
+        return new ResponseEntity<>(service.update(idPersonaje, personajeDto), HttpStatus.ACCEPTED);
     }
 }
