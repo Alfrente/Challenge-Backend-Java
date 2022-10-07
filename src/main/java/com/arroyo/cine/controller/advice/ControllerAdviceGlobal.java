@@ -61,9 +61,9 @@ public class ControllerAdviceGlobal {
     }
 
     private Map<String, String> generarMapaError(ExcepcionGenerica excepcion){
-        this.response.put(MENSAJE, excepcion.getMensaje());
-        this.response.put(CODIGO_ERROR, String.valueOf(excepcion.getCodigo().value()));
-        this.response.put(FECHA, FECHA_ACTUAL);
+        this.response.put(excepcion.getLlaveMapMensajeError(), excepcion.getMensaje());
+        this.response.put(excepcion.getLlaveMapMensajeErrorCodigo(), String.valueOf(excepcion.getCodigo().value()));
+        this.response.put("Fecha", FECHA_ACTUAL);
         return this.response;
     }
 
@@ -74,9 +74,9 @@ public class ControllerAdviceGlobal {
             this.index++;
             this.mensajes.append(index).append(" ").append(mensaje).append(" - ");
         }
-        this.response.put(MENSAJE, this.mensajes.toString());
-        this.response.put(CODIGO_ERROR, String.valueOf(excepciones.getCodigo().value()));
-        this.response.put(FECHA, FECHA_ACTUAL);
+        this.response.put(excepciones.getLlaveMapMensajeError(), this.mensajes.toString());
+        this.response.put(excepciones.getLlaveMapMensajeErrorCodigo(), String.valueOf(excepciones.getCodigo().value()));
+        this.response.put("Fecha", FECHA_ACTUAL);
         return response;
     }
 }

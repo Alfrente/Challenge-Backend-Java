@@ -1,7 +1,6 @@
 package com.arroyo.cine.controller;
 
-import com.arroyo.cine.dto.personaje.PersonajeDto;
-import com.arroyo.cine.dto.personaje.PersonajePersonalizadoPDto;
+import com.arroyo.cine.dto.PersonajeDto;
 import com.arroyo.cine.service.PersonajeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,7 +14,7 @@ import java.util.List;
 
 @RestController
 public class PersonajeController {
-    private  final PersonajeService service;
+    private final PersonajeService service;
 
     public PersonajeController(PersonajeService service) {
         this.service = service;
@@ -32,19 +31,6 @@ public class PersonajeController {
     public ResponseEntity<List<PersonajeDto>> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
     Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
         return new ResponseEntity<>(service.getAll(name, age, movies), HttpStatus.OK);
-    }
-
-    @GetMapping("/personaje/getAll")
-    @Operation(summary = "Trae los personajes", description = "Este método trae todos los personajes tiene la opción de filtrar el resultado", responses = {
-            @ApiResponse(responseCode = "200", description = "Petición exitosa."),
-            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición.")
-    })
-    @Parameter(description = "name", example = "Guerra z")
-    @Parameter(description = "age", example = "15")
-    @Parameter(description = "movies", example = "1")
-    public ResponseEntity<List<PersonajePersonalizadoPDto>> getAllPersonalizado(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
-    Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
-        return new ResponseEntity<>(service.getAllPersonalizado(name, age, movies), HttpStatus.OK);
     }
 
     @GetMapping("/personaje/getById/{idPersona}")

@@ -1,4 +1,4 @@
-package com.arroyo.cine.dto.genero;
+package com.arroyo.cine.dto;
 
 import com.arroyo.cine.entity.PeliculaSerie;
 import com.fasterxml.jackson.annotation.JsonInclude;

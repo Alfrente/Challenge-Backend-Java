@@ -1,6 +1,6 @@
 package com.arroyo.cine.mapper.pelicula_serie;
 
-import com.arroyo.cine.dto.pelicula_serie.PeliculaSerieDto;
+import com.arroyo.cine.dto.PeliculaSerieDto;
 import com.arroyo.cine.entity.PeliculaSerie;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;

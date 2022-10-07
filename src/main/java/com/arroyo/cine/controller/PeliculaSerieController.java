@@ -1,7 +1,6 @@
 package com.arroyo.cine.controller;
 
-import com.arroyo.cine.dto.pelicula_serie.PeliculaSerieDto;
-import com.arroyo.cine.dto.pelicula_serie.PeliculaSeriePersonalizadoPsDto;
+import com.arroyo.cine.dto.PeliculaSerieDto;
 import com.arroyo.cine.service.PeliculaSerieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,20 +34,6 @@ public class PeliculaSerieController {
     public ResponseEntity<List<PeliculaSerieDto>> getAll(@RequestParam(required = false, name = "name") @Null String name, @RequestParam(required = false, name = "genre")
     @Null Integer genre, @RequestParam(required = false, name = "order") @Null String order) {
         return new ResponseEntity<>(service.getAll(name, genre, order), HttpStatus.OK);
-    }
-
-    @GetMapping("/peliculaSerie/getAll")
-    @Operation(summary = "Trae las peliculas y series", description = "Este método trae todas las peliculas y series tiene la opción de filtrar el resultado", responses = {
-            @ApiResponse(responseCode = "200", description = "Petición exitosa."),
-            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
-            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
-    })
-    @Parameter(description = "name", example = "Guerra z")
-    @Parameter(description = "genre", example = "1")
-    @Parameter(description = "order", example = "ASC")
-    public ResponseEntity<List<PeliculaSeriePersonalizadoPsDto>> getAllParameter(@RequestParam(required = false, name = "name") @Null String name, @RequestParam(required = false, name = "genre")
-    @Null Integer genre, @RequestParam(required = false, name = "order") @Null String order) {
-        return new ResponseEntity<>(service.getAllParameter(name, genre, order), HttpStatus.OK);
     }
 
     @GetMapping("/peliculaSerie/getById/{id}")

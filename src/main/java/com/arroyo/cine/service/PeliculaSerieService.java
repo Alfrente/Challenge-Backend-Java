@@ -1,12 +1,10 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.dto.pelicula_serie.PeliculaSerieDto;
-import com.arroyo.cine.dto.pelicula_serie.PeliculaSeriePersonalizadoPsDto;
-import com.arroyo.cine.dto.personaje.PersonajeDto;
+import com.arroyo.cine.dto.PeliculaSerieDto;
+import com.arroyo.cine.dto.PersonajeDto;
 import com.arroyo.cine.entity.PeliculaSerie;
 import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSerieMapper;
-import com.arroyo.cine.mapper.pelicula_serie.PeliculaSeriePersonalizadoMapper;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,21 +31,15 @@ public class PeliculaSerieService {
 
     private final PeliculaSerieMapper mapper;
 
-    private final PeliculaSeriePersonalizadoMapper mapperP;
     private List<String> errores;
 
-    public PeliculaSerieService(PeliculaSerieRepository repository, PeliculaSerieMapper mapper, PeliculaSeriePersonalizadoMapper mapperP) {
+    public PeliculaSerieService(PeliculaSerieRepository repository, PeliculaSerieMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
-        this.mapperP = mapperP;
     }
 
     public List<PeliculaSerieDto> getAll(String name, Integer genre, String order) {
         return mapper.aListPeliculaSerieDto(filtro(repository.findAll(), name, genre, order));
-    }
-
-    public List<PeliculaSeriePersonalizadoPsDto> getAllParameter(String name, Integer genre, String order) {
-        return mapperP.aListPeliculaSeriePersolizadaDto(filtro(repository.findAll(), name, genre, order));
     }
 
     public PeliculaSerieDto getById(Integer idPeliculaSerie) {
@@ -59,9 +51,10 @@ public class PeliculaSerieService {
         //if (peliculaSerie.getIdPersonaje() == null)
         //   return new PeliculaSerieDto();
         verificarParametrosEntradaPeliculaSerie(peliculaSerie);
+        verificarParametrosEntradaPersonajes(peliculaSerie);
         //PeliculaSerie buscarPersonaje = bucarPersonaje(peliculaSerie.getIdPersonaje());
         //if (!validarDatosGuardarPeliculaSerieConPersonajes(peliculaSerie) && !validarDatosPeliculaSerie(peliculaSerie) && buscarPersonaje == null)
-          //  return new PeliculaSerieDto();
+        //  return new PeliculaSerieDto();
         return mapper.aPeliculaSerieDto(repository.save(mapper.aPeliculaSerie(peliculaSerie)));
     }
 
@@ -175,7 +168,7 @@ public class PeliculaSerieService {
 
     private List<PeliculaSerie> filtro(List<PeliculaSerie> peliculaSeries, String name, Integer genre, String order) {
         if (peliculaSeries.isEmpty())
-            throw new PeliculaSerieExcepcion(SIN_PELICULA_SERIE, HttpStatus.BAD_REQUEST);
+            throw new PeliculaSerieExcepcion(CODIGO,MENSAJE,NO_HAY + PELICULA_SERIE + DISPONIBLE, HttpStatus.OK);
         if (name != null && !name.isBlank() && genre != null && genre > 0) {
             return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name) && peliculaSerie.getIdGenero().equals(genre)).map(setearNull).collect(Collectors.toList());
         } else if (name != null && !name.isBlank())
@@ -206,21 +199,21 @@ public class PeliculaSerieService {
 
     private PeliculaSerie buscarConId(Integer idPeliculaSerie) {
         return repository.findById(idPeliculaSerie).orElseThrow(()
-                -> new PeliculaSerieExcepcion(ID_PELICULA_SERIE_NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
+                -> new PeliculaSerieExcepcion(CODIGO,MENSAJE,LA + PELICULA_SERIE + NO_DISPONIBLE, HttpStatus.OK));
     }
 
     private void verificarParametrosEntradaPeliculaSerie(PeliculaSerieDto dto) {
         this.errores = new ArrayList<>();
         if (dto.getTitulo() == null || !dto.getTitulo().matches(EXPRECION_TEXTO_ESPACIO))
-            this.errores.add(TITULO_INCORRECTO);
+            this.errores.add(POR_FAVOR_INGRESE + "un titulo" + VALIDO);
         if (dto.getCaratula() == null || validarDireccionImagen(dto.getCaratula())) {
-            this.errores.add(DIRECCION_INCORRECTA_IMAGEN);
+            this.errores.add(INGRESE_DIRECCION_IMAGEN_INCORRECTA);
         }
         if (dto.getFechaCreacion() == null || validarFecha(dto.getFechaCreacion())) {
-            this.errores.add(FECHA_INCORRECTA);
+            this.errores.add(POR_FAVOR_INGRESE + "una fecha" + VALIDA);
         }
-        if (dto.getCalifiacion() == null || (!(dto.getCalifiacion() >= 0 && dto.getCalifiacion() <=5))) {
-            this.errores.add(CALIFICACION_INCORRECTA);
+        if (dto.getCalifiacion() == null || (!(dto.getCalifiacion() >= 0 && dto.getCalifiacion() <= 5))) {
+            this.errores.add(POR_FAVOR_INGRESE + LA + "calificación" + VALIDA);
         }
         if (dto.getIdGenero() == null) {
             //this.errores.add();
@@ -228,8 +221,9 @@ public class PeliculaSerieService {
 
     }
 
-    private void verificarParametrosEntradaPersonajes(List<PersonajeDto> personajeDtos){
-        personajeDtos.forEach(ValidacionCompartida::verificarParametrosEntradaPersonaje);
+    private void verificarParametrosEntradaPersonajes(PeliculaSerieDto peliculaSerieDto) {
+        if (peliculaSerieDto.getPersonajes() != null)
+            peliculaSerieDto.getPersonajes().forEach(ValidacionCompartida::verificarParametrosEntradaPersonaje);
     }
 
     private boolean validarFecha(String fechaEntrda) {//yyyy-MM-dd

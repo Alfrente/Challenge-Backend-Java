@@ -1,7 +1,8 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.dto.personaje.PersonajeDto;
+import com.arroyo.cine.dto.PersonajeDto;
 import com.arroyo.cine.exception.custom.personaje.PersonajeExcepciones;
+import com.arroyo.cine.util.statico.RespuestaExcepcion;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -47,16 +48,16 @@ public class ValidacionCompartida {
     public static void verificarParametrosEntradaPersonaje(PersonajeDto dto) {
         errores = new ArrayList<>();
         if (dto.getNombre() == null || validarNombrePersonaje(dto.getNombre()))
-            errores.add(NOMBRE_INCORRECTO);
+            errores.add(POR_FAVOR_INGRESE + "el nombre " + DE_EL + PERSONAJE + VALIDO);
         if (dto.getEdad() == null || validarEdad(dto.getEdad()))
-            errores.add(EDAD_INCORRECTO);
+            errores.add(POR_FAVOR_INGRESE + "la edad" + VALIDA);
         if (dto.getPeso() == null || validarPeso(dto.getPeso()))
-            errores.add(PESO_INCORRECTO);
+            errores.add(POR_FAVOR_INGRESE + "el peso" + VALIDO);
         if (dto.getImagen() == null || validarDireccionImagen(dto.getImagen()))
-            errores.add(DIRECCION_INCORRECTA_IMAGEN);
+            errores.add(INGRESE_DIRECCION_IMAGEN_INCORRECTA);
         if (dto.getHistoria() == null || dto.getHistoria().isBlank() || !dto.getHistoria().matches(EXPRECION_TEXTO_ESPACIO))
-            errores.add(HISTORIA_INCORRECTO);
+            errores.add(POR_FAVOR_INGRESE + "la historia" + VALIDA);
         if (!errores.isEmpty())
-            throw new PersonajeExcepciones(errores, HttpStatus.BAD_REQUEST);
+            throw new PersonajeExcepciones(CODIGO_ERROR,ERROR, errores, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,6 +1,6 @@
 package com.arroyo.cine.mapper.pelicula_serie;
 
-import com.arroyo.cine.dto.personaje.PersonajeDto;
+import com.arroyo.cine.dto.PersonajeDto;
 import com.arroyo.cine.entity.Personaje;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

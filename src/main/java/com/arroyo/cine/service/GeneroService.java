@@ -1,6 +1,6 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.dto.genero.GeneroDto;
+import com.arroyo.cine.dto.GeneroDto;
 import com.arroyo.cine.entity.Genero;
 import com.arroyo.cine.exception.custom.genero.GeneroExcepcion;
 import com.arroyo.cine.exception.custom.genero.GeneroExcepciones;
@@ -31,7 +31,7 @@ public class GeneroService {
     }
 
     public List<GeneroDto> getAll() {
-        return mapper.aListGeneroDto(repository.findAll());
+        return traerTodo();
     }
 
     public GeneroDto getById(Integer idGenero) {
@@ -73,32 +73,39 @@ public class GeneroService {
 
     private Genero buscarConId(Integer idGenero) {
         return repository.findById(idGenero).
-                orElseThrow(() -> new GeneroExcepcion(ID_GENERO_NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
+                orElseThrow(() -> new GeneroExcepcion(CODIGO,MENSAJE, EL + GENERO + NO_DISPONIBLE, HttpStatus.OK));
     }
 
     private void validarIdGenero(Integer idGenero) {
         if (idGenero == null || idGenero <= 0)
-            throw new GeneroExcepcion(ID_GENERO_NO_INGRESADO, HttpStatus.BAD_REQUEST);
+            throw new GeneroExcepcion(CODIGO_ERROR,ERROR, POR_FAVOR_INGRESE + "el id " + DE_EL + GENERO + ".", HttpStatus.BAD_REQUEST);
     }
 
     private void validarGeneroDtoEliminar(GeneroDto dto, Genero genero) {
         this.hayError = false;
         List<String> excepciones = new ArrayList<>();
         if (dto == null)
-            throw new GeneroExcepcion(INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
+            throw new GeneroExcepcion(CODIGO_ERROR,ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
         if (dto.getNombreGenero() == null || dto.getNombreGenero().isBlank() || (!dto.getNombreGenero().equals(genero.getNombre())))
             this.hayError = true;
-        excepciones.add("El nombre del genero Ingresado es incorrecto");
+        excepciones.add(POR_FAVOR_INGRESE + "el nombre " + DE_EL + GENERO + VALIDO);
         if (dto.getImagenGenero() == null || dto.getImagenGenero().isBlank() || (!dto.getImagenGenero().equals(genero.getImagen())))
             this.hayError = true;
-        excepciones.add("El nombre de La imagen ingresado es incorrecto");
+        excepciones.add(INGRESE_DIRECCION_IMAGEN_INCORRECTA);
         if (this.hayError)
-            throw new GeneroExcepciones(excepciones, HttpStatus.BAD_REQUEST);
+            throw new GeneroExcepciones(CODIGO_ERROR,ERROR, excepciones, HttpStatus.BAD_REQUEST);
     }
 
     private void validarEntradaNombreGenero(String nombre) {
         if (nombre != null && !nombre.matches(EXPRECION_NOMBRE)) {
-            throw new GeneroExcepcion("El nombre del genero es incorrecto", HttpStatus.BAD_REQUEST);
+            throw new GeneroExcepcion(CODIGO_ERROR,ERROR, POR_FAVOR_INGRESE + "el nombre " + DE_EL + GENERO + VALIDO, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private List<GeneroDto> traerTodo() {
+        List<Genero> generoList = repository.findAll();
+        if (generoList.isEmpty())
+            throw new GeneroExcepcion(CODIGO,MENSAJE, NO_HAY + GENERO + DISPONIBLE, HttpStatus.OK);
+        return mapper.aListGeneroDto(generoList);
     }
 }

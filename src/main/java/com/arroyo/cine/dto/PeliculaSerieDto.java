@@ -1,6 +1,5 @@
-package com.arroyo.cine.dto.pelicula_serie;
+package com.arroyo.cine.dto;
 
-import com.arroyo.cine.dto.personaje.PersonajeDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;

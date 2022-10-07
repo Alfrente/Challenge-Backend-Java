@@ -1,4 +1,4 @@
-package com.arroyo.cine.dto.personaje;
+package com.arroyo.cine.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -8,27 +8,46 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
-public class PersonajePersonalizadoPDto {
+public class PersonajeDto  {
+
+    @Null
+    @Size(min = 1)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Integer idePersonaje;
+
     @NotBlank
     @Size(min = 4, max = 50)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String nombre;
 
     @NotBlank
     @Size(min = 1, max = 2)
-    private Byte edad;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String edad;
 
     @NotBlank
-    private Float peso;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String peso;
 
     @Null
     @Size(max = 255)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String imagen;
 
     @Null
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private  String historia;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PeliculaSeriePersolizadaPDto> peliculaSeries;
+    private List<PeliculaSerieDto> peliculaSeries;
+
+    public Integer getIdePersonaje() {
+        return idePersonaje;
+    }
+
+    public void setIdePersonaje(Integer idePersonaje) {
+        this.idePersonaje = idePersonaje;
+    }
 
     public String getNombre() {
         return nombre;
@@ -38,19 +57,19 @@ public class PersonajePersonalizadoPDto {
         this.nombre = nombre;
     }
 
-    public Byte getEdad() {
+    public String getEdad() {
         return edad;
     }
 
-    public void setEdad(Byte edad) {
+    public void setEdad(String edad) {
         this.edad = edad;
     }
 
-    public Float getPeso() {
+    public String getPeso() {
         return peso;
     }
 
-    public void setPeso(Float peso) {
+    public void setPeso(String peso) {
         this.peso = peso;
     }
 
@@ -70,11 +89,11 @@ public class PersonajePersonalizadoPDto {
         this.historia = historia;
     }
 
-    public List<PeliculaSeriePersolizadaPDto> getPeliculaSeries() {
+    public List<PeliculaSerieDto> getPeliculaSeries() {
         return peliculaSeries;
     }
 
-    public void setPeliculaSeries(List<PeliculaSeriePersolizadaPDto> peliculaSeries) {
+    public void setPeliculaSeries(List<PeliculaSerieDto> peliculaSeries) {
         this.peliculaSeries = peliculaSeries;
     }
 
@@ -82,12 +101,12 @@ public class PersonajePersonalizadoPDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PersonajePersonalizadoPDto that = (PersonajePersonalizadoPDto) o;
-        return Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia) && Objects.equals(peliculaSeries, that.peliculaSeries);
+        PersonajeDto that = (PersonajeDto) o;
+        return Objects.equals(idePersonaje, that.idePersonaje) && Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nombre, edad, peso, imagen, historia, peliculaSeries);
+        return Objects.hash(idePersonaje, nombre, edad, peso, imagen, historia);
     }
 }

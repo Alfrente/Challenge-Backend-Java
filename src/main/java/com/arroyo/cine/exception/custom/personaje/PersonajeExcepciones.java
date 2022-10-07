@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 public class PersonajeExcepciones extends ExcepcionesGenerica {
-    public PersonajeExcepciones(List<String> mensajes, HttpStatus codigo) {
-        super(mensajes, codigo);
+    public PersonajeExcepciones(String llaveMapMensajeError, String llaveMapMensajeErrorCodigo, List<String> mensajes, HttpStatus codigo) {
+        super(llaveMapMensajeError, llaveMapMensajeErrorCodigo, mensajes, codigo);
     }
 }

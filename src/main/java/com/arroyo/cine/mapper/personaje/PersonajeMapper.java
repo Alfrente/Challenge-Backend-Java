@@ -1,6 +1,6 @@
 package com.arroyo.cine.mapper.personaje;
 
-import com.arroyo.cine.dto.personaje.PersonajeDto;
+import com.arroyo.cine.dto.PersonajeDto;
 import com.arroyo.cine.entity.Personaje;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
