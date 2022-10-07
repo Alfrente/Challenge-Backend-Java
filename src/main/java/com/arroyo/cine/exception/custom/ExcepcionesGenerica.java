@@ -1,17 +1,17 @@
-package com.arroyo.cine.exception.custom.pelicula.serie;
+package com.arroyo.cine.exception.custom;
 
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-public class PersonajeExcepciones extends RuntimeException {
+public class ExcepcionesGenerica extends RuntimeException{
     private List<String> mensajes;
     private HttpStatus codigo;
 
-    public PersonajeExcepciones() {
+    public ExcepcionesGenerica() {
     }
 
-    public PersonajeExcepciones(List<String> mensajes, HttpStatus codigo) {
+    public ExcepcionesGenerica(List<String> mensajes, HttpStatus codigo) {
         this.mensajes = mensajes;
         this.codigo = codigo;
     }

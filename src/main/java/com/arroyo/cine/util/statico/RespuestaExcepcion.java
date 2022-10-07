@@ -27,4 +27,10 @@ public class RespuestaExcepcion {
     public static final String PESO_DIFERENTE = "Por favor verifique el peso";
     public static final String IMAGEN_DIFERENTE = "Por favor verifique la dirección de la imagen";
     public static final String HISTORIA_DIFERENTE = "Por favor verifique la historia";
+
+    public static final String SIN_PELICULA_SERIE = "No hay película o serie disponibles";
+    public static final String ID_PELICULA_SERIE_NO_DISPONIBLE = "La película o serie no esta disponible";
+    public static final String TITULO_INCORRECTO = "Por favor ingrese un titulo correcto";
+    public static final String FECHA_INCORRECTA = "Por favor ingrese una fecha correcto";
+    public static final String CALIFICACION_INCORRECTA = "Por favor ingrese una calificación correcta";
 }

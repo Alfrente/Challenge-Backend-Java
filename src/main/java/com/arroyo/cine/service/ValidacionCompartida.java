@@ -1,7 +1,7 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.dto.personaje.PersonajeDto;
-import com.arroyo.cine.exception.custom.pelicula.serie.PersonajeExcepciones;
+import com.arroyo.cine.exception.custom.personaje.PersonajeExcepciones;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -38,13 +38,13 @@ public class ValidacionCompartida {
         return !nombre.matches(EXPRECION_NOMBRE);
     }
 
-    private static boolean validarDireccionImagen(String imagen) {
+    public static boolean validarDireccionImagen(String imagen) {
         if (imagen.matches(EXPRECION_DIRECCION_FORMATO_JPG))
             return false;
         return !imagen.matches(EXPRECION_DIRECCION_FORMATO_PNG);
     }
 
-    public static void verificarParametrosEntrada(PersonajeDto dto) {
+    public static void verificarParametrosEntradaPersonaje(PersonajeDto dto) {
         errores = new ArrayList<>();
         if (dto.getNombre() == null || validarNombrePersonaje(dto.getNombre()))
             errores.add(NOMBRE_INCORRECTO);

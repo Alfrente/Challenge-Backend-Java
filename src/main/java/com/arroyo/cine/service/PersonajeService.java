@@ -3,8 +3,8 @@ package com.arroyo.cine.service;
 import com.arroyo.cine.dto.personaje.PersonajeDto;
 import com.arroyo.cine.dto.personaje.PersonajePersonalizadoPDto;
 import com.arroyo.cine.entity.Personaje;
-import com.arroyo.cine.exception.custom.pelicula.serie.PersonajeExcepciones;
-import com.arroyo.cine.exception.custom.personaje.PersonajeExcepcionGenerico;
+import com.arroyo.cine.exception.custom.personaje.PersonajeExcepciones;
+import com.arroyo.cine.exception.custom.personaje.PersonajeExcepcion;
 import com.arroyo.cine.mapper.personaje.PersonajeMapper;
 import com.arroyo.cine.mapper.personaje.PersonajePersonalizadoMapper;
 import com.arroyo.cine.repository.PersonajeRepository;
@@ -53,7 +53,7 @@ public class PersonajeService {
 
     @Transactional
     public PersonajeDto save(@NotNull PersonajeDto personajeDto) {
-        verificarParametrosEntrada(personajeDto);
+        verificarParametrosEntradaPersonaje(personajeDto);
         return mapper.aPersonajeDto(repository.save(mapper.aPersonaje(personajeDto)));
     }
 
@@ -61,7 +61,7 @@ public class PersonajeService {
     public PersonajeDto update(@NotNull Integer idPersonaje, @NotNull PersonajeDto personajeDto) {
         this.personaje = null;
         this.personaje = buscarConId(idPersonaje);
-        verificarParametrosEntrada(personajeDto);
+        verificarParametrosEntradaPersonaje(personajeDto);
         repository.save(verificarDatoModificar(this.personaje, personajeDto));
         return mapper.aPersonajeDto(buscarConId(idPersonaje));
     }
@@ -69,7 +69,7 @@ public class PersonajeService {
     @Transactional
     public PersonajeDto delete(@NotNull PersonajeDto personajeDto) {
         this.personaje = null;
-        verificarParametrosEntrada(personajeDto);
+        verificarParametrosEntradaPersonaje(personajeDto);
         this.personaje = buscarConId(personajeDto.getIdePersonaje());
         verificarPersonajeDBConPersonajeDto(this.personaje, personajeDto);
         repository.delete(mapper.aPersonaje(personajeDto));
@@ -86,7 +86,7 @@ public class PersonajeService {
 
     private Personaje buscarConId(Integer idPersonaje) {
         return repository.findById(idPersonaje).orElseThrow(() ->
-                new PersonajeExcepcionGenerico(ID_PERSONAJE_NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
+                new PersonajeExcepcion(ID_PERSONAJE_NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 
     private final BiFunction<Personaje, Boolean, Personaje> setearNull = (personajeFuncion, setear) -> {
@@ -112,7 +112,7 @@ public class PersonajeService {
     }
 
     private List<Personaje> filtro(List<Personaje> personajes, String name, Byte age, Integer movie, Boolean setear) {
-        if (personajes.isEmpty()) throw new PersonajeExcepcionGenerico(SIN_PERSONAJE, HttpStatus.BAD_REQUEST);
+        if (personajes.isEmpty()) throw new PersonajeExcepcion(SIN_PERSONAJE, HttpStatus.BAD_REQUEST);
         if (name != null && !name.isBlank() && age != null && age > 0 && movie != null && movie > 0)
             return personajes.stream().filter(personajeStream -> personajeStream.getNombre().equals(name) && Objects.equals(personajeStream.getEdad(), age) && Objects.equals(personajeStream.getIdPersonaje(), movie)).map(personajeStream -> setearNull.apply(personaje, setear)).collect(Collectors.toList());
         else if (name != null && !name.isBlank())

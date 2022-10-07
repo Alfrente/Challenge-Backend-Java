@@ -2,7 +2,7 @@ package com.arroyo.cine.service;
 
 import com.arroyo.cine.dto.genero.GeneroDto;
 import com.arroyo.cine.entity.Genero;
-import com.arroyo.cine.exception.custom.genero.GeneroExcepcionGenerico;
+import com.arroyo.cine.exception.custom.genero.GeneroExcepcion;
 import com.arroyo.cine.exception.custom.genero.GeneroExcepciones;
 import com.arroyo.cine.mapper.genero.GeneroMapper;
 import com.arroyo.cine.repository.GeneroRepository;
@@ -73,19 +73,19 @@ public class GeneroService {
 
     private Genero buscarConId(Integer idGenero) {
         return repository.findById(idGenero).
-                orElseThrow(() -> new GeneroExcepcionGenerico(ID_GENERO_NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
+                orElseThrow(() -> new GeneroExcepcion(ID_GENERO_NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 
     private void validarIdGenero(Integer idGenero) {
         if (idGenero == null || idGenero <= 0)
-            throw new GeneroExcepcionGenerico(ID_GENERO_NO_INGRESADO, HttpStatus.BAD_REQUEST);
+            throw new GeneroExcepcion(ID_GENERO_NO_INGRESADO, HttpStatus.BAD_REQUEST);
     }
 
     private void validarGeneroDtoEliminar(GeneroDto dto, Genero genero) {
         this.hayError = false;
         List<String> excepciones = new ArrayList<>();
         if (dto == null)
-            throw new GeneroExcepcionGenerico(INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
+            throw new GeneroExcepcion(INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
         if (dto.getNombreGenero() == null || dto.getNombreGenero().isBlank() || (!dto.getNombreGenero().equals(genero.getNombre())))
             this.hayError = true;
         excepciones.add("El nombre del genero Ingresado es incorrecto");
@@ -98,7 +98,7 @@ public class GeneroService {
 
     private void validarEntradaNombreGenero(String nombre) {
         if (nombre != null && !nombre.matches(EXPRECION_NOMBRE)) {
-            throw new GeneroExcepcionGenerico("El nombre del genero es incorrecto", HttpStatus.BAD_REQUEST);
+            throw new GeneroExcepcion("El nombre del genero es incorrecto", HttpStatus.BAD_REQUEST);
         }
     }
 }
