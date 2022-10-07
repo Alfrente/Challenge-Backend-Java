@@ -3,18 +3,17 @@ package com.arroyo.cine.dto;
 import com.arroyo.cine.entity.PeliculaSerie;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
 public class GeneroDto {
-    @Null
     @Size(min = 1)
     private Integer ideGenero;
 
-    @NotBlank
+    @NotNull
     @Size(min = 5, max = 50)
     private String nombreGenero;
 

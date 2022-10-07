@@ -2,20 +2,18 @@ package com.arroyo.cine.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
 public class PeliculaSerieDto {
-
-    @Null
     @Size(min = 1)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idPeliculaSerie;
 
-    @NotBlank
+    @NotNull
     @Size(min = 5, max = 50)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String titulo;
@@ -24,7 +22,7 @@ public class PeliculaSerieDto {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String caratula;
 
-    @NotBlank
+    @NotNull
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String fechaCreacion;
 
@@ -33,7 +31,7 @@ public class PeliculaSerieDto {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Byte califiacion;
 
-    @NotBlank
+    @NotNull
     @Size(min = 1)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idGenero;

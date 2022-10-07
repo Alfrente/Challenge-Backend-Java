@@ -1,7 +1,7 @@
 package com.arroyo.cine.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
@@ -13,7 +13,7 @@ public class Genero {
     @Column(name = "id_genero")
     private Integer idGenero;
 
-    @NotBlank
+    @NotNull
     @Column(length = 50, nullable = false)
     @Size(min = 5, max = 50)
     private String nombre;

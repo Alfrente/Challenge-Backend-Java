@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ public class PeliculaSerie {
     @Column(name = "id_pelicula_serie")
     private Integer idPeliculaSerie;
 
-    @NotBlank
+    @NotNull
     @Column(length = 50, nullable = false)
     @Size(min = 5, max = 50)
     private String titulo;
@@ -25,7 +26,7 @@ public class PeliculaSerie {
     @Null
     private String imagen;
 
-    @NotBlank
+    @NotNull
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDate fechaCreacion;
 

@@ -3,7 +3,7 @@ package com.arroyo.cine.entity;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -16,17 +16,17 @@ public class Personaje {
     @Column(name = "id_personaje")
     private Integer idPersonaje;
 
-    @NotBlank
+    @NotNull
     @Column(length = 50, nullable = false)
     @Size(min = 4, max = 50)
     private String nombre;
 
-    @NotBlank
+    @NotNull
     @Column(length = 2, nullable = false)
     @Size(min = 1, max = 2)
     private Byte edad;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
     private Float peso;
 

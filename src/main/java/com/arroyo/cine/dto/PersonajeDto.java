@@ -2,30 +2,28 @@ package com.arroyo.cine.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
 public class PersonajeDto  {
-
-    @Null
     @Size(min = 1)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idePersonaje;
 
-    @NotBlank
+    @NotNull
     @Size(min = 4, max = 50)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String nombre;
 
-    @NotBlank
+    @NotNull
     @Size(min = 1, max = 2)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String edad;
 
-    @NotBlank
+    @NotNull
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String peso;
 
