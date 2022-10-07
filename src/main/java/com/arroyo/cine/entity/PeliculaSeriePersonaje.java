@@ -1,6 +1,6 @@
 package com.arroyo.cine.entity;
 
-import javax.persistence.Column;
+/*import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,17 +9,17 @@ import javax.persistence.Table;
 @Table(name = "pelicula_serie_personajes")
 public class PeliculaSeriePersonaje {
     @Id
-    @Column(name = "personaje_id", nullable = false)
-    Integer personajeId;
+    @Column(name = "id_pelicula_serie", nullable = false)
+    Integer idPeliculaSerie;
     @Column(name = "id_personaje", nullable = false)
     Integer idPersonaje;
 
-    public Integer getPersonajeId() {
-        return personajeId;
+    public Integer getIdPeliculaSerie() {
+        return idPeliculaSerie;
     }
 
-    public void setPersonajeId(Integer personajeId) {
-        this.personajeId = personajeId;
+    public void setIdPeliculaSerie(Integer idPeliculaSerie) {
+        this.idPeliculaSerie = idPeliculaSerie;
     }
 
     public Integer getIdPersonaje() {
@@ -30,3 +30,4 @@ public class PeliculaSeriePersonaje {
         this.idPersonaje = idPersonaje;
     }
 }
+*/

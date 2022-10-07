@@ -34,25 +34,15 @@ public class PeliculaSerie {
     @Size(min = 1, max = 5)
     private Byte califiacion;
 
-    @NotBlank
-    @Size(min = 1)
-    @Column(name = "personaje_id", nullable = false)
-    private Integer idPersonaje;
-
-    @NotBlank
     @Size(min = 1)
     @Column(name = "id_genero", nullable = false)
     private Integer idGenero;
 
     @ManyToMany
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
-    @JoinTable(name = "pelicula_serie_personajes", joinColumns = @JoinColumn(name = "personaje_id"), inverseJoinColumns = @JoinColumn(name = "id_personaje"))
+    @JoinTable(name = "pelicula_serie_personaje", joinColumns = @JoinColumn(name = "id_pelicula_serie"), inverseJoinColumns = @JoinColumn(name = "id_personaje"))
     private List<Personaje> personajes;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "personaje_id", insertable = false, updatable = false)
-    @JoinTable(name = "pelicula_serie_personajes", joinColumns = @JoinColumn(name = "id_personaje"))
-    private PeliculaSeriePersonaje peliculaSeriePersonaje;
 
     public Integer getIdPeliculaSerie() {
         return idPeliculaSerie;
@@ -92,14 +82,6 @@ public class PeliculaSerie {
 
     public void setCalifiacion(Byte califiacion) {
         this.califiacion = califiacion;
-    }
-
-    public Integer getIdPersonaje() {
-        return idPersonaje;
-    }
-
-    public void setIdPersonaje(Integer idPersonaje) {
-        this.idPersonaje = idPersonaje;
     }
 
     public Integer getIdGenero() {

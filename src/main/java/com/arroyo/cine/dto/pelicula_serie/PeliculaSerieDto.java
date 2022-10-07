@@ -37,11 +37,6 @@ public class PeliculaSerieDto {
     @NotBlank
     @Size(min = 1)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Integer idPersonaje;
-
-    @NotBlank
-    @Size(min = 1)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer idGenero;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -87,14 +82,6 @@ public class PeliculaSerieDto {
         this.califiacion = califiacion;
     }
 
-    public Integer getIdPersonaje() {
-        return idPersonaje;
-    }
-
-    public void setIdPersonaje(Integer idPersonaje) {
-        this.idPersonaje = idPersonaje;
-    }
-
     public Integer getIdGenero() {
         return idGenero;
     }
@@ -116,11 +103,11 @@ public class PeliculaSerieDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PeliculaSerieDto that = (PeliculaSerieDto) o;
-        return Objects.equals(idPeliculaSerie, that.idPeliculaSerie) && Objects.equals(titulo, that.titulo) && Objects.equals(caratula, that.caratula) && Objects.equals(fechaCreacion, that.fechaCreacion) && Objects.equals(califiacion, that.califiacion) && Objects.equals(idPersonaje, that.idPersonaje) && Objects.equals(idGenero, that.idGenero);
+        return Objects.equals(idPeliculaSerie, that.idPeliculaSerie) && Objects.equals(titulo, that.titulo) && Objects.equals(caratula, that.caratula) && Objects.equals(fechaCreacion, that.fechaCreacion) && Objects.equals(califiacion, that.califiacion) && Objects.equals(idGenero, that.idGenero);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idPeliculaSerie, titulo, caratula, fechaCreacion, califiacion, idPersonaje, idGenero);
+        return Objects.hash(idPeliculaSerie, titulo, caratula, fechaCreacion, califiacion, idGenero);
     }
 }

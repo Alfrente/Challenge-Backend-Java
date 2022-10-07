@@ -4,7 +4,6 @@ import com.arroyo.cine.dto.pelicula_serie.PeliculaSerieDto;
 import com.arroyo.cine.dto.pelicula_serie.PeliculaSeriePersonalizadoPsDto;
 import com.arroyo.cine.dto.personaje.PersonajeDto;
 import com.arroyo.cine.entity.PeliculaSerie;
-import com.arroyo.cine.entity.Personaje;
 import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSerieMapper;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSeriePersonalizadoMapper;
@@ -24,7 +23,6 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import static com.arroyo.cine.service.ValidacionCompartida.*;
-import static com.arroyo.cine.service.ValidacionCompartida.verificarParametrosEntradaPersonaje;
 import static com.arroyo.cine.util.statico.ExprecionRegular.*;
 import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
 

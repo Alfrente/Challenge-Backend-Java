@@ -16,7 +16,6 @@ public interface PeliculaSerieMapper {
     @Mapping(target = "caratula", source = "peliculaSerie.imagen")
     @Mapping(target = "fechaCreacion", source = "peliculaSerie.fechaCreacion")
     @Mapping(target = "califiacion", source = "peliculaSerie.califiacion")
-    @Mapping(target = "idPersonaje", source = "peliculaSerie.idPersonaje")
     @Mapping(target = "idGenero", source = "peliculaSerie.idGenero")
     @Mapping(target = "personajes", source = "peliculaSerie.personajes")
     PeliculaSerieDto aPeliculaSerieDto(PeliculaSerie peliculaSerie);
