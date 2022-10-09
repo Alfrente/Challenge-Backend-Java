@@ -11,7 +11,7 @@ import java.util.Objects;
 public class PeliculaSerieDto {
     @Size(min = 1)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Integer idPeliculaSerie;
+    private String idPeliculaSerie;
 
     @NotNull
     @Size(min = 5, max = 50)
@@ -29,22 +29,38 @@ public class PeliculaSerieDto {
     @Null
     @Size(min = 1, max = 5)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Byte califiacion;
+    private String califiacion;
 
     @NotNull
     @Size(min = 1)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Integer idGenero;
+    private String idGenero;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PersonajeDto> personajes;
 
-    public Integer getIdPeliculaSerie() {
+    public String getIdPeliculaSerie() {
         return idPeliculaSerie;
     }
 
-    public void setIdPeliculaSerie(Integer idPeliculaSerie) {
+    public void setIdPeliculaSerie(String idPeliculaSerie) {
         this.idPeliculaSerie = idPeliculaSerie;
+    }
+
+    public String getCalifiacion() {
+        return califiacion;
+    }
+
+    public void setCalifiacion(String califiacion) {
+        this.califiacion = califiacion;
+    }
+
+    public String getIdGenero() {
+        return idGenero;
+    }
+
+    public void setIdGenero(String idGenero) {
+        this.idGenero = idGenero;
     }
 
     public String getTitulo() {
@@ -69,22 +85,6 @@ public class PeliculaSerieDto {
 
     public void setFechaCreacion(String fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
-    }
-
-    public Byte getCalifiacion() {
-        return califiacion;
-    }
-
-    public void setCalifiacion(Byte califiacion) {
-        this.califiacion = califiacion;
-    }
-
-    public Integer getIdGenero() {
-        return idGenero;
-    }
-
-    public void setIdGenero(Integer idGenero) {
-        this.idGenero = idGenero;
     }
 
     public List<PersonajeDto> getPersonajes() {

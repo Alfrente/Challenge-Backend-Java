@@ -29,7 +29,7 @@ public class PersonajeController {
     @Parameter(description = "age", example = "15")
     @Parameter(description = "movies", example = "1")
     public ResponseEntity<List<PersonajeDto>> getAll(@RequestParam(required = false, name = "name") String name, @RequestParam(required = false, name = "age")
-    Byte age, @RequestParam(required = false, name = "movies") Integer movies) {
+    String age, @RequestParam(required = false, name = "movies") String movies) {
         return new ResponseEntity<>(service.getAll(name, age, movies), HttpStatus.OK);
     }
 

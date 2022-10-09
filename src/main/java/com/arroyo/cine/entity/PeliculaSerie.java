@@ -1,9 +1,6 @@
 package com.arroyo.cine.entity;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
@@ -39,11 +36,14 @@ public class PeliculaSerie {
     @Column(name = "id_genero", nullable = false)
     private Integer idGenero;
 
-    @ManyToMany
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
+    @ManyToMany(cascade = CascadeType.ALL)
+    //@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(name = "pelicula_serie_personaje", joinColumns = @JoinColumn(name = "id_pelicula_serie"), inverseJoinColumns = @JoinColumn(name = "id_personaje"))
     private List<Personaje> personajes;
 
+    @OneToOne
+    @JoinColumn(name = "id_genero", insertable = false, updatable = false)
+    private Genero genero;
 
     public Integer getIdPeliculaSerie() {
         return idPeliculaSerie;

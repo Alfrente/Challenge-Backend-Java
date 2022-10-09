@@ -17,7 +17,7 @@ public class RespuestaExcepcion {
     public static final String VALIDO = " valido.";
     public static final String VALIDA = " valida.";
     public static final String NO_DISPONIBLE = " no esta disponible.";
-    public static final String INGRESE_DIRECCION_IMAGEN_INCORRECTA = "Por favor ingrese una dirección valido para la imagen";
+    public static final String INGRESE_DIRECCION_IMAGEN_INCORRECTA = POR_FAVOR_INGRESE + "una dirección valida para la imagen";
     public static final String INGRESE_DATOS_REQUERIDOS = "Por favor ingrese los datos requeridos";
     public static final String PERSONAJE = "personaje";
     public static final String GENERO = "genero";

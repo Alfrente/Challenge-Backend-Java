@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class GeneroDto {
     @Size(min = 1)
-    private Integer ideGenero;
+    private String ideGenero;
 
     @NotNull
     @Size(min = 5, max = 50)
@@ -25,11 +25,11 @@ public class GeneroDto {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PeliculaSerie> peliculaSeries;
 
-    public Integer getIdeGenero() {
+    public String getIdeGenero() {
         return ideGenero;
     }
 
-    public void setIdeGenero(Integer ideGenero) {
+    public void setIdeGenero(String ideGenero) {
         this.ideGenero = ideGenero;
     }
 

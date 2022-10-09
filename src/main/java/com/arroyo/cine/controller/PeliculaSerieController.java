@@ -91,7 +91,7 @@ public class PeliculaSerieController {
     @Parameter(description = "idMovie", required = true, example = "1")
     @Parameter(description = "idCharacter", required = true, example = "2")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteReq(@PathVariable("idMovie") Integer idMovie, @PathVariable("idCharacter") Integer idCharacter) {
+    public void deleteReq(@PathVariable("idMovie") String idMovie, @PathVariable("idCharacter") String idCharacter) {
         service.deletePersonalizado(idMovie, idCharacter);
     }
 
@@ -102,7 +102,7 @@ public class PeliculaSerieController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id", example = "1")
-    public ResponseEntity<PeliculaSerieDto> deleteById(@PathVariable("id") Integer id) {
+    public ResponseEntity<PeliculaSerieDto> deleteById(@PathVariable("id") String id) {
         return new ResponseEntity<>(service.deleteById(id), HttpStatus.ACCEPTED);
     }
 

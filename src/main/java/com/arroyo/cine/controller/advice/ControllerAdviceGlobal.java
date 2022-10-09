@@ -2,12 +2,12 @@ package com.arroyo.cine.controller.advice;
 
 import com.arroyo.cine.exception.custom.ExcepcionGenerica;
 import com.arroyo.cine.exception.custom.ExcepcionesGenerica;
-import com.arroyo.cine.exception.custom.genero.GeneroExcepciones;
 import com.arroyo.cine.exception.custom.genero.GeneroExcepcion;
+import com.arroyo.cine.exception.custom.genero.GeneroExcepciones;
 import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
 import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepciones;
-import com.arroyo.cine.exception.custom.personaje.PersonajeExcepciones;
 import com.arroyo.cine.exception.custom.personaje.PersonajeExcepcion;
+import com.arroyo.cine.exception.custom.personaje.PersonajeExcepciones;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,11 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.arroyo.cine.util.statico.ExprecionRegular.FECHA_ACTUAL;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
 
 @ControllerAdvice
 public class ControllerAdviceGlobal {
-    private final Map<String, String> response;
+    private static Map<String, String> response;
     private StringBuilder mensajes;
 
     private int index = 0;
@@ -51,7 +50,7 @@ public class ControllerAdviceGlobal {
     }
 
     @ExceptionHandler(PeliculaSerieExcepcion.class)
-    public ResponseEntity<Map<String, String>> errorPeliculaSerieGenerico(PeliculaSerieExcepcion excepcion){
+    public ResponseEntity<Map<String, String>> errorPeliculaSerieGenerico(PeliculaSerieExcepcion excepcion) {
         return new ResponseEntity<>(generarMapaError(excepcion), excepcion.getCodigo());
     }
 
@@ -60,23 +59,26 @@ public class ControllerAdviceGlobal {
         return new ResponseEntity<>(generarMapaErrores(excepciones), excepciones.getCodigo());
     }
 
-    private Map<String, String> generarMapaError(ExcepcionGenerica excepcion){
-        this.response.put(excepcion.getLlaveMapMensajeError(), excepcion.getMensaje());
-        this.response.put(excepcion.getLlaveMapMensajeErrorCodigo(), String.valueOf(excepcion.getCodigo().value()));
-        this.response.put("Fecha", FECHA_ACTUAL);
-        return this.response;
+    private Map<String, String> generarMapaError(ExcepcionGenerica excepcion) {
+        response.clear();
+        response.put(excepcion.getLlaveMapMensajeError(), excepcion.getMensaje());
+        response.put(excepcion.getLlaveMapMensajeErrorCodigo(), String.valueOf(excepcion.getCodigo().value()));
+        response.put("Fecha", FECHA_ACTUAL);
+        return response;
     }
 
-    private Map<String, String> generarMapaErrores(ExcepcionesGenerica excepciones){
+    private Map<String, String> generarMapaErrores(ExcepcionesGenerica excepciones) {
         this.index = 0;
-        this.mensajes.setLength(0);
+        response.clear();
+        mensajes.setLength(0);
         for (String mensaje : excepciones.getMensajes()) {
             this.index++;
-            this.mensajes.append(index).append(" ").append(mensaje).append(" - ");
+            mensajes.append(index).append(" ").append(mensaje).append(" - ");
         }
-        this.response.put(excepciones.getLlaveMapMensajeError(), this.mensajes.toString());
-        this.response.put(excepciones.getLlaveMapMensajeErrorCodigo(), String.valueOf(excepciones.getCodigo().value()));
-        this.response.put("Fecha", FECHA_ACTUAL);
+        mensajes.replace(mensajes.length()-2, mensajes.length(), "");
+        response.put(excepciones.getLlaveMapMensajeError(), mensajes.toString());
+        response.put(excepciones.getLlaveMapMensajeErrorCodigo(), String.valueOf(excepciones.getCodigo().value()));
+        response.put("Fecha", FECHA_ACTUAL);
         return response;
     }
 }

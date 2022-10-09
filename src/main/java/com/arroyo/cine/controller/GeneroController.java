@@ -39,7 +39,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método sirve para buscar un genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
-    public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") Integer idGenero) {
+    public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") String idGenero) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getById(idGenero));
     }
 
@@ -72,7 +72,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método sirve para eliminar el genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
-    public ResponseEntity<GeneroDto> deleteById(@PathVariable("idGenero") Integer idGenero) {
+    public ResponseEntity<GeneroDto> deleteById(@PathVariable("idGenero") String idGenero) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteById(idGenero));
     }
 
@@ -84,7 +84,7 @@ public class GeneroController {
     }, description = "Este método sirve para actualiza el genero")
     @Parameter(required = true, description = "Id genero", example = "1")
     @Parameter(required = true, description = "Nuevo genero", example = "Acción")
-    public ResponseEntity<GeneroDto> update(@PathVariable("idGenero") Integer idGenero, @PathVariable("nuevoGenero") String nuevoGenero) {
+    public ResponseEntity<GeneroDto> update(@PathVariable("idGenero") String idGenero, @PathVariable("nuevoGenero") String nuevoGenero) {
         return ResponseEntity.status(HttpStatus.OK).body(service.update(idGenero, nuevoGenero));
     }
 }
