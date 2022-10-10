@@ -25,15 +25,12 @@ public class ParametroEntrada {
     private ParametroEntrada() {
     }
 
-    private static List<String> errores;
-
-    public static boolean validarFechaExprecion(String fecha) {
-        return fecha.matches(EXPRECION_FECHA);
-    }
-
-    public static PeliculaSerieDto setearPersonajesNull(PeliculaSerieDto peliculaSerieDto) {
-        peliculaSerieDto.setPersonajes(null);
-        return peliculaSerieDto;
+    public static void validarPeliculaSerieDto(PeliculaSerieDto dto) {
+        if (dto != null && dto.getIdPeliculaSerie() == null && dto.getTitulo() == null
+                && dto.getCalifiacion() == null && dto.getCaratula() == null
+                && dto.getFechaCreacion() == null && dto.getIdGenero() == null
+        )
+            throw new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
     }
 
     public static List<PeliculaSerie> ordenarLista(List<PeliculaSerie> peliculaSeries, String orden) {
@@ -51,20 +48,6 @@ public class ParametroEntrada {
         peliculaSerie.setIdGenero(null);
         return peliculaSerie;
     };
-
-    public static boolean validarDatosPersonajes(List<PersonajeDto> personajesRecibidos) {
-        if (personajesRecibidos == null)
-            return false;
-        int index = personajesRecibidos.size();
-        int personajesValido = 0;
-
-        for (var personaje : personajesRecibidos) {
-            if (personaje.getEdad() != null && convertirByte(personaje.getEdad()) > 0 && personaje.getNombre() != null &&
-                    (!personaje.getNombre().isBlank()) && personaje.getPeso() != null && convertirFloat(personaje.getPeso()) > 0)
-                personajesValido++;
-        }
-        return personajesValido == index;
-    }
 
     public static List<PeliculaSerie> filtroPeliculaSerie(List<PeliculaSerie> peliculaSeries, String name, Integer genre, String order) {
         if (peliculaSeries.isEmpty())
@@ -84,34 +67,53 @@ public class ParametroEntrada {
     }
 
     public static void verificarParametrosEntradaPeliculaSerie(PeliculaSerieDto dto) {
-        errores = new ArrayList<>();
-        if (dto.getTitulo() == null || !validarNombreConSinEspacio(dto.getTitulo()))
-            errores.add(POR_FAVOR_INGRESE + "un titulo" + VALIDO);
+        List<String> errores = new ArrayList<>();
+        if (dto.getTitulo() == null || !dto.getTitulo().matches(EXPRECION_TEXTO_CON_ESPACIOS))
+            errores.add(POR_FAVOR_INGRESE + "el titulo de la " + PELICULA_SERIE + VALIDA);
         if (dto.getCaratula() == null || validarDireccionImagen(dto.getCaratula()))
             errores.add(INGRESE_DIRECCION_IMAGEN_INCORRECTA);
         if (dto.getFechaCreacion() == null || validarFecha(dto.getFechaCreacion()))
             errores.add(POR_FAVOR_INGRESE + "una fecha" + VALIDA);
-        if (dto.getCalifiacion() == null || !validarCalificacion(convertirByte(dto.getCalifiacion())))
+        if (dto.getCalifiacion() == null || !validarCalificacion(dto.getCalifiacion()))
             errores.add(POR_FAVOR_INGRESE + LA + "calificación" + VALIDA);
-        throw new PeliculaSerieExcepciones(CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
+        if (!errores.isEmpty())
+            throw new PeliculaSerieExcepciones(CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
     }
 
-    private static boolean validarCalificacion(Byte calificacion){
-        return (calificacion > 0 && calificacion <= 5);
-    }
 
     public static PeliculaSerie identificarParametroActualizar(PeliculaSerie entity, PeliculaSerieDto dto) {
-        if (dto.getTitulo() != null && validarNombreConSinEspacio(dto.getTitulo()))
+        validarEntradaActualizar(dto);
+        if (dto.getTitulo() != null && dto.getTitulo().matches(EXPRECION_TEXTO_CON_ESPACIOS_NUMERO))
             entity.setTitulo(dto.getTitulo());
-        if (dto.getCaratula() != null && !validarDireccionImagen(dto.getCaratula()))
+        if (dto.getCaratula() != null && validarDireccionImagen(dto.getCaratula()))
             entity.setImagen(dto.getCaratula());
         if (dto.getFechaCreacion() != null && !validarFecha(dto.getFechaCreacion()))
             entity.setFechaCreacion(LocalDate.parse(dto.getFechaCreacion()));
-        if (dto.getCalifiacion() != null && validarCalificacion(convertirByte(dto.getCalifiacion())))
+        if (dto.getCalifiacion() != null && validarCalificacion(dto.getCalifiacion()))
             entity.setCalifiacion(convertirByte(dto.getCalifiacion()));
         if (dto.getIdGenero() != null && convertirEntero(dto.getIdGenero()) > 0)
             entity.setIdGenero(convertirEntero(dto.getIdGenero()));
         return entity;
+    }
+
+    private static void validarEntradaActualizar(PeliculaSerieDto dto) {
+        List<String> errores = new ArrayList<>();
+        if (dto.getTitulo() != null && !dto.getTitulo().matches(EXPRECION_TEXTO_CON_ESPACIOS_NUMERO))
+            errores.add(POR_FAVOR_VERIFIQUE + "el titulo de la " + PELICULA_SERIE + VALIDA);
+        if (dto.getCaratula() != null && !validarDireccionImagen(dto.getCaratula()))
+            errores.add(INGRESE_DIRECCION_IMAGEN_INCORRECTA);
+        if (dto.getFechaCreacion() != null && validarFecha(dto.getFechaCreacion()))
+            errores.add(POR_FAVOR_VERIFIQUE + "la fecha");
+        if (dto.getCalifiacion() != null && !validarCalificacion(dto.getCalifiacion()))
+            errores.add(POR_FAVOR_VERIFIQUE + LA + "calificación");
+        if (dto.getIdGenero() != null && convertirEntero(dto.getIdGenero()) <= 0)
+            errores.add(POR_FAVOR_VERIFIQUE + LA + "calificación" + VALIDA);
+        if (!errores.isEmpty())
+            throw new PeliculaSerieExcepciones(CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
+    }
+
+    private static boolean validarCalificacion(String calidicain){
+        return calidicain.matches(UNO_AL_CINCO);
     }
 
     public static void verificarParametrosEntradaPersonajes(List<PersonajeDto> personajeDtos) {
@@ -119,13 +121,8 @@ public class ParametroEntrada {
             personajeDtos.forEach(ParametroEntradaPersonaje::verificarParametrosEntradaPersonaje);
     }
 
-    public static void verificarPeliculaSerieDto(PeliculaSerieDto peliculaSerie) {
-        if (peliculaSerie == null || peliculaSerie.getIdPeliculaSerie() == null)
-            throw new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
-    }
-
     public static void validarDatosSonIgual(PeliculaSerie peliculaSerie, PeliculaSerieDto dto) {
-        errores = new ArrayList<>();
+        List<String> errores = new ArrayList<>();
         if (peliculaSerie.getTitulo() != null && dto.getTitulo() != null && !peliculaSerie.getTitulo().equals(dto.getTitulo()))
             errores.add(POR_FAVOR_VERIFIQUE + "el titulo");
         if (peliculaSerie.getFechaCreacion() != null && dto.getFechaCreacion() != null && !peliculaSerie.getFechaCreacion().equals(LocalDate.parse(dto.getFechaCreacion())))
@@ -137,5 +134,4 @@ public class ParametroEntrada {
         if (!errores.isEmpty())
             throw new PeliculaSerieExcepciones(CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
     }
-
 }

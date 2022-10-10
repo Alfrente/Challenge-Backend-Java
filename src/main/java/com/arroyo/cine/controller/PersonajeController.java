@@ -39,7 +39,7 @@ public class PersonajeController {
             @ApiResponse(responseCode = "400", description = "No se pudo completar la petición.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
-    public ResponseEntity<PersonajeDto> getById(@PathVariable("idPersona") Integer idPersona) {
+    public ResponseEntity<PersonajeDto> getById(@PathVariable("idPersona") String idPersona) {
         return new ResponseEntity<>(service.getById(idPersona), HttpStatus.OK);
     }
 
@@ -69,7 +69,7 @@ public class PersonajeController {
             @ApiResponse(responseCode = "400", description = "No se pudo eliminar el personaje.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
-    public ResponseEntity<PersonajeDto> deleteById(@PathVariable("idPersona") Integer idPersona) {
+    public ResponseEntity<PersonajeDto> deleteById(@PathVariable("idPersona") String idPersona) {
         return new ResponseEntity<>(service.deleteById(idPersona), HttpStatus.ACCEPTED);
     }
 
@@ -80,7 +80,7 @@ public class PersonajeController {
     })
     @Parameter(required = true, description = "Id personaje", example = "1")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public ResponseEntity<PersonajeDto> update(@PathVariable("idPersonaje") Integer idPersonaje, @RequestBody @NotBlank PersonajeDto personajeDto) {
+    public ResponseEntity<PersonajeDto> update(@PathVariable("idPersonaje") String idPersonaje, @RequestBody @NotBlank PersonajeDto personajeDto) {
         return new ResponseEntity<>(service.update(idPersonaje, personajeDto), HttpStatus.ACCEPTED);
     }
 }

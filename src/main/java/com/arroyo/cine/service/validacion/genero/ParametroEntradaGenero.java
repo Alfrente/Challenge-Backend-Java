@@ -18,11 +18,6 @@ public class ParametroEntradaGenero {
     private ParametroEntradaGenero() {
     }
 
-    public static void validarIdGenero(Integer idGenero) {
-        if (validarIdNullMenorCero(idGenero))
-            throw new GeneroExcepcion(CODIGO_ERROR, ERROR, POR_FAVOR_INGRESE + "el id " + DE_EL + GENERO + ".", HttpStatus.BAD_REQUEST);
-    }
-
     public static void validarGeneroDtoEliminar(GeneroDto dto, Genero genero) {
         List<String> excepciones = new ArrayList<>();
         if (dto.getNombreGenero() == null || (!dto.getNombreGenero().equals(genero.getNombre())))
@@ -47,10 +42,4 @@ public class ParametroEntradaGenero {
         if (!validarDireccionImagen(direccionImagen))
             throw new GeneroExcepcion(CODIGO_ERROR, ERROR, INGRESE_DIRECCION_IMAGEN_INCORRECTA, HttpStatus.BAD_REQUEST);
     }
-
-    public static void validarStringNumeroGenero(String numero) {
-        if (!validarStringNumero(numero))
-            throw new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, POR_FAVOR_INGRESE + "el id " + DE_EL + GENERO + VALIDO, HttpStatus.BAD_REQUEST);
-    }
-
 }

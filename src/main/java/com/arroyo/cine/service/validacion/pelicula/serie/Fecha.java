@@ -12,8 +12,6 @@ public class Fecha {
     }
 
     public static boolean validarFecha(String fechaEntrda) {
-        if (fechaEntrda.matches(EXPRECION_FECHA_SIN_CERO))
-            return verificarFecha(generarFecha(fechaEntrda));
         if (fechaEntrda.matches(EXPRECION_FECHA))
             return verificarFecha(fechaEntrda);
         return true;

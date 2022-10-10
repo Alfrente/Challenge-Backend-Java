@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.arroyo.cine.service.validacion.ValidacionGenerica.convertirEntero;
+import static com.arroyo.cine.service.validacion.ValidacionGenerica.validarId;
 import static com.arroyo.cine.service.validacion.personaje.ParametroEntradaPersonaje.*;
 import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
 
@@ -33,7 +35,7 @@ public class PersonajeService {
         return mapper.aListPersonajeDto(filtroPersonaje(repository.findAll(), name, age, movie, true));
     }
 
-    public PersonajeDto getById(Integer idPersonaje) {
+    public PersonajeDto getById(String idPersonaje) {
         return mapper.aPersonajeDto(buscarConId(idPersonaje));
     }
 
@@ -45,7 +47,7 @@ public class PersonajeService {
     }
 
     @Transactional
-    public PersonajeDto update(Integer idPersonaje, PersonajeDto personajeDto) {
+    public PersonajeDto update(String idPersonaje, PersonajeDto personajeDto) {
         this.personaje = null;
         validarPersonajeDto(personajeDto);
         this.personaje = buscarConId(idPersonaje);
@@ -66,15 +68,16 @@ public class PersonajeService {
     }
 
     @Transactional
-    public PersonajeDto deleteById(Integer idPersonaje) {
+    public PersonajeDto deleteById(String idPersonaje) {
         this.personaje = null;
         this.personaje = buscarConId(idPersonaje);
-        repository.deleteById(idPersonaje);
+        repository.deleteById(convertirEntero(idPersonaje));
         return mapper.aPersonajeDto(this.personaje);
     }
 
-    private Personaje buscarConId(Integer idPersonaje) {
-        return repository.findById(idPersonaje).orElseThrow(() ->
+    private Personaje buscarConId(String idPersonaje) {
+        validarId(idPersonaje, POR_FAVOR_INGRESE + EL_ID+ DE_EL + PERSONAJE + VALIDO);
+        return repository.findById(convertirEntero(idPersonaje)).orElseThrow(() ->
                 new PersonajeExcepcion(CODIGO_ERROR, ERROR, EL + PERSONAJE + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 }

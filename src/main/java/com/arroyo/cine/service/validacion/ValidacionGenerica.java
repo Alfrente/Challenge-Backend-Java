@@ -1,6 +1,10 @@
 package com.arroyo.cine.service.validacion;
 
+import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
+import org.springframework.http.HttpStatus;
+
 import static com.arroyo.cine.util.statico.ExprecionRegular.*;
+import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
 
 public class ValidacionGenerica {
 
@@ -8,7 +12,7 @@ public class ValidacionGenerica {
     }
 
     public static boolean validarStringNumero(String numero) {
-        return numero.matches(NUMERO);
+        return !numero.matches(NUMERO);
     }
 
     public static int convertirEntero(String numero) {
@@ -17,10 +21,6 @@ public class ValidacionGenerica {
 
     public static boolean validarDireccionImagen(String imagen) {
         return imagen.matches(EXPRECION_DIRECCION_FORMATO_JPG) || imagen.matches(EXPRECION_DIRECCION_FORMATO_PNG);
-    }
-
-    public static boolean validarIdNullMenorCero(Integer idGenero) {
-         return idGenero == null || idGenero <= 0;
     }
 
     public static boolean validarNombreConSinEspacio(String nombre) {
@@ -33,5 +33,10 @@ public class ValidacionGenerica {
 
     public static float convertirFloat(String numero) {
         return Float.parseFloat(numero);
+    }
+
+    public static void validarId(String id, String mensaje){
+        if (id == null || validarStringNumero(id))
+            throw new PeliculaSerieExcepcion(CODIGO_ERROR,ERROR,mensaje, HttpStatus.BAD_REQUEST );
     }
 }

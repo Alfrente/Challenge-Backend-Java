@@ -9,12 +9,14 @@ public class ExprecionRegular {
 
     private static final  String DIGITO = "\\d";
     private static final String UNO_AL_NUEVE = "[1-9]";
-    public static final String NUMERO = UNO_AL_NUEVE+DIGITO+"+";
+    public static final String UNO_AL_CINCO = "[1-5]";
+    public static final String NUMERO = UNO_AL_NUEVE+"[0-9]*";
     public static final String EXPRECION_FECHA = UNO_AL_NUEVE + DIGITO + "{3}-" + DIGITO + "{2}-" + DIGITO + "{2}";
     public static final String EXPRECION_FECHA_SIN_CERO = UNO_AL_NUEVE + DIGITO + "{3}-" + UNO_AL_NUEVE + DIGITO +"?-" + UNO_AL_NUEVE + DIGITO +"?";
     public static final  String ASC = "ASC";
     public static final String DESC = "DESC";
     public static final String EXPRECION_TEXTO_CON_ESPACIOS = "[A-Z][a-zA-Z\\ ]+";
+    public static final String EXPRECION_TEXTO_CON_ESPACIOS_NUMERO = "[A-Z][a-zA-Z0-9\\ ]+";
     public static final String EXPRECION_TEXTO_CON_UN_ESPACIO = "[A-Z][a-z]{3,9}[ ][A-Z][a-z]{5,9}";
     public static final String EXPRECION_TEXTO_SIN_ESPACIOS = "[A-Z][a-z]{3,9}";
     public static final String FORMATO_FECHA = "dd-MMMM-yyyy HH:mm:ss";

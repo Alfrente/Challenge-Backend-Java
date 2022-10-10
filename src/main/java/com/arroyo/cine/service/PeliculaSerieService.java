@@ -1,13 +1,14 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.dto.PeliculaSerieDto;
+import com.arroyo.cine.entity.FkPeliculaSeriePersonaje;
 import com.arroyo.cine.entity.PeliculaSerie;
+import com.arroyo.cine.entity.PeliculaSeriePersonaje;
 import com.arroyo.cine.entity.Personaje;
 import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
 import com.arroyo.cine.exception.custom.personaje.PersonajeExcepcion;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSerieMapper;
 import com.arroyo.cine.repository.GeneroRepository;
-import com.arroyo.cine.repository.PeliculaSeriePersonajeRepository;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
 import com.arroyo.cine.repository.PersonajeRepository;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.convertirEntero;
+import static com.arroyo.cine.service.validacion.ValidacionGenerica.validarId;
 import static com.arroyo.cine.service.validacion.pelicula.serie.ParametroEntrada.*;
 import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
 
@@ -27,14 +29,14 @@ public class PeliculaSerieService {
     private final GeneroRepository generoRepository;
     private final PersonajeRepository personajeRepository;
 
-    private final PeliculaSeriePersonajeRepository peliculaSeriePersonajeRepository;
+    private final PeliculaSeriePersonajeService peliculaSeriePersonajeService;
     private final PeliculaSerieMapper mapper;
 
-    public PeliculaSerieService(PeliculaSerieRepository repository, GeneroRepository generoRepository, PersonajeRepository personajeRepository, PeliculaSeriePersonajeRepository peliculaSeriePersonajeRepository, PeliculaSerieMapper mapper) {
+    public PeliculaSerieService(PeliculaSerieRepository repository, GeneroRepository generoRepository, PersonajeRepository personajeRepository, PeliculaSeriePersonajeService peliculaSeriePersonajeService, PeliculaSerieMapper mapper) {
         this.repository = repository;
         this.generoRepository = generoRepository;
         this.personajeRepository = personajeRepository;
-        this.peliculaSeriePersonajeRepository = peliculaSeriePersonajeRepository;
+        this.peliculaSeriePersonajeService = peliculaSeriePersonajeService;
         this.mapper = mapper;
     }
 
@@ -42,42 +44,39 @@ public class PeliculaSerieService {
         return mapper.aListPeliculaSerieDto(filtroPeliculaSerie(repository.findAll(), name, genre, order));
     }
 
-    public PeliculaSerieDto getById(Integer idPeliculaSerie) {
-        // validar id string
+    public PeliculaSerieDto getById(String idPeliculaSerie) {
         return mapper.aPeliculaSerieDto(buscarPeliculaSerieConId(idPeliculaSerie));
     }
 
     @Transactional
     public PeliculaSerieDto save(PeliculaSerieDto peliculaSerie) {
-        verificarPeliculaSerieDto(peliculaSerie);
+        validarPeliculaSerieDto(peliculaSerie);
+        buscarGeneroConId(peliculaSerie.getIdGenero());
         verificarParametrosEntradaPeliculaSerie(peliculaSerie);
         verificarParametrosEntradaPersonajes(peliculaSerie.getPersonajes());
         return mapper.aPeliculaSerieDto(repository.save(mapper.aPeliculaSerie(peliculaSerie)));
     }
 
     @Transactional
-    public void savePersonalizado(Integer idPeli, Integer idPersonaje) {
-        // validar id string
-        Optional<PeliculaSerie> peliculaSerie = Optional.of(buscarPeliculaSerieConId(idPeli));
-        Optional<Personaje> personaje = Optional.of(buscarPersonajeConId(idPersonaje));
-        peliculaSerie.ifPresent(peliculaSerie1 -> personaje.ifPresent(personaje1 -> {
-            peliculaSerie1.setPersonajes(List.of(personaje1));
-            repository.save(peliculaSerie1);
-        }));
+    public PeliculaSerieDto savePersonalizado(String idPeliculaSerie, String idPersonaje) {
+        PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(idPeliculaSerie);
+        Personaje personaje = buscarPersonajeConId(idPersonaje);
+        peliculaSeriePersonajeService.save(new PeliculaSeriePersonaje(new FkPeliculaSeriePersonaje(peliculaSerie.getIdPeliculaSerie(), personaje.getIdPersonaje())));
+        return mapper.aPeliculaSerieDto(buscarPeliculaSerieConId(idPeliculaSerie));
     }
 
     @Transactional
-    public PeliculaSerieDto update(Integer idPeliculaSerie, PeliculaSerieDto peliculaSerieDto) {
-        // validar id string
+    public PeliculaSerieDto update(String idPeliculaSerie, PeliculaSerieDto peliculaSerieDto) {
+        validarPeliculaSerieDto(peliculaSerieDto);
         PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(idPeliculaSerie);
-        return mapper.aPeliculaSerieDto(repository.save(identificarParametroActualizar(peliculaSerie, peliculaSerieDto))); //validar entrada
+        buscarGeneroConId(peliculaSerieDto.getIdGenero());
+        return mapper.aPeliculaSerieDto(repository.save(identificarParametroActualizar(peliculaSerie, peliculaSerieDto)));
     }
 
     @Transactional
     public PeliculaSerieDto delete(PeliculaSerieDto peliculaSerieDto) {
-        verificarPeliculaSerieDto(peliculaSerieDto);
-        // validar id string
-        PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(convertirEntero(peliculaSerieDto.getIdPeliculaSerie()));
+        validarPeliculaSerieDto(peliculaSerieDto);
+        PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(peliculaSerieDto.getIdPeliculaSerie());
         verificarParametrosEntradaPeliculaSerie(peliculaSerieDto);
         validarDatosSonIgual(peliculaSerie, peliculaSerieDto);
         repository.delete(mapper.aPeliculaSerie(setearPersonajesNull(peliculaSerieDto)));
@@ -86,35 +85,44 @@ public class PeliculaSerieService {
 
     @Transactional
     public void deletePersonalizado(String idPeliculaSerie, String idPersonaje) {
-        // validar id string
-        Optional<PeliculaSerie> peliculaSerie = Optional.of(buscarPeliculaSerieConId(convertirEntero(idPeliculaSerie)));
-        Optional<Personaje> personaje = Optional.of(buscarPersonajeConId(convertirEntero(idPersonaje)));
-        peliculaSerie.ifPresent(peliculaSerie1 -> {
-            repository.deleteById(peliculaSerie1.getIdPeliculaSerie());
-            personaje.ifPresent(personaje1 -> peliculaSeriePersonajeRepository.deleteById(personaje1.getIdPersonaje()));
-        });
+        PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(idPeliculaSerie);
+        Personaje personaje = buscarPersonajeConId(idPersonaje);
+        validarTablaIntermedia(peliculaSerie.getIdPeliculaSerie(), personaje.getIdPersonaje());
+        peliculaSeriePersonajeService.delete(new PeliculaSeriePersonaje(new FkPeliculaSeriePersonaje(peliculaSerie.getIdPeliculaSerie(), personaje.getIdPersonaje())));
     }
 
     @Transactional
     public PeliculaSerieDto deleteById(String idPeliculaSerie) {
-        // validar id string
-        Optional<PeliculaSerie> peliculaSerie = Optional.of(buscarPeliculaSerieConId(convertirEntero(idPeliculaSerie)));
+        Optional<PeliculaSerie> peliculaSerie = Optional.of(buscarPeliculaSerieConId(idPeliculaSerie));
         peliculaSerie.ifPresent(peliculaSerie1 -> repository.deleteById(peliculaSerie1.getIdPeliculaSerie()));
         return mapper.aPeliculaSerieDto(peliculaSerie.get());
     }
 
-    private PeliculaSerie buscarPeliculaSerieConId(Integer idPeliculaSerie) {
-        return repository.findById(idPeliculaSerie).orElseThrow(() ->
+    private PeliculaSerieDto setearPersonajesNull(PeliculaSerieDto peliculaSerieDto) {
+        peliculaSerieDto.setPersonajes(null);
+        return peliculaSerieDto;
+    }
+
+    private PeliculaSerie buscarPeliculaSerieConId(String idPeliculaSerie) {
+        validarId(idPeliculaSerie, POR_FAVOR_INGRESE + EL_ID + "de la " + PELICULA_SERIE + VALIDO);
+        return repository.findById(convertirEntero(idPeliculaSerie)).orElseThrow(() ->
                 new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, LA + PELICULA_SERIE + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 
-    private void buscarGeneroConId(Integer IdGenero) {
-        generoRepository.findById(IdGenero).orElseThrow(() ->
-                new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, POR_FAVOR_VERIFIQUE + "el id " + DE_EL + GENERO + ".", HttpStatus.BAD_REQUEST));
+    private void buscarGeneroConId(String idGenero) {
+        validarId(idGenero, POR_FAVOR_INGRESE + EL_ID + DE_EL + GENERO + VALIDO);
+        if (generoRepository.findById(convertirEntero(idGenero)).isEmpty())
+            throw new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, POR_FAVOR_VERIFIQUE + "el id " + GENERO + ".", HttpStatus.BAD_REQUEST);
     }
 
-    private Personaje buscarPersonajeConId(Integer idPersonaje) {
-        return personajeRepository.findById(idPersonaje).orElseThrow(() ->
+    private Personaje buscarPersonajeConId(String idPersonaje) {
+        validarId(idPersonaje, POR_FAVOR_INGRESE + EL_ID + DE_EL + PERSONAJE + VALIDO);
+        return personajeRepository.findById(convertirEntero(idPersonaje)).orElseThrow(() ->
                 new PersonajeExcepcion(CODIGO_ERROR, ERROR, EL + PERSONAJE + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
+    }
+
+    private void validarTablaIntermedia(Integer idPeli, Integer idPersonaje) {
+        if (peliculaSeriePersonajeService.getByIdPeliculaSerieAndIdPersonaje(idPeli, idPersonaje) == null)
+            throw new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, POR_FAVOR_VERIFIQUE + "la información ingresada.", HttpStatus.BAD_REQUEST);
     }
 }

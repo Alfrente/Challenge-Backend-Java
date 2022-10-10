@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PeliculaSerieController {
@@ -43,7 +44,7 @@ public class PeliculaSerieController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id", example = "1")
-    public ResponseEntity<PeliculaSerieDto> getById(@PathVariable("id") Integer id) {
+    public ResponseEntity<PeliculaSerieDto> getById(@PathVariable("id") String id) {
         return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
     }
 
@@ -67,8 +68,8 @@ public class PeliculaSerieController {
     @Parameter(description = "idMovie", required = true, example = "1")
     @Parameter(description = "idCharacter", required = true, example = "2")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void saveReq(@PathVariable("idMovie") Integer idMovie, @PathVariable("idCharacter") Integer idCharacter) {
-        service.savePersonalizado(idMovie, idCharacter);
+    public ResponseEntity<PeliculaSerieDto> saveReq(@PathVariable("idMovie") String idMovie, @PathVariable("idCharacter") String idCharacter) {
+        return new ResponseEntity<>(service.savePersonalizado(idMovie, idCharacter), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/peliculaSerie")
@@ -91,8 +92,9 @@ public class PeliculaSerieController {
     @Parameter(description = "idMovie", required = true, example = "1")
     @Parameter(description = "idCharacter", required = true, example = "2")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteReq(@PathVariable("idMovie") String idMovie, @PathVariable("idCharacter") String idCharacter) {
+    public ResponseEntity<Map<String,String>> deletePersonalizado(@PathVariable("idMovie") String idMovie, @PathVariable("idCharacter") String idCharacter) {
         service.deletePersonalizado(idMovie, idCharacter);
+        return new ResponseEntity<>(Map.of("Mensaje", "Recurso eliminado"),HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/peliculaSerie/deleteById/{id}")
@@ -114,8 +116,7 @@ public class PeliculaSerieController {
     })
     @Parameter(required = true, description = "Id", example = "1")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad pelicula_serie")
-    public ResponseEntity<PeliculaSerieDto> update(@PathVariable("id") Integer id, @RequestBody @NotBlank PeliculaSerieDto peliculaSerieDto) {
+    public ResponseEntity<PeliculaSerieDto> update(@PathVariable("id") String id, @RequestBody @NotBlank PeliculaSerieDto peliculaSerieDto) {
         return new ResponseEntity<>(service.update(id, peliculaSerieDto), HttpStatus.ACCEPTED);
     }
-
 }

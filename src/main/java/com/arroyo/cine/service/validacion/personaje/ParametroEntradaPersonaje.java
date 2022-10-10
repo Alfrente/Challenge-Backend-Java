@@ -21,6 +21,14 @@ public class ParametroEntradaPersonaje {
     private ParametroEntradaPersonaje() {
     }
 
+    public static boolean validarEdad(String edad) {
+        return (!edad.matches(EXPRECION_EDAD));
+    }
+
+    public static boolean validarPeso(String peso) {
+        return (!peso.matches(EXPRECION_PESO));
+    }
+
     public static void validarPersonajeDto(PersonajeDto dto) {
         if (dto != null && dto.getIdePersonaje() == null && dto.getHistoria() == null
                 && dto.getImagen() == null && dto.getPeso() == null && dto.getEdad() == null
@@ -53,7 +61,7 @@ public class ParametroEntradaPersonaje {
 
     public static void verificarPersonajeDBConPersonajeDto(Personaje db, PersonajeDto dto) {
         List<String> errores = new ArrayList<>();
-        if (!db.getIdPersonaje().equals(dto.getIdePersonaje()))
+        if (!db.getIdPersonaje().equals(convertirEntero(dto.getIdePersonaje())))
             errores.add(POR_FAVOR_VERIFIQUE + "el id " + DE_EL + PERSONAJE + ".");
         if (!db.getNombre().equals(dto.getNombre()))
             errores.add(POR_FAVOR_VERIFIQUE + "el nombre " + DE_EL + PERSONAJE + ".");
@@ -67,16 +75,6 @@ public class ParametroEntradaPersonaje {
             errores.add(POR_FAVOR_VERIFIQUE + "la historia " + DE_EL + PERSONAJE + ".");
         if (!errores.isEmpty())
             throw new PersonajeExcepciones(CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
-    }
-
-
-
-    public static boolean validarEdad(String edad) {
-        return (!edad.matches(EXPRECION_EDAD));
-    }
-
-    public static boolean validarPeso(String peso) {
-        return (!peso.matches(EXPRECION_PESO));
     }
 
     private static boolean validarNombrePersonaje(String nombre) {
@@ -126,7 +124,7 @@ public class ParametroEntradaPersonaje {
             errores.add(POR_FAVOR_INGRESE + "un name " + VALIDO);
         if (age != null && validarEdad(age))
             errores.add(POR_FAVOR_INGRESE + "el age" + VALIDO);
-        if (movie != null && !validarStringNumero(movie))
+        if (movie != null && validarStringNumero(movie))
             errores.add(POR_FAVOR_INGRESE + "el movies" + VALIDA);
         if (!errores.isEmpty())
             throw new PersonajeExcepciones(CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);

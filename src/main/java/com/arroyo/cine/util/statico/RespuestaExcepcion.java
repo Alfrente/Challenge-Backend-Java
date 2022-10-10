@@ -12,6 +12,7 @@ public class RespuestaExcepcion {
     public static final String POR_FAVOR_INGRESE = "Por favor ingrese ";
     public static final String POR_FAVOR_VERIFIQUE = "Por favor verifique ";
     public static final String DE_EL = "de el ";
+    public static final String EL_ID = "el id ";
     public static final String NO_HAY = "No hay ";
     public static final String DISPONIBLE = " disponible";
     public static final String VALIDO = " valido.";

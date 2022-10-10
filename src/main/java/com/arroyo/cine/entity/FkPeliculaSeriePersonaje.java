@@ -18,6 +18,9 @@ public class FkPeliculaSeriePersonaje implements Serializable {
     @Column(name = "id_personaje")
     Integer idPersonaje;
 
+    public FkPeliculaSeriePersonaje() {
+    }
+
     public FkPeliculaSeriePersonaje(Integer idPeliculaSerie, Integer idPersonaje) {
         this.idPeliculaSerie = idPeliculaSerie;
         this.idPersonaje = idPersonaje;

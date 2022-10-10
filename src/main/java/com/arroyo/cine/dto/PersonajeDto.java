@@ -11,7 +11,7 @@ import java.util.Objects;
 public class PersonajeDto  {
     @Size(min = 1)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Integer idePersonaje;
+    private String idePersonaje;
 
     @NotNull
     @Size(min = 4, max = 50)
@@ -39,11 +39,11 @@ public class PersonajeDto  {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PeliculaSerieDto> peliculaSeries;
 
-    public Integer getIdePersonaje() {
+    public String getIdePersonaje() {
         return idePersonaje;
     }
 
-    public void setIdePersonaje(Integer idePersonaje) {
+    public void setIdePersonaje(String idePersonaje) {
         this.idePersonaje = idePersonaje;
     }
 

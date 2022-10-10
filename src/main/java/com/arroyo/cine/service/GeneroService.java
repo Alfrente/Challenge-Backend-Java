@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.convertirEntero;
+import static com.arroyo.cine.service.validacion.ValidacionGenerica.validarId;
 import static com.arroyo.cine.service.validacion.genero.ParametroEntradaGenero.*;
 import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
 
@@ -31,8 +32,7 @@ public class GeneroService {
     }
 
     public GeneroDto getById(String idGenero) {
-        validarStringNumeroGenero(idGenero);
-        return mapper.aGeneroDto(buscarIdGenero(convertirEntero(idGenero)));
+        return mapper.aGeneroDto(buscarGeneroConId(idGenero));
     }
 
     @Transactional
@@ -46,8 +46,7 @@ public class GeneroService {
     @Transactional
     public GeneroDto update(String idGenero, String nuevoGenero) {
         this.genero = null;
-        validarStringNumeroGenero(idGenero);
-        this.genero = buscarIdGenero(convertirEntero(idGenero));
+        this.genero = buscarGeneroConId(idGenero);
         validarNombreGeneroDto(nuevoGenero);
         this.genero.setNombre(nuevoGenero);
         return mapper.aGeneroDto(repository.save(genero));
@@ -57,9 +56,7 @@ public class GeneroService {
     public GeneroDto delete(GeneroDto dto) {
         this.genero = null;
         velidarGeneroDto(dto);
-        validarStringNumeroGenero(dto.getIdeGenero());
-        validarIdGenero(convertirEntero(dto.getIdeGenero()));
-        this.genero = buscarIdGenero(convertirEntero(dto.getIdeGenero()));
+        this.genero = buscarGeneroConId(dto.getIdeGenero());
         validarGeneroDtoEliminar(dto, genero);
         repository.delete(mapper.aGenero(dto));
         return mapper.aGeneroDto(this.genero);
@@ -68,8 +65,7 @@ public class GeneroService {
     @Transactional
     public GeneroDto deleteById(String idGenero) {
         this.genero = null;
-        validarStringNumeroGenero(idGenero);
-        this.genero = buscarIdGenero(convertirEntero(idGenero));
+        this.genero = buscarGeneroConId(idGenero);
         repository.deleteById(this.genero.getIdGenero());
         return mapper.aGeneroDto(this.genero);
     }
@@ -81,8 +77,9 @@ public class GeneroService {
         return mapper.aListGeneroDto(generoList);
     }
 
-    private Genero buscarIdGenero(Integer idGenero) {
-        return repository.findById(idGenero).
+    private Genero buscarGeneroConId(String idGenero) {
+        validarId(idGenero, POR_FAVOR_INGRESE + EL_ID + DE_EL + GENERO + VALIDO);
+        return repository.findById(convertirEntero(idGenero)).
                 orElseThrow(() -> new GeneroExcepcion(CODIGO_ERROR, ERROR, EL + GENERO + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 }
