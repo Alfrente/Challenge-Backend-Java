@@ -1,6 +1,6 @@
 package com.arroyo.cine.repository;
 
-import com.arroyo.cine.entity.PeliculaSeriePersonaje;
+import com.arroyo.cine.model.entity.PeliculaSeriePersonaje;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

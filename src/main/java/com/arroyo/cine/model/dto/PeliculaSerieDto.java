@@ -1,4 +1,4 @@
-package com.arroyo.cine.dto;
+package com.arroyo.cine.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

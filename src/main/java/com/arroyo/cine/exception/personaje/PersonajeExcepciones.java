@@ -1,6 +1,6 @@
-package com.arroyo.cine.exception.custom.personaje;
+package com.arroyo.cine.exception.personaje;
 
-import com.arroyo.cine.exception.custom.ExcepcionesGenerica;
+import com.arroyo.cine.exception.ExcepcionesGenerica;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.arroyo.cine.service.validacion.pelicula.serie;
 
-import com.arroyo.cine.dto.PeliculaSerieDto;
-import com.arroyo.cine.dto.PersonajeDto;
-import com.arroyo.cine.entity.PeliculaSerie;
-import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
-import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepciones;
+import com.arroyo.cine.model.dto.PeliculaSerieDto;
+import com.arroyo.cine.model.dto.PersonajeDto;
+import com.arroyo.cine.model.entity.PeliculaSerie;
+import com.arroyo.cine.exception.pelicula.serie.PeliculaSerieExcepcion;
+import com.arroyo.cine.exception.pelicula.serie.PeliculaSerieExcepciones;
 import com.arroyo.cine.service.validacion.personaje.ParametroEntradaPersonaje;
 import org.springframework.http.HttpStatus;
 

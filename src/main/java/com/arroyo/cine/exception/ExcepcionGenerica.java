@@ -1,27 +1,25 @@
-package com.arroyo.cine.exception.custom;
+package com.arroyo.cine.exception;
 
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
-
-public class ExcepcionesGenerica extends RuntimeException{
+public class ExcepcionGenerica extends RuntimeException{
     private String llaveMapMensajeErrorCodigo;
     private String llaveMapMensajeError;
-    private List<String> mensajes;
+    private String mensaje;
     private HttpStatus codigo;
 
-    public ExcepcionesGenerica() {
+    public ExcepcionGenerica() {
     }
 
-    public ExcepcionesGenerica(String llaveMapMensajeErrorCodigo, String llaveMapMensajeError, List<String> mensajes, HttpStatus codigo) {
+    public ExcepcionGenerica(String llaveMapMensajeErrorCodigo, String llaveMapMensajeError, String mensaje, HttpStatus codigo) {
         this.llaveMapMensajeErrorCodigo = llaveMapMensajeErrorCodigo;
         this.llaveMapMensajeError = llaveMapMensajeError;
-        this.mensajes = mensajes;
+        this.mensaje = mensaje;
         this.codigo = codigo;
     }
 
-    public List<String> getMensajes() {
-        return mensajes;
+    public String getMensaje() {
+        return mensaje;
     }
 
     public HttpStatus getCodigo() {

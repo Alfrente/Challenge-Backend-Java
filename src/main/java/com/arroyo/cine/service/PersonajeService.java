@@ -1,8 +1,8 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.dto.PersonajeDto;
-import com.arroyo.cine.entity.Personaje;
-import com.arroyo.cine.exception.custom.personaje.PersonajeExcepcion;
+import com.arroyo.cine.model.dto.PersonajeDto;
+import com.arroyo.cine.model.entity.Personaje;
+import com.arroyo.cine.exception.personaje.PersonajeExcepcion;
 import com.arroyo.cine.mapper.personaje.PersonajeMapper;
 import com.arroyo.cine.repository.PersonajeRepository;
 import org.springframework.http.HttpStatus;

@@ -1,9 +1,9 @@
 package com.arroyo.cine.service.validacion.personaje;
 
-import com.arroyo.cine.dto.PersonajeDto;
-import com.arroyo.cine.entity.Personaje;
-import com.arroyo.cine.exception.custom.personaje.PersonajeExcepcion;
-import com.arroyo.cine.exception.custom.personaje.PersonajeExcepciones;
+import com.arroyo.cine.model.dto.PersonajeDto;
+import com.arroyo.cine.model.entity.Personaje;
+import com.arroyo.cine.exception.personaje.PersonajeExcepcion;
+import com.arroyo.cine.exception.personaje.PersonajeExcepciones;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;

@@ -1,13 +1,13 @@
 package com.arroyo.cine.controller.advice;
 
-import com.arroyo.cine.exception.custom.ExcepcionGenerica;
-import com.arroyo.cine.exception.custom.ExcepcionesGenerica;
-import com.arroyo.cine.exception.custom.genero.GeneroExcepcion;
-import com.arroyo.cine.exception.custom.genero.GeneroExcepciones;
-import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
-import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepciones;
-import com.arroyo.cine.exception.custom.personaje.PersonajeExcepcion;
-import com.arroyo.cine.exception.custom.personaje.PersonajeExcepciones;
+import com.arroyo.cine.exception.ExcepcionGenerica;
+import com.arroyo.cine.exception.ExcepcionesGenerica;
+import com.arroyo.cine.exception.genero.GeneroExcepcion;
+import com.arroyo.cine.exception.genero.GeneroExcepciones;
+import com.arroyo.cine.exception.pelicula.serie.PeliculaSerieExcepcion;
+import com.arroyo.cine.exception.pelicula.serie.PeliculaSerieExcepciones;
+import com.arroyo.cine.exception.personaje.PersonajeExcepcion;
+import com.arroyo.cine.exception.personaje.PersonajeExcepciones;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

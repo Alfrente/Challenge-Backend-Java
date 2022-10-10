@@ -1,6 +1,6 @@
 package com.arroyo.cine.controller;
 
-import com.arroyo.cine.dto.PeliculaSerieDto;
+import com.arroyo.cine.model.dto.PeliculaSerieDto;
 import com.arroyo.cine.service.PeliculaSerieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -1,7 +1,7 @@
 package com.arroyo.cine.mapper.genero;
 
-import com.arroyo.cine.dto.GeneroDto;
-import com.arroyo.cine.entity.Genero;
+import com.arroyo.cine.model.dto.GeneroDto;
+import com.arroyo.cine.model.entity.Genero;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,13 +10,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface GeneroMapper {
-
-    @Mapping(target = "ideGenero", source = "genero.idGenero")
-    @Mapping(target = "nombreGenero", source = "genero.nombre")
-    @Mapping(target = "imagenGenero", source = "genero.imagen")
     GeneroDto aGeneroDto(Genero genero);
     List<GeneroDto> aListGeneroDto(List<Genero> generos);
-
     @InheritInverseConfiguration
     Genero aGenero(GeneroDto generoDto);
 }

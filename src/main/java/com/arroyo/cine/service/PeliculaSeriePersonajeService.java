@@ -1,11 +1,9 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.entity.PeliculaSeriePersonaje;
+import com.arroyo.cine.model.entity.PeliculaSeriePersonaje;
 import com.arroyo.cine.repository.PeliculaSeriePersonajeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class PeliculaSeriePersonajeService {

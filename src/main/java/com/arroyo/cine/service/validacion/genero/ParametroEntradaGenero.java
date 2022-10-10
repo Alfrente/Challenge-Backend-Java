@@ -1,10 +1,9 @@
 package com.arroyo.cine.service.validacion.genero;
 
-import com.arroyo.cine.dto.GeneroDto;
-import com.arroyo.cine.entity.Genero;
-import com.arroyo.cine.exception.custom.genero.GeneroExcepcion;
-import com.arroyo.cine.exception.custom.genero.GeneroExcepciones;
-import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
+import com.arroyo.cine.model.dto.GeneroDto;
+import com.arroyo.cine.model.entity.Genero;
+import com.arroyo.cine.exception.genero.GeneroExcepcion;
+import com.arroyo.cine.exception.genero.GeneroExcepciones;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;

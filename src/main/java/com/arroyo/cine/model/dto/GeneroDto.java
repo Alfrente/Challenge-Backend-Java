@@ -1,6 +1,6 @@
-package com.arroyo.cine.dto;
+package com.arroyo.cine.model.dto;
 
-import com.arroyo.cine.entity.PeliculaSerie;
+import com.arroyo.cine.model.entity.PeliculaSerie;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;

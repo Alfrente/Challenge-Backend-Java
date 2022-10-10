@@ -1,6 +1,6 @@
-package com.arroyo.cine.exception.custom.pelicula.serie;
+package com.arroyo.cine.exception.pelicula.serie;
 
-import com.arroyo.cine.exception.custom.ExcepcionGenerica;
+import com.arroyo.cine.exception.ExcepcionGenerica;
 import org.springframework.http.HttpStatus;
 
 public class PeliculaSerieExcepcion extends ExcepcionGenerica {

@@ -1,12 +1,12 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.dto.PeliculaSerieDto;
-import com.arroyo.cine.entity.FkPeliculaSeriePersonaje;
-import com.arroyo.cine.entity.PeliculaSerie;
-import com.arroyo.cine.entity.PeliculaSeriePersonaje;
-import com.arroyo.cine.entity.Personaje;
-import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
-import com.arroyo.cine.exception.custom.personaje.PersonajeExcepcion;
+import com.arroyo.cine.model.dto.PeliculaSerieDto;
+import com.arroyo.cine.model.entity.FkPeliculaSeriePersonaje;
+import com.arroyo.cine.model.entity.PeliculaSerie;
+import com.arroyo.cine.model.entity.PeliculaSeriePersonaje;
+import com.arroyo.cine.model.entity.Personaje;
+import com.arroyo.cine.exception.pelicula.serie.PeliculaSerieExcepcion;
+import com.arroyo.cine.exception.personaje.PersonajeExcepcion;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSerieMapper;
 import com.arroyo.cine.repository.GeneroRepository;
 import com.arroyo.cine.repository.PeliculaSerieRepository;

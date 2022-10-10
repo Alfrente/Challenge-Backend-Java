@@ -1,4 +1,4 @@
-package com.arroyo.cine.entity;
+package com.arroyo.cine.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

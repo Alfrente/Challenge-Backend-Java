@@ -1,6 +1,6 @@
 package com.arroyo.cine.service.validacion;
 
-import com.arroyo.cine.exception.custom.pelicula.serie.PeliculaSerieExcepcion;
+import com.arroyo.cine.exception.pelicula.serie.PeliculaSerieExcepcion;
 import org.springframework.http.HttpStatus;
 
 import static com.arroyo.cine.util.statico.ExprecionRegular.*;
