@@ -1,37 +1,60 @@
 package com.arroyo.cine.controller;
 
+import com.arroyo.cine.model.dto.UsuarioDto;
+import com.arroyo.cine.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
 public class UsuarioController {
 
-    @GetMapping("/login")
-    public ResponseEntity<String> login(){
-        return new ResponseEntity<>("Usuario registrado", HttpStatus.ACCEPTED);
+    private final UsuarioService service;
+
+    public UsuarioController(UsuarioService service) {
+        this.service = service;
     }
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> registrar(){
-        return new ResponseEntity<>("Usuario", HttpStatus.ACCEPTED);
+    @Operation(summary = "Actualizar personaje", description = "Este método es para actualizar el personaje", responses = {
+            @ApiResponse(responseCode = "200", description = "Usuario creado exitosamente."),
+            @ApiResponse(responseCode = "400", description = "No se pudo crear el Usuario."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad usuario")
+    public ResponseEntity<String> registrar(@RequestBody UsuarioDto dto) {
+        service.saveRolUser(dto);
+        return new ResponseEntity<>("Usuario creado exitosamente", HttpStatus.CREATED);
     }
 
-    @GetMapping("/user")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> getUser(){
-        return new ResponseEntity<>("Usuario", HttpStatus.ACCEPTED);
+    @PostMapping("/register/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Actualizar personaje", description = "Este método es para actualizar el personaje", responses = {
+            @ApiResponse(responseCode = "200", description = "Usuario creado exitosamente."),
+            @ApiResponse(responseCode = "400", description = "No se pudo crear el Usuario."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad usuario")
+    public ResponseEntity<Map<String, String>> registrarAdmin(@RequestBody UsuarioDto dto) {
+        service.save(dto);
+        return new ResponseEntity<>(Map.of("Mensaje","Usuario creado exitosamente"), HttpStatus.CREATED);
     }
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> getAdmin(){
-        return new ResponseEntity<>("Usuario admin", HttpStatus.ACCEPTED);
+    public ResponseEntity<UsuarioDto> getAdmin() {
+        return new ResponseEntity<>(service.getById(), HttpStatus.OK);
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<UsuarioDto> getUser() {
+        return new ResponseEntity<>(service.getById(), HttpStatus.OK);
     }
 }

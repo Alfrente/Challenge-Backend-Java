@@ -1,10 +1,10 @@
 package com.arroyo.cine.service.validacion.pelicula.serie;
 
+import com.arroyo.cine.exception.Excepcion;
+import com.arroyo.cine.exception.Excepciones;
 import com.arroyo.cine.model.dto.PeliculaSerieDto;
 import com.arroyo.cine.model.dto.PersonajeDto;
 import com.arroyo.cine.model.entity.PeliculaSerie;
-import com.arroyo.cine.exception.pelicula.serie.PeliculaSerieExcepcion;
-import com.arroyo.cine.exception.pelicula.serie.PeliculaSerieExcepciones;
 import com.arroyo.cine.service.validacion.personaje.ParametroEntradaPersonaje;
 import org.springframework.http.HttpStatus;
 
@@ -30,13 +30,13 @@ public class ParametroEntrada {
                 && dto.getCalifiacion() == null && dto.getCaratula() == null
                 && dto.getFechaCreacion() == null && dto.getIdGenero() == null
         )
-            throw new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
+            throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
     }
 
     public static List<PeliculaSerie> ordenarLista(List<PeliculaSerie> peliculaSeries, String orden) {
-        if (orden.equalsIgnoreCase(ASC))
+        if (orden.equalsIgnoreCase("ASC"))
             peliculaSeries.sort(Comparator.comparing(PeliculaSerie::getFechaCreacion));
-        else if (orden.equalsIgnoreCase(DESC))
+        else if (orden.equalsIgnoreCase("DESC"))
             peliculaSeries.sort(Comparator.comparing(PeliculaSerie::getFechaCreacion).reversed());
         return peliculaSeries;
     }
@@ -51,7 +51,7 @@ public class ParametroEntrada {
 
     public static List<PeliculaSerie> filtroPeliculaSerie(List<PeliculaSerie> peliculaSeries, String name, Integer genre, String order) {
         if (peliculaSeries.isEmpty())
-            throw new PeliculaSerieExcepcion(CODIGO, MENSAJE, NO_HAY + PELICULA_SERIE + DISPONIBLE, HttpStatus.OK);
+            throw new Excepcion(MENSAJE_CODIGO, MENSAJE, NO_HAY + PELICULA_SERIE + DISPONIBLE, HttpStatus.OK);
         if (name != null && !name.isBlank() && genre != null && genre > 0) {
             return peliculaSeries.stream().filter(peliculaSerie -> peliculaSerie.getTitulo().equals(name) && peliculaSerie.getIdGenero().equals(genre)).map(setearNull).collect(Collectors.toList());
         } else if (name != null && !name.isBlank())
@@ -70,14 +70,14 @@ public class ParametroEntrada {
         List<String> errores = new ArrayList<>();
         if (dto.getTitulo() == null || !dto.getTitulo().matches(EXPRECION_TEXTO_CON_ESPACIOS))
             errores.add(POR_FAVOR_INGRESE + "el titulo de la " + PELICULA_SERIE + VALIDA);
-        if (dto.getCaratula() == null || validarDireccionImagen(dto.getCaratula()))
+        if (dto.getCaratula() == null || validarDirectorioImagen(dto.getCaratula()))
             errores.add(INGRESE_DIRECCION_IMAGEN_INCORRECTA);
         if (dto.getFechaCreacion() == null || validarFecha(dto.getFechaCreacion()))
             errores.add(POR_FAVOR_INGRESE + "una fecha" + VALIDA);
         if (dto.getCalifiacion() == null || !validarCalificacion(dto.getCalifiacion()))
             errores.add(POR_FAVOR_INGRESE + LA + "calificación" + VALIDA);
         if (!errores.isEmpty())
-            throw new PeliculaSerieExcepciones(CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
+            throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
     }
 
 
@@ -85,7 +85,7 @@ public class ParametroEntrada {
         validarEntradaActualizar(dto);
         if (dto.getTitulo() != null && dto.getTitulo().matches(EXPRECION_TEXTO_CON_ESPACIOS_NUMERO))
             entity.setTitulo(dto.getTitulo());
-        if (dto.getCaratula() != null && validarDireccionImagen(dto.getCaratula()))
+        if (dto.getCaratula() != null && validarDirectorioImagen(dto.getCaratula()))
             entity.setImagen(dto.getCaratula());
         if (dto.getFechaCreacion() != null && !validarFecha(dto.getFechaCreacion()))
             entity.setFechaCreacion(LocalDate.parse(dto.getFechaCreacion()));
@@ -100,7 +100,7 @@ public class ParametroEntrada {
         List<String> errores = new ArrayList<>();
         if (dto.getTitulo() != null && !dto.getTitulo().matches(EXPRECION_TEXTO_CON_ESPACIOS_NUMERO))
             errores.add(POR_FAVOR_VERIFIQUE + "el titulo de la " + PELICULA_SERIE + VALIDA);
-        if (dto.getCaratula() != null && !validarDireccionImagen(dto.getCaratula()))
+        if (dto.getCaratula() != null && !validarDirectorioImagen(dto.getCaratula()))
             errores.add(INGRESE_DIRECCION_IMAGEN_INCORRECTA);
         if (dto.getFechaCreacion() != null && validarFecha(dto.getFechaCreacion()))
             errores.add(POR_FAVOR_VERIFIQUE + "la fecha");
@@ -109,7 +109,7 @@ public class ParametroEntrada {
         if (dto.getIdGenero() != null && convertirEntero(dto.getIdGenero()) <= 0)
             errores.add(POR_FAVOR_VERIFIQUE + LA + "calificación" + VALIDA);
         if (!errores.isEmpty())
-            throw new PeliculaSerieExcepciones(CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
+            throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
     }
 
     private static boolean validarCalificacion(String calidicain){
@@ -118,7 +118,7 @@ public class ParametroEntrada {
 
     public static void verificarParametrosEntradaPersonajes(List<PersonajeDto> personajeDtos) {
         if (personajeDtos != null)
-            personajeDtos.forEach(ParametroEntradaPersonaje::verificarParametrosEntradaPersonaje);
+            personajeDtos.forEach(ParametroEntradaPersonaje::validarDatoRecibido);
     }
 
     public static void validarDatosSonIgual(PeliculaSerie peliculaSerie, PeliculaSerieDto dto) {
@@ -132,6 +132,6 @@ public class ParametroEntrada {
         if (peliculaSerie.getCalifiacion() != null && dto.getCalifiacion() != null && !peliculaSerie.getCalifiacion().equals(convertirByte(dto.getCalifiacion())))
             errores.add(POR_FAVOR_VERIFIQUE + "la calificación");
         if (!errores.isEmpty())
-            throw new PeliculaSerieExcepciones(CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
+            throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,12 +1,11 @@
 package com.arroyo.cine.service;
 
+import com.arroyo.cine.exception.Excepcion;
 import com.arroyo.cine.model.dto.PeliculaSerieDto;
 import com.arroyo.cine.model.entity.FkPeliculaSeriePersonaje;
 import com.arroyo.cine.model.entity.PeliculaSerie;
 import com.arroyo.cine.model.entity.PeliculaSeriePersonaje;
 import com.arroyo.cine.model.entity.Personaje;
-import com.arroyo.cine.exception.pelicula.serie.PeliculaSerieExcepcion;
-import com.arroyo.cine.exception.personaje.PersonajeExcepcion;
 import com.arroyo.cine.mapper.pelicula_serie.PeliculaSerieMapper;
 import com.arroyo.cine.repository.GeneroRepository;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
@@ -28,9 +27,9 @@ public class PeliculaSerieService {
     private final PeliculaSerieRepository repository;
     private final GeneroRepository generoRepository;
     private final PersonajeRepository personajeRepository;
-
     private final PeliculaSeriePersonajeService peliculaSeriePersonajeService;
     private final PeliculaSerieMapper mapper;
+    private static final int directorio = 3;
 
     public PeliculaSerieService(PeliculaSerieRepository repository, GeneroRepository generoRepository, PersonajeRepository personajeRepository, PeliculaSeriePersonajeService peliculaSeriePersonajeService, PeliculaSerieMapper mapper) {
         this.repository = repository;
@@ -106,23 +105,23 @@ public class PeliculaSerieService {
     private PeliculaSerie buscarPeliculaSerieConId(String idPeliculaSerie) {
         validarId(idPeliculaSerie, POR_FAVOR_INGRESE + EL_ID + "de la " + PELICULA_SERIE + VALIDO);
         return repository.findById(convertirEntero(idPeliculaSerie)).orElseThrow(() ->
-                new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, LA + PELICULA_SERIE + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
+                new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, LA + PELICULA_SERIE + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 
     private void buscarGeneroConId(String idGenero) {
         validarId(idGenero, POR_FAVOR_INGRESE + EL_ID + DE_EL + GENERO + VALIDO);
         if (generoRepository.findById(convertirEntero(idGenero)).isEmpty())
-            throw new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, POR_FAVOR_VERIFIQUE + "el id " + GENERO + ".", HttpStatus.BAD_REQUEST);
+            throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, POR_FAVOR_VERIFIQUE + "el id " + GENERO + ".", HttpStatus.BAD_REQUEST);
     }
 
     private Personaje buscarPersonajeConId(String idPersonaje) {
         validarId(idPersonaje, POR_FAVOR_INGRESE + EL_ID + DE_EL + PERSONAJE + VALIDO);
         return personajeRepository.findById(convertirEntero(idPersonaje)).orElseThrow(() ->
-                new PersonajeExcepcion(CODIGO_ERROR, ERROR, EL + PERSONAJE + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
+                new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, EL + PERSONAJE + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 
     private void validarTablaIntermedia(Integer idPeli, Integer idPersonaje) {
         if (peliculaSeriePersonajeService.getByIdPeliculaSerieAndIdPersonaje(idPeli, idPersonaje) == null)
-            throw new PeliculaSerieExcepcion(CODIGO_ERROR, ERROR, POR_FAVOR_VERIFIQUE + "la información ingresada.", HttpStatus.BAD_REQUEST);
+            throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, POR_FAVOR_VERIFIQUE + "la información ingresada.", HttpStatus.BAD_REQUEST);
     }
 }

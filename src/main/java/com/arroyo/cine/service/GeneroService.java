@@ -1,9 +1,9 @@
 package com.arroyo.cine.service;
 
+import com.arroyo.cine.exception.Excepcion;
+import com.arroyo.cine.mapper.genero.GeneroMapper;
 import com.arroyo.cine.model.dto.GeneroDto;
 import com.arroyo.cine.model.entity.Genero;
-import com.arroyo.cine.exception.genero.GeneroExcepcion;
-import com.arroyo.cine.mapper.genero.GeneroMapper;
 import com.arroyo.cine.repository.GeneroRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,7 @@ public class GeneroService {
     private final GeneroRepository repository;
     private final GeneroMapper mapper;
     private Genero genero;
+    private static final int directorio = 1;
 
     public GeneroService(GeneroRepository repository, GeneroMapper mapper) {
         this.repository = repository;
@@ -73,13 +74,13 @@ public class GeneroService {
     private List<GeneroDto> traerTodo() {
         List<Genero> generoList = repository.findAll();
         if (generoList.isEmpty())
-            throw new GeneroExcepcion(CODIGO_ERROR, ERROR, NO_HAY + GENERO + DISPONIBLE, HttpStatus.BAD_REQUEST);
+            throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, NO_HAY + GENERO + DISPONIBLE, HttpStatus.BAD_REQUEST);
         return mapper.aListGeneroDto(generoList);
     }
 
     private Genero buscarGeneroConId(String idGenero) {
         validarId(idGenero, POR_FAVOR_INGRESE + EL_ID + DE_EL + GENERO + VALIDO);
         return repository.findById(convertirEntero(idGenero)).
-                orElseThrow(() -> new GeneroExcepcion(CODIGO_ERROR, ERROR, EL + GENERO + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
+                orElseThrow(() -> new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, EL + GENERO + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 }

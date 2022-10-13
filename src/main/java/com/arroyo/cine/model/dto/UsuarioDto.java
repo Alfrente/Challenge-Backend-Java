@@ -1,7 +1,5 @@
 package com.arroyo.cine.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import javax.validation.constraints.Null;
 
 public class UsuarioDto {
@@ -9,7 +7,7 @@ public class UsuarioDto {
     Integer idUsuario;
 
     @Null
-    String nombreUsuario;
+    String usuario;
 
     @Null
     String correo;
@@ -20,6 +18,16 @@ public class UsuarioDto {
     @Null
     String rol;
 
+    public UsuarioDto() {
+    }
+
+    public UsuarioDto(String usuario, String correo, String contrasena, String rol) {
+        this.usuario = usuario;
+        this.correo = correo;
+        this.contrasena = contrasena;
+        this.rol = rol;
+    }
+
     public Integer getIdUsuario() {
         return idUsuario;
     }
@@ -28,12 +36,12 @@ public class UsuarioDto {
         this.idUsuario = idUsuario;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getCorreo() {

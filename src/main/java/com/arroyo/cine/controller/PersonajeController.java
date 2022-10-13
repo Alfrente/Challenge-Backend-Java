@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -23,7 +24,8 @@ public class PersonajeController {
     @GetMapping("characters")
     @Operation(summary = "Trae los personajes", description = "Este método trae todos los personajes tiene la opción de filtrar el resultado", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
-            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición.")
+            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(description = "name", example = "Guerra z")
     @Parameter(description = "age", example = "15")
@@ -36,7 +38,8 @@ public class PersonajeController {
     @GetMapping("/personaje/getById/{idPersona}")
     @Operation(summary = "Buscar con id", description = "Este método busca el personaje con el id", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
-            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición.")
+            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
     public ResponseEntity<PersonajeDto> getById(@PathVariable("idPersona") String idPersona) {
@@ -46,17 +49,25 @@ public class PersonajeController {
     @PostMapping("/personaje")
     @Operation(summary = "Guardar personaje", description = "Este método es para guarda un personaje", responses = {
             @ApiResponse(responseCode = "201", description = "Se creo el personaje."),
-            @ApiResponse(responseCode = "400", description = "No se pudo crear el personaje.")
+            @ApiResponse(responseCode = "400", description = "No se pudo crear el personaje."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public ResponseEntity<PersonajeDto> save(@RequestBody @NotBlank PersonajeDto personajeDto) {
-        return new ResponseEntity<>(service.save(personajeDto), HttpStatus.CREATED);
+    public ResponseEntity<PersonajeDto> save(
+            @RequestParam(value = "nombre", required = false) String nombre,
+            @RequestParam(value = "edad", required = false) String edad,
+            @RequestParam(value = "peso", required = false) String peso,
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen,
+            @RequestParam(value = "historia", required = false) String historia
+    ) {
+        return new ResponseEntity<>(service.save(nombre,edad,peso, imagen, historia), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/personaje")
     @Operation(summary = "Eliminar personaje", description = "Este método es para eliminar el personaje", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el personaje."),
-            @ApiResponse(responseCode = "400", description = "No se pudo eliminar el personaje.")
+            @ApiResponse(responseCode = "400", description = "No se pudo eliminar el personaje."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
     public ResponseEntity<PersonajeDto> delete(@RequestBody @NotBlank PersonajeDto personajeDto) {
@@ -66,7 +77,8 @@ public class PersonajeController {
     @DeleteMapping("/personaje/deleteById/{idPersona}")
     @Operation(summary = "Eliminar personaje con id", description = "Este método es para eliminar el personaje con el id", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el personaje."),
-            @ApiResponse(responseCode = "400", description = "No se pudo eliminar el personaje.")
+            @ApiResponse(responseCode = "400", description = "No se pudo eliminar el personaje."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
     public ResponseEntity<PersonajeDto> deleteById(@PathVariable("idPersona") String idPersona) {
@@ -76,11 +88,19 @@ public class PersonajeController {
     @PutMapping("/personaje/update/{idPersonaje}")
     @Operation(summary = "Actualizar personaje", description = "Este método es para actualizar el personaje", responses = {
             @ApiResponse(responseCode = "202", description = "Se actualizo el personaje."),
-            @ApiResponse(responseCode = "400", description = "No se pudo actualizar el personaje.")
+            @ApiResponse(responseCode = "400", description = "No se pudo actualizar el personaje."),
+            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id personaje", example = "1")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public ResponseEntity<PersonajeDto> update(@PathVariable("idPersonaje") String idPersonaje, @RequestBody @NotBlank PersonajeDto personajeDto) {
-        return new ResponseEntity<>(service.update(idPersonaje, personajeDto), HttpStatus.ACCEPTED);
+    public ResponseEntity<PersonajeDto> update(
+            @PathVariable(value = "idPersonaje") String idPersonaje,
+            @RequestParam(value = "nombre", required = false) String nombre,
+            @RequestParam(value = "edad", required = false) String edad,
+            @RequestParam(value = "peso", required = false) String peso,
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen,
+            @RequestParam(value = "historia", required = false) String historia
+    ) {
+        return new ResponseEntity<>(service.update(idPersonaje, nombre, edad, peso, imagen, historia), HttpStatus.ACCEPTED);
     }
 }

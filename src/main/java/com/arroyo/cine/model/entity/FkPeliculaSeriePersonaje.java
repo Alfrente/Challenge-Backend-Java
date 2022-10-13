@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class FkPeliculaSeriePersonaje implements Serializable {
@@ -32,5 +33,18 @@ public class FkPeliculaSeriePersonaje implements Serializable {
 
     public Integer getIdPersonaje() {
         return idPersonaje;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FkPeliculaSeriePersonaje that = (FkPeliculaSeriePersonaje) o;
+        return Objects.equals(idPeliculaSerie, that.idPeliculaSerie) && Objects.equals(idPersonaje, that.idPersonaje);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idPeliculaSerie, idPersonaje);
     }
 }

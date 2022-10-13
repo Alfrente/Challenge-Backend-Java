@@ -29,6 +29,7 @@ public class Personaje {
     private Float peso;
 
     @Null
+    @Column(unique = true)
     @Size(max = 255)
     private String imagen;
 

@@ -13,17 +13,17 @@ public class ExprecionRegular {
     public static final String NUMERO = UNO_AL_NUEVE+"[0-9]*";
     public static final String EXPRECION_FECHA = UNO_AL_NUEVE + DIGITO + "{3}-" + DIGITO + "{2}-" + DIGITO + "{2}";
     public static final String EXPRECION_FECHA_SIN_CERO = UNO_AL_NUEVE + DIGITO + "{3}-" + UNO_AL_NUEVE + DIGITO +"?-" + UNO_AL_NUEVE + DIGITO +"?";
-    public static final  String ASC = "ASC";
-    public static final String DESC = "DESC";
     public static final String EXPRECION_TEXTO_CON_ESPACIOS = "[A-Z][a-zA-Z\\ ]+";
     public static final String EXPRECION_TEXTO_CON_ESPACIOS_NUMERO = "[A-Z][a-zA-Z0-9\\ ]+";
     public static final String EXPRECION_TEXTO_CON_UN_ESPACIO = "[A-Z][a-z]{3,9}[ ][A-Z][a-z]{5,9}";
     public static final String EXPRECION_TEXTO_SIN_ESPACIOS = "[A-Z][a-z]{3,9}";
+
+    public static final String EXPRECION_FORMATO_JPG = ".+.jpg";
+    public static final String EXPRECION_FORMATO_PNG = ".+.png";
+    public static final String EXPRECION_PESO = "[12]"+DIGITO+".?"+DIGITO+"?"+DIGITO+"?";
+    public static final String EXPRECION_EDAD = UNO_AL_NUEVE+DIGITO+"?";
+    public static final String EXPRECION_CORREO_GMAIL = "[a-zA-Z][a-zA-Z0-9-.]+@gmail.com";
+
     public static final String FORMATO_FECHA = "dd-MMMM-yyyy HH:mm:ss";
     public static final String FECHA_ACTUAL = LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_FECHA));
-    public static final String EXPRECION_DIRECCION_FORMATO_JPG = "[ABCDFG]:/Users/[a-zA-Z0-9-/]+.jpg";
-    public static final String EXPRECION_DIRECCION_FORMATO_PNG = "[ABCDFG]:/Users/[a-zA-Z0-9-/]+.png";
-    public static final String EXPRECION_PESO = "[12]"+DIGITO+"."+DIGITO+DIGITO+"?";
-    public static final String EXPRECION_EDAD = UNO_AL_NUEVE+DIGITO+"?";
-
 }

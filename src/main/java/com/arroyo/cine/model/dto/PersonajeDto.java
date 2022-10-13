@@ -11,7 +11,7 @@ import java.util.Objects;
 public class PersonajeDto  {
     @Size(min = 1)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private String idePersonaje;
+    private String idPersonaje;
 
     @NotNull
     @Size(min = 4, max = 50)
@@ -39,12 +39,12 @@ public class PersonajeDto  {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PeliculaSerieDto> peliculaSeries;
 
-    public String getIdePersonaje() {
-        return idePersonaje;
+    public String getIdPersonaje() {
+        return idPersonaje;
     }
 
-    public void setIdePersonaje(String idePersonaje) {
-        this.idePersonaje = idePersonaje;
+    public void setIdPersonaje(String idPersonaje) {
+        this.idPersonaje = idPersonaje;
     }
 
     public String getNombre() {
@@ -100,11 +100,11 @@ public class PersonajeDto  {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonajeDto that = (PersonajeDto) o;
-        return Objects.equals(idePersonaje, that.idePersonaje) && Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia);
+        return Objects.equals(idPersonaje, that.idPersonaje) && Objects.equals(nombre, that.nombre) && Objects.equals(edad, that.edad) && Objects.equals(peso, that.peso) && Objects.equals(imagen, that.imagen) && Objects.equals(historia, that.historia);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idePersonaje, nombre, edad, peso, imagen, historia);
+        return Objects.hash(idPersonaje, nombre, edad, peso, imagen, historia);
     }
 }

@@ -21,6 +21,7 @@ public class PeliculaSerie {
     private String titulo;
 
     @Null
+    @Column(unique = true)
     private String imagen;
 
     @NotNull

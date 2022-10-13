@@ -9,12 +9,12 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     Integer idUsuario;
-    @Column(name = "nombre_usuario", nullable = false, length = 50)
+    @Column(name = "nombre_usuario", nullable = false, length = 50, unique = true)
     String nombreUsuario;
 
     @Column(unique = true, nullable = false)
     String correo;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     String contrasena;
 
     @Column(nullable = false, length = 20)
