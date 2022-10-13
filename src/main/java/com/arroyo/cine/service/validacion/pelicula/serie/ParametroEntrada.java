@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.*;
 import static com.arroyo.cine.service.validacion.pelicula.serie.Fecha.validarFecha;
 import static com.arroyo.cine.util.statico.ExprecionRegular.*;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
+import static com.arroyo.cine.util.statico.MensajeError.*;
 
 public class ParametroEntrada {
 
@@ -68,14 +68,14 @@ public class ParametroEntrada {
 
     public static void verificarParametrosEntradaPeliculaSerie(PeliculaSerieDto dto) {
         List<String> errores = new ArrayList<>();
-        if (dto.getTitulo() == null || !dto.getTitulo().matches(EXPRECION_TEXTO_CON_ESPACIOS))
+        if (dto.getTitulo() == null || !dto.getTitulo().matches(TEXTO_CON_ESPACIOS))
             errores.add(POR_FAVOR_INGRESE + "el titulo de la " + PELICULA_SERIE + VALIDA);
-        if (dto.getCaratula() == null || validarDirectorioImagen(dto.getCaratula()))
-            errores.add(INGRESE_DIRECCION_IMAGEN_INCORRECTA);
+        if (dto.getCaratula() == null || validarFormato(dto.getCaratula()))
+            errores.add(IMAGEN_FORMATO_INCORRECTO);
         if (dto.getFechaCreacion() == null || validarFecha(dto.getFechaCreacion()))
             errores.add(POR_FAVOR_INGRESE + "una fecha" + VALIDA);
         if (dto.getCalifiacion() == null || !validarCalificacion(dto.getCalifiacion()))
-            errores.add(POR_FAVOR_INGRESE + LA + "calificación" + VALIDA);
+            errores.add(POR_FAVOR_INGRESE + LA + PUNTO + VALIDA);
         if (!errores.isEmpty())
             throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
     }
@@ -83,9 +83,9 @@ public class ParametroEntrada {
 
     public static PeliculaSerie identificarParametroActualizar(PeliculaSerie entity, PeliculaSerieDto dto) {
         validarEntradaActualizar(dto);
-        if (dto.getTitulo() != null && dto.getTitulo().matches(EXPRECION_TEXTO_CON_ESPACIOS_NUMERO))
+        if (dto.getTitulo() != null && dto.getTitulo().matches(TEXTO_CON_ESPACIOS_NUMERO))
             entity.setTitulo(dto.getTitulo());
-        if (dto.getCaratula() != null && validarDirectorioImagen(dto.getCaratula()))
+        if (dto.getCaratula() != null && validarFormato(dto.getCaratula()))
             entity.setImagen(dto.getCaratula());
         if (dto.getFechaCreacion() != null && !validarFecha(dto.getFechaCreacion()))
             entity.setFechaCreacion(LocalDate.parse(dto.getFechaCreacion()));
@@ -98,22 +98,22 @@ public class ParametroEntrada {
 
     private static void validarEntradaActualizar(PeliculaSerieDto dto) {
         List<String> errores = new ArrayList<>();
-        if (dto.getTitulo() != null && !dto.getTitulo().matches(EXPRECION_TEXTO_CON_ESPACIOS_NUMERO))
+        if (dto.getTitulo() != null && !dto.getTitulo().matches(TEXTO_CON_ESPACIOS_NUMERO))
             errores.add(POR_FAVOR_VERIFIQUE + "el titulo de la " + PELICULA_SERIE + VALIDA);
-        if (dto.getCaratula() != null && !validarDirectorioImagen(dto.getCaratula()))
-            errores.add(INGRESE_DIRECCION_IMAGEN_INCORRECTA);
+        if (dto.getCaratula() != null && !validarFormato(dto.getCaratula()))
+            errores.add(IMAGEN_FORMATO_INCORRECTO);
         if (dto.getFechaCreacion() != null && validarFecha(dto.getFechaCreacion()))
             errores.add(POR_FAVOR_VERIFIQUE + "la fecha");
         if (dto.getCalifiacion() != null && !validarCalificacion(dto.getCalifiacion()))
-            errores.add(POR_FAVOR_VERIFIQUE + LA + "calificación");
+            errores.add(POR_FAVOR_VERIFIQUE + LA + PUNTO);
         if (dto.getIdGenero() != null && convertirEntero(dto.getIdGenero()) <= 0)
-            errores.add(POR_FAVOR_VERIFIQUE + LA + "calificación" + VALIDA);
+            errores.add(POR_FAVOR_VERIFIQUE + LA + PUNTO + VALIDA);
         if (!errores.isEmpty())
             throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
     }
 
     private static boolean validarCalificacion(String calidicain){
-        return calidicain.matches(UNO_AL_CINCO);
+        return calidicain.matches("[1-5]");
     }
 
     public static void verificarParametrosEntradaPersonajes(List<PersonajeDto> personajeDtos) {

@@ -1,7 +1,12 @@
 package com.arroyo.cine.util.statico;
 
-public class RespuestaExcepcion {
-    private RespuestaExcepcion() {
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static com.arroyo.cine.util.statico.ExprecionRegular.FORMATO_FECHA;
+
+public class MensajeError {
+    private MensajeError() {
     }
     public static final String ERROR = "Error";
     public static final String MENSAJE = "Mensaje";
@@ -18,9 +23,11 @@ public class RespuestaExcepcion {
     public static final String VALIDO = " valido.";
     public static final String VALIDA = " valida.";
     public static final String NO_DISPONIBLE = " no esta disponible.";
-    public static final String INGRESE_DIRECCION_IMAGEN_INCORRECTA = POR_FAVOR_INGRESE + "una imagen";
+    public static final String IMAGEN_FORMATO_INCORRECTO = POR_FAVOR_INGRESE + "una imagen";
     public static final String INGRESE_DATOS_REQUERIDOS = "Por favor ingrese los datos obligatorios.";
     public static final String PERSONAJE = "personaje";
     public static final String GENERO = "genero";
-    public static final String PELICULA_SERIE = "pelicula o serie";
+    public static final String PUNTO = "calificación";
+    public static final String PELICULA_SERIE = "película o serie";
+    public static final String FECHA_ACTUAL = LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_FECHA));
 }

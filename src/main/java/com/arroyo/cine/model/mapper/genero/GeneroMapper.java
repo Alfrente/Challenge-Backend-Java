@@ -1,10 +1,9 @@
-package com.arroyo.cine.mapper.genero;
+package com.arroyo.cine.model.mapper.genero;
 
 import com.arroyo.cine.model.dto.GeneroDto;
 import com.arroyo.cine.model.entity.Genero;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

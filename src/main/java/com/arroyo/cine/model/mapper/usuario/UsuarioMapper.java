@@ -1,4 +1,4 @@
-package com.arroyo.cine.mapper.usuario;
+package com.arroyo.cine.model.mapper.usuario;
 
 import com.arroyo.cine.model.dto.UsuarioDto;
 import com.arroyo.cine.model.entity.Usuario;

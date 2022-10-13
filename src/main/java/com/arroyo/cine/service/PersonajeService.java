@@ -1,7 +1,7 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.exception.Excepcion;
-import com.arroyo.cine.mapper.personaje.PersonajeMapper;
+import com.arroyo.cine.model.mapper.personaje.PersonajeMapper;
 import com.arroyo.cine.model.dto.PersonajeDto;
 import com.arroyo.cine.model.entity.Personaje;
 import com.arroyo.cine.repository.PersonajeRepository;
@@ -19,13 +19,12 @@ import static com.arroyo.cine.service.validacion.imagen.GuardarImagen.*;
 import static com.arroyo.cine.service.validacion.imagen.ValidarImagenEntrada.devolverDirectorioImagen;
 import static com.arroyo.cine.service.validacion.personaje.ParametroEntradaPersonaje.*;
 import static com.arroyo.cine.service.validacion.personaje.ValidarCampoIndividual.*;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
+import static com.arroyo.cine.util.statico.MensajeError.*;
 
 @Service
 public class PersonajeService {
     private final PersonajeRepository repository;
     private final PersonajeMapper mapper;
-    private String nombreImagenVieja;
     private static final int directorio = 2;
 
     public PersonajeService(PersonajeRepository repository, PersonajeMapper mapper) {
@@ -35,7 +34,7 @@ public class PersonajeService {
 
     public List<PersonajeDto> getAll(String name, String age, String movie) {
         List<Personaje> personajes = repository.findAll();
-        personajes.forEach(personaje1 -> personaje1.setImagen(devolverDirectorioImagen(personaje1.getImagen(), 2).toString()));
+        personajes.forEach(personaje1 -> personaje1.setImagen(devolverDirectorioImagen(personaje1.getImagen(), directorio).toString()));
         return mapper.aListPersonajeDto(filtroPersonaje(personajes, name, age, movie, true));
     }
 
@@ -106,10 +105,9 @@ public class PersonajeService {
         if (peso != null && Float.parseFloat(peso) > 0) personaje.setPeso(Float.parseFloat(peso));
         if (historia != null && !historia.isBlank()) personaje.setHistoria(historia);
 
-        if (imagen != null) {
-            nombreImagenVieja = personaje.getImagen();
+        if (imagen != null && personaje.getImagen() != null) {
+            borrarImagenActualizar(personaje.getImagen(), Objects.requireNonNull(imagen.getOriginalFilename()), directorio);
             personaje.setImagen(guardarImagen(imagen, directorio));
-            borrarImagenActualizar(nombreImagenVieja, Objects.requireNonNull(imagen.getOriginalFilename()), 2);
         }
 
         return mapper.aPersonajeDto(personaje);

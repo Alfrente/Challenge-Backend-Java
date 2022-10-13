@@ -17,7 +17,7 @@ import static com.arroyo.cine.util.statico.Directorio.GENERO;
 import static com.arroyo.cine.util.statico.Directorio.PELICULA_SERIE;
 import static com.arroyo.cine.util.statico.Directorio.PERSONAJE;
 import static com.arroyo.cine.util.statico.Directorio.*;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
+import static com.arroyo.cine.util.statico.MensajeError.*;
 
 public class GuardarImagen {
 

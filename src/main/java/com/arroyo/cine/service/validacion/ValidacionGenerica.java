@@ -4,8 +4,8 @@ import com.arroyo.cine.exception.Excepcion;
 import org.springframework.http.HttpStatus;
 
 import static com.arroyo.cine.util.statico.ExprecionRegular.*;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.MENSAJE_CODIGO_ERROR;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.ERROR;
+import static com.arroyo.cine.util.statico.MensajeError.ERROR;
+import static com.arroyo.cine.util.statico.MensajeError.MENSAJE_CODIGO_ERROR;
 
 public class ValidacionGenerica {
 
@@ -20,12 +20,10 @@ public class ValidacionGenerica {
         return Integer.parseInt(numero);
     }
 
-    public static boolean validarDirectorioImagen(String imagen) {
-        return imagen.matches(EXPRECION_FORMATO_JPG) || imagen.matches(EXPRECION_FORMATO_PNG);
-    }
-
-    public static boolean validarNombreConSinEspacio(String nombre) {
-        return (nombre.matches(EXPRECION_TEXTO_SIN_ESPACIOS) || nombre.matches(EXPRECION_TEXTO_CON_UN_ESPACIO));
+    public static boolean validarFormato(String imagen) {
+        if (imagen == null)
+            return false;
+        return imagen.endsWith(".png") || imagen.endsWith(".PNG") || imagen.endsWith(".jpg") || imagen.endsWith(".JPG");
     }
 
     public static byte convertirByte(String numero) {

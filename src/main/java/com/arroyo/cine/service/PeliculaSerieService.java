@@ -6,7 +6,7 @@ import com.arroyo.cine.model.entity.FkPeliculaSeriePersonaje;
 import com.arroyo.cine.model.entity.PeliculaSerie;
 import com.arroyo.cine.model.entity.PeliculaSeriePersonaje;
 import com.arroyo.cine.model.entity.Personaje;
-import com.arroyo.cine.mapper.pelicula_serie.PeliculaSerieMapper;
+import com.arroyo.cine.model.mapper.pelicula_serie.PeliculaSerieMapper;
 import com.arroyo.cine.repository.GeneroRepository;
 import com.arroyo.cine.repository.PeliculaSerieRepository;
 import com.arroyo.cine.repository.PersonajeRepository;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.convertirEntero;
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.validarId;
 import static com.arroyo.cine.service.validacion.pelicula.serie.ParametroEntrada.*;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
+import static com.arroyo.cine.util.statico.MensajeError.*;
 
 @Service
 public class PeliculaSerieService {

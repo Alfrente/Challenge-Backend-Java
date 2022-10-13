@@ -5,16 +5,14 @@ import com.arroyo.cine.exception.Excepciones;
 import com.arroyo.cine.model.dto.PersonajeDto;
 import com.arroyo.cine.model.entity.Personaje;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.*;
-import static com.arroyo.cine.service.validacion.imagen.GuardarImagen.guardarImagen;
 import static com.arroyo.cine.service.validacion.personaje.Filtro.*;
 import static com.arroyo.cine.service.validacion.personaje.ValidarCampoIndividual.*;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
+import static com.arroyo.cine.util.statico.MensajeError.*;
 
 public class ParametroEntradaPersonaje {
 

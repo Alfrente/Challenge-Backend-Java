@@ -11,42 +11,42 @@ import java.util.Objects;
 
 public class GeneroDto {
     @Size(min = 1)
-    private String ideGenero;
+    private String idGenero;
 
     @NotNull
     @Size(min = 5, max = 50)
-    private String nombreGenero;
+    private String nombre;
 
     @Null
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private String imagenGenero;
+    private String imagen;
 
     @Null
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PeliculaSerie> peliculaSeries;
 
-    public String getIdeGenero() {
-        return ideGenero;
+    public String getIdGenero() {
+        return idGenero;
     }
 
-    public void setIdeGenero(String ideGenero) {
-        this.ideGenero = ideGenero;
+    public void setIdGenero(String idGenero) {
+        this.idGenero = idGenero;
     }
 
-    public String getNombreGenero() {
-        return nombreGenero;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreGenero(String nombreGenero) {
-        this.nombreGenero = nombreGenero;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getImagenGenero() {
-        return imagenGenero;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setImagenGenero(String imagenGenero) {
-        this.imagenGenero = imagenGenero;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     @Override
@@ -54,11 +54,11 @@ public class GeneroDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GeneroDto generoDto = (GeneroDto) o;
-        return Objects.equals(ideGenero, generoDto.ideGenero) && Objects.equals(nombreGenero, generoDto.nombreGenero) && Objects.equals(imagenGenero, generoDto.imagenGenero);
+        return Objects.equals(idGenero, generoDto.idGenero) && Objects.equals(nombre, generoDto.nombre) && Objects.equals(imagen, generoDto.imagen);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ideGenero, nombreGenero, imagenGenero);
+        return Objects.hash(idGenero, nombre, imagen);
     }
 }

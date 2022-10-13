@@ -53,7 +53,7 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public ResponseEntity<PersonajeDto> save(
+    public ResponseEntity<PersonajeDto> save(  /******************************/
             @RequestParam(value = "nombre", required = false) String nombre,
             @RequestParam(value = "edad", required = false) String edad,
             @RequestParam(value = "peso", required = false) String peso,
@@ -92,7 +92,7 @@ public class PersonajeController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id personaje", example = "1")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje") /******************************/
     public ResponseEntity<PersonajeDto> update(
             @PathVariable(value = "idPersonaje") String idPersonaje,
             @RequestParam(value = "nombre", required = false) String nombre,

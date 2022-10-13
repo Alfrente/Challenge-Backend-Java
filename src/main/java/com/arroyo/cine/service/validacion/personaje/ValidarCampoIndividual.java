@@ -4,8 +4,7 @@ import com.arroyo.cine.exception.Excepcion;
 import org.springframework.http.HttpStatus;
 
 import static com.arroyo.cine.util.statico.ExprecionRegular.*;
-import static com.arroyo.cine.util.statico.ExprecionRegular.EXPRECION_TEXTO_SIN_ESPACIOS;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
+import static com.arroyo.cine.util.statico.MensajeError.*;
 
 public class ValidarCampoIndividual {
 
@@ -13,21 +12,19 @@ public class ValidarCampoIndividual {
     }
 
     public static boolean validarEdad(String edad) {
-        return !edad.matches(EXPRECION_EDAD);
+        return !edad.matches(EDAD);
     }
 
     public static boolean validarPeso(String peso) {
-        return (!peso.matches(EXPRECION_PESO));
+        return (!peso.matches(PESO));
     }
 
     public static boolean validarHistoria(String historia) {
-        return !historia.matches(EXPRECION_TEXTO_CON_ESPACIOS);
+        return !historia.matches(TEXTO_CON_ESPACIOS);
     }
 
     public static boolean validarNombre(String nombre) {
-        if (nombre.matches(EXPRECION_TEXTO_CON_UN_ESPACIO))
-            return false;
-        return (!nombre.matches(EXPRECION_TEXTO_SIN_ESPACIOS));
+        return (!nombre.matches("[A-Z][a-zA-Z ]{3,47}"));
     }
 
     public static void validarEdadError(String edad) {

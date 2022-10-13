@@ -11,9 +11,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.arroyo.cine.util.statico.ExprecionRegular.FECHA_ACTUAL;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.MENSAJE_CODIGO;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.MENSAJE_CODIGO_ERROR;
+import static com.arroyo.cine.util.statico.MensajeError.*;
 
 @ControllerAdvice
 public class ControllerAdviceGlobal {

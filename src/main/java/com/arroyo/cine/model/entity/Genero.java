@@ -19,6 +19,7 @@ public class Genero {
     private String nombre;
 
     @Null
+    @Column(unique = true)
     private String imagen;
 
     public Integer getIdGenero() {

@@ -1,4 +1,4 @@
-package com.arroyo.cine.mapper.pelicula_serie;
+package com.arroyo.cine.model.mapper.pelicula_serie;
 
 import com.arroyo.cine.model.dto.PersonajeDto;
 import com.arroyo.cine.model.entity.Personaje;

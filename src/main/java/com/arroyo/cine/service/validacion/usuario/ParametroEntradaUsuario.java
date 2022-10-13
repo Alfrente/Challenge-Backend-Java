@@ -4,9 +4,9 @@ import com.arroyo.cine.exception.Excepcion;
 import com.arroyo.cine.model.dto.UsuarioDto;
 import org.springframework.http.HttpStatus;
 
-import static com.arroyo.cine.util.statico.ExprecionRegular.EXPRECION_CORREO_GMAIL;
-import static com.arroyo.cine.util.statico.ExprecionRegular.EXPRECION_TEXTO_CON_ESPACIOS_NUMERO;
-import static com.arroyo.cine.util.statico.RespuestaExcepcion.*;
+import static com.arroyo.cine.util.statico.ExprecionRegular.CORREO_GMAIL;
+import static com.arroyo.cine.util.statico.ExprecionRegular.TEXTO_CON_ESPACIOS_NUMERO;
+import static com.arroyo.cine.util.statico.MensajeError.*;
 
 public class ParametroEntradaUsuario {
 
@@ -19,12 +19,12 @@ public class ParametroEntradaUsuario {
     }
 
     public static void validarCorreo(String correo) {
-        if (correo == null || !correo.matches(EXPRECION_CORREO_GMAIL))
+        if (correo == null || !correo.matches(CORREO_GMAIL))
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, POR_FAVOR_INGRESE + "un correo" + VALIDO, HttpStatus.BAD_REQUEST);
     }
 
     public static void validarUsuario(String usuario) {
-        if (usuario == null || usuario.matches(EXPRECION_TEXTO_CON_ESPACIOS_NUMERO))
+        if (usuario == null || usuario.matches(TEXTO_CON_ESPACIOS_NUMERO))
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, POR_FAVOR_INGRESE + "un usuario" + VALIDO, HttpStatus.BAD_REQUEST);
     }
 
