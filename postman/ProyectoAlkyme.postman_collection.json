@@ -11,6 +11,21 @@
 				{
 					"name": "getAll",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -30,11 +45,39 @@
 				{
 					"name": "save",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\r\n        \"nombreGenero\": \"Accion\",\r\n        \"imagenGenero\": \"C:/Accion.jpg\"\r\n}",
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "Accion Arrooyo",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/arroy/OneDrive/Escritorio/ddd.jpg",
+									"disabled": true
+								}
+							],
 							"options": {
 								"raw": {
 									"language": "json"
@@ -79,10 +122,25 @@
 				{
 					"name": "deleteById",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8090/genero/deleteById/2",
+							"raw": "http://localhost:8090/genero/deleteById/16",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -91,7 +149,7 @@
 							"path": [
 								"genero",
 								"deleteById",
-								"2"
+								"16"
 							]
 						}
 					},
@@ -104,7 +162,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ideGenero\": 5,\r\n    \"nombreGenero\": \"Accion\"\r\n}",
+							"raw": "{\r\n    \"ideGenero\": 1,\r\n    \"nombreGenero\": \"Accion Arrooyo\",\r\n    \"imagenGenero\": \"B:/Users/daniel/copias20/foto.jpg\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -128,10 +186,47 @@
 				{
 					"name": "update",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "Accion puras 2",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8090/genero/update/3/Accion pura",
+							"raw": "http://localhost:8090/genero/update/16",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -140,8 +235,7 @@
 							"path": [
 								"genero",
 								"update",
-								"3",
-								"Accion pura"
+								"16"
 							]
 						}
 					},
@@ -154,9 +248,31 @@
 			"item": [
 				{
 					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:8090/characters",
 							"protocol": "http",
@@ -170,17 +286,17 @@
 							"query": [
 								{
 									"key": "name",
-									"value": "Felipe",
+									"value": "Arroyo Hernandez",
 									"disabled": true
 								},
 								{
 									"key": "age",
-									"value": "23",
+									"value": "10",
 									"disabled": true
 								},
 								{
 									"key": "movies",
-									"value": "1",
+									"value": "15",
 									"disabled": true
 								}
 							]
@@ -189,16 +305,62 @@
 					"response": []
 				},
 				{
-					"name": "save",
+					"name": "save con parametros",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": " {\r\n        \"nombre\": \"Arroyo\",\r\n        \"edad\": 22,\r\n        \"peso\": 20.5,\r\n        \"imagen\": \"foto.jpg\",\r\n        \"historia\": \"Soy nuevo\"\r\n }",
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "Arroyo Hernandez",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "edad",
+									"value": "10",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "peso",
+									"value": "20.5",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/arroy/OneDrive/Escritorio/302525486_1366473733882031_4562715660165695451_n.jpg",
+									"disabled": true
+								},
+								{
+									"key": "historia",
+									"value": "Soy protagonista de la pelicula",
+									"type": "text",
+									"disabled": true
+								}
+							],
 							"options": {
 								"raw": {
-									"language": "json"
+									"language": "text"
 								}
 							}
 						},
@@ -219,6 +381,21 @@
 				{
 					"name": "getById",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -240,10 +417,25 @@
 				{
 					"name": "deleteById",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8090/personaje/deleteById/4",
+							"raw": "http://localhost:8090/personaje/deleteById/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -252,7 +444,7 @@
 							"path": [
 								"personaje",
 								"deleteById",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -265,7 +457,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"idePersonaje\": 33,\r\n    \"nombre\": \"Arroyo\",\r\n    \"edad\": 22,\r\n    \"peso\": 20.5,\r\n    \"imagen\": \"foto.jpg\",\r\n    \"historia\": \"Soy nuevo\"\r\n}",
+							"raw": "{\r\n    \"idePersonaje\": 1,\r\n    \"nombre\": \"Arroyo Hernandez\",\r\n    \"edad\": \"10\",\r\n    \"peso\": \"20.5\",\r\n    \"imagen\": \"B:/Users/daniel/copias20/foto.jpg\",\r\n    \"historia\": \"Soy protagonista de la pelicula\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -293,7 +485,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\r\n    \"nombre\": \"Arroyo\",\r\n    \"edad\": 22,\r\n    \"peso\": 17,\r\n    \"imagen\": \"Foto.jpg\",\r\n    \"historia\": \"Soy arroyo\"\r\n }",
+							"raw": "{\r\n    \"nombre\": \"Arroyo\",\r\n    \"edad\": 10,\r\n    \"peso\": 20.5,\r\n    \"imagen\": \"B:/Users/daniel/copias/foto.jpg\",\r\n    \"historia\": \"Soy protagonista de la pelicula\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -317,12 +509,67 @@
 					"response": []
 				},
 				{
-					"name": "getAllPersonalizado",
+					"name": "update con parametros",
 					"request": {
-						"method": "GET",
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "Arroyo",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "edad",
+									"value": "10",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "peso",
+									"value": "15.0",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								},
+								{
+									"key": "historia",
+									"value": "Soy protagonista de la pelicula 2",
+									"type": "text",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8090/personaje/getAll",
+							"raw": "http://localhost:8090/personaje/update/15",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -330,24 +577,8 @@
 							"port": "8090",
 							"path": [
 								"personaje",
-								"getAll"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "Felipe",
-									"disabled": true
-								},
-								{
-									"key": "age",
-									"value": "23",
-									"disabled": true
-								},
-								{
-									"key": "movies",
-									"value": "1",
-									"disabled": true
-								}
+								"update",
+								"15"
 							]
 						}
 					},
@@ -444,7 +675,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8090/peliculaSerie/deleteById/4",
+							"raw": "http://localhost:8090/peliculaSerie/deleteById/20",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -453,7 +684,7 @@
 							"path": [
 								"peliculaSerie",
 								"deleteById",
-								"4"
+								"20"
 							]
 						}
 					},
@@ -465,7 +696,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8090/movies/6/characters/2",
+							"raw": "http://localhost:8090/movies/1/characters/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -473,7 +704,7 @@
 							"port": "8090",
 							"path": [
 								"movies",
-								"6",
+								"1",
 								"characters",
 								"2"
 							]
@@ -488,7 +719,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n        \"idPeliculaSerie\": 1,\r\n        \"titulo\": \"El camagua 1\",\r\n        \"caratula\": \"peli.jpg\",\r\n        \"fechaCreacion\": \"2020-09-16T00:00:00\",\r\n        \"califiacion\": 5,\r\n        \"idPersonaje\": 50,\r\n        \"idGenero\": 2\r\n}",
+							"raw": "{\r\n   \"titulo\": \"Los 4 fantasticos\",\r\n    \"caratula\": \"B:/Users/daniel/copias20/foto.jpg\",\r\n    \"fechaCreacion\": \"2020-09-16\",\r\n    \"califiacion\": \"WW\",\r\n    \"idGenero\": 4\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -512,51 +743,13 @@
 					"response": []
 				},
 				{
-					"name": "getAllPersonalizado",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8090/peliculaSerie/getAll",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8090",
-							"path": [
-								"peliculaSerie",
-								"getAll"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "Yo soy",
-									"disabled": true
-								},
-								{
-									"key": "genre",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "order",
-									"value": "ASC",
-									"description": "ASC o DESC",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "saveEntidad",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "   {\r\n        \"titulo\": \"El agua\",\r\n        \"caratula\": \"pelicula.jpg\",\r\n        \"fechaCreacion\": \"2020-09-16T00:00:00\",\r\n        \"califiacion\": 5,\r\n        \"idPersonaje\": 50,\r\n        \"idGenero\": 2,\r\n        \"personajes\": [\r\n            {\r\n                \"nombre\": \"Free\",\r\n                \"edad\": 22,\r\n                \"peso\": 17.0,\r\n                \"imagen\": \"Foto.jpg\",\r\n                \"historia\": \"Soy arroyo\"\r\n            }\r\n        ]\r\n    }",
+							"raw": "   {\r\n        \"titulo\": \"El agua\",\r\n        \"caratula\": \"pelicula.jpg\",\r\n        \"fechaCreacion\": \"2020-09-16\",\r\n        \"califiacion\": 5,\r\n        \"idGenero\": 1,\r\n        \"personajes\": [\r\n            {\r\n                \"nombre\": \"Free\",\r\n                \"edad\": 22,\r\n                \"peso\": 17.0,\r\n                \"imagen\": \"Foto.jpg\",\r\n                \"historia\": \"Soy arroyo\"\r\n            }\r\n        ]\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -600,6 +793,88 @@
 							"port": "8090",
 							"path": [
 								"peliculaSerie"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "registrar rol usuario",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"usuario\": \"arroyo\",\r\n    \"correo\": \"user11@gmail.com\",\r\n    \"contrasena\": \"arroyo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrar rol usuario y/o admin",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "arroyo",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "arroyo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"usuario\": \"arroyo\",\r\n    \"correo\": \"user11@gmail.com\",\r\n    \"contrasena\": \"arroyo\",\r\n    \"rol\": \"ROLE_USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/auth/register/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"auth",
+								"register",
+								"admin"
 							]
 						}
 					},

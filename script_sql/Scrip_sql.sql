@@ -2,41 +2,41 @@ CREATE DATABASE IF NOT EXISTS CINE;
 USE CINE;
 
 CREATE TABLE IF NOT EXISTS genero(
-id_genero INTEGER PRIMARY KEY AUTO_INCREMENT,
-nombre VARCHAR(50) NOT NULL,
-imagen VARCHAR(255)
+id_genero INTEGER PRIMARY KEY AUTO_INCREMENT UNIQUE,
+nombre VARCHAR(50) NOT NULL UNIQUE,
+imagen VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS personaje (
-id_personaje INTEGER PRIMARY KEY AUTO_INCREMENT,
+id_personaje INTEGER PRIMARY KEY AUTO_INCREMENT UNIQUE,
 nombre VARCHAR(50) NOT NULL,
 edad TINYINT NOT NULL,
-peso FLOAT NOT NULL, 
-imagen VARCHAR(255),
+peso FLOAT NOT NULL,
+imagen VARCHAR(255) UNIQUE,
 historia TEXT
 );
 
 CREATE TABLE IF NOT EXISTS pelicula_serie(
-id_pelicula_serie INTEGER PRIMARY KEY AUTO_INCREMENT,
+id_pelicula_serie INTEGER PRIMARY KEY AUTO_INCREMENT UNIQUE,
 titulo VARCHAR(50) NOT NULL,
-imagen VARCHAR(255),
+imagen VARCHAR(255) UNIQUE,
 fecha_creacion DATE NOT NULL,
 califiacion TINYINT DEFAULT 0,
-personaje_id INTEGER NOT NULL,
 id_genero INTEGER NOT NULL,
 FOREIGN KEY(id_genero) REFERENCES genero(id_genero)
 );
 
--- ALTER TABLE pelicula_serie ADD INDEX i_pelicula_serie(personaje_id);
-
-CREATE TABLE IF NOT EXISTS pelicula_serie_personajes(
-personaje_id INTEGER NOT NULL,
+CREATE TABLE IF NOT EXISTS pelicula_serie_personaje(
+id_pelicula_serie INTEGER NOT NULL,
 id_personaje INTEGER NOT NULL,
+FOREIGN KEY(id_pelicula_serie) REFERENCES pelicula_serie(id_pelicula_serie),
 FOREIGN KEY(id_personaje) REFERENCES personaje(id_personaje)
 );
 
 CREATE TABLE IF NOT EXISTS usuario(
 id_usuario INTEGER PRIMARY KEY AUTO_INCREMENT,
-username VARCHAR(50) NOT NULL,
-`password` VARCHAR(255) NOT NULL
+nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
+correo VARCHAR(255) NOT NULL UNIQUE,
+rol VARCHAR(20) NOT NULL,
+contrasena VARCHAR(255) NOT NULL
 );

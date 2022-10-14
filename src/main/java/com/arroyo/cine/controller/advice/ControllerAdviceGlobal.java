@@ -16,16 +16,6 @@ import static com.arroyo.cine.util.statico.MensajeError.*;
 @ControllerAdvice
 public class ControllerAdviceGlobal {
 
-    @ExceptionHandler(HttpClientErrorException.MethodNotAllowed.class)
-    public ResponseEntity<Map<String, String>> errorMethodNotAllowed() {
-        return new ResponseEntity<>(generarMapaError(new Excepcion(MENSAJE_CODIGO_ERROR, MENSAJE_CODIGO, "Usuario 2 no autorizado")), HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler(HttpClientErrorException.Forbidden.class)
-    public ResponseEntity<Map<String, String>> errorForbidden() {
-        return new ResponseEntity<>(generarMapaError(new Excepcion(MENSAJE_CODIGO_ERROR, MENSAJE_CODIGO, "Usuario no autorizado")), HttpStatus.FORBIDDEN);
-    }
-
     @ExceptionHandler(Excepcion.class)
     public ResponseEntity<Map<String, String>> error(Excepcion excepcion) {
         return new ResponseEntity<>(generarMapaError(excepcion), excepcion.getCodigo());
