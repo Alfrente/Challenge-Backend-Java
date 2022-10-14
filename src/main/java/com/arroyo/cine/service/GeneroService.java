@@ -86,7 +86,7 @@ public class GeneroService {
                 orElseThrow(() -> new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, EL + GENERO + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 
-    public GeneroDto verificarDatoModificar(String nuevoGenero, MultipartFile nuevaImagen, Genero genero){
+    private GeneroDto verificarDatoModificar(String nuevoGenero, MultipartFile nuevaImagen, Genero genero){
         if (nuevoGenero != null)
             genero.setNombre(nuevoGenero);
         if (nuevaImagen != null && genero.getImagen() != null) {

@@ -100,11 +100,11 @@ public class PeliculaSerieDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PeliculaSerieDto that = (PeliculaSerieDto) o;
-        return Objects.equals(idPeliculaSerie, that.idPeliculaSerie) && Objects.equals(titulo, that.titulo) && Objects.equals(caratula, that.caratula) && Objects.equals(fechaCreacion, that.fechaCreacion) && Objects.equals(califiacion, that.califiacion) && Objects.equals(idGenero, that.idGenero);
+        return Objects.equals(idPeliculaSerie, that.idPeliculaSerie) && Objects.equals(titulo, that.titulo) && Objects.equals(caratula, that.caratula) && Objects.equals(fechaCreacion, that.fechaCreacion) && Objects.equals(califiacion, that.califiacion) && Objects.equals(idGenero, that.idGenero) && Objects.equals(personajes, that.personajes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idPeliculaSerie, titulo, caratula, fechaCreacion, califiacion, idGenero);
+        return Objects.hash(idPeliculaSerie, titulo, caratula, fechaCreacion, califiacion, idGenero, personajes);
     }
 }

@@ -1,6 +1,7 @@
 package com.arroyo.cine.model.dto;
 
 import javax.validation.constraints.Null;
+import java.util.Objects;
 
 public class UsuarioDto {
 
@@ -66,5 +67,18 @@ public class UsuarioDto {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UsuarioDto that = (UsuarioDto) o;
+        return Objects.equals(idUsuario, that.idUsuario) && Objects.equals(usuario, that.usuario) && Objects.equals(correo, that.correo) && Objects.equals(contrasena, that.contrasena) && Objects.equals(rol, that.rol);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUsuario, usuario, correo, contrasena, rol);
     }
 }
