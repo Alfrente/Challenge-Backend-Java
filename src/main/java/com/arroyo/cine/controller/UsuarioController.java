@@ -22,9 +22,9 @@ public class UsuarioController {
     }
 
     @PostMapping("/register")
-    @Operation(summary = "Actualizar personaje", description = "Este método es para actualizar el personaje", responses = {
-            @ApiResponse(responseCode = "200", description = "Usuario creado exitosamente."),
-            @ApiResponse(responseCode = "400", description = "No se pudo crear el Usuario."),
+    @Operation(summary = "Crear usuario", description = "Crea un nuevo usuario", responses = {
+            @ApiResponse(responseCode = "200", description = "Se creo el usuario."),
+            @ApiResponse(responseCode = "400", description = "No se creo el Usuario."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad usuario")
@@ -35,26 +35,14 @@ public class UsuarioController {
 
     @PostMapping("/register/admin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @Operation(summary = "Actualizar personaje", description = "Este método es para actualizar el personaje", responses = {
-            @ApiResponse(responseCode = "200", description = "Usuario creado exitosamente."),
-            @ApiResponse(responseCode = "400", description = "No se pudo crear el Usuario."),
+    @Operation(summary = "Crear usuario", description = "Crea un nuevo usuario con el rol", responses = {
+            @ApiResponse(responseCode = "200", description = "Se creo el usuario."),
+            @ApiResponse(responseCode = "400", description = "No se creo el Usuario."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad usuario")
     public ResponseEntity<Map<String, String>> registrarAdmin(@RequestBody UsuarioDto dto) {
         service.save(dto);
         return new ResponseEntity<>(Map.of("Mensaje","Usuario creado exitosamente"), HttpStatus.CREATED);
-    }
-
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<UsuarioDto> getAdmin() {
-        return new ResponseEntity<>(service.getById(), HttpStatus.OK);
-    }
-
-    @GetMapping("/user")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<UsuarioDto> getUser() {
-        return new ResponseEntity<>(service.getById(), HttpStatus.OK);
     }
 }

@@ -22,9 +22,9 @@ public class PersonajeController {
     }
 
     @GetMapping("characters")
-    @Operation(summary = "Trae los personajes", description = "Este método trae todos los personajes tiene la opción de filtrar el resultado", responses = {
+    @Operation(summary = "Lista personajes", description = "Devuelve la lista de personajes", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
-            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
+            @ApiResponse(responseCode = "400", description = "No se completo la petición."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(description = "name", example = "Guerra z")
@@ -36,9 +36,9 @@ public class PersonajeController {
     }
 
     @GetMapping("/personaje/getById/{idPersona}")
-    @Operation(summary = "Buscar con id", description = "Este método busca el personaje con el id", responses = {
+    @Operation(summary = "Personaje específico", description = "Devuelve un personaje específico", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
-            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
+            @ApiResponse(responseCode = "400", description = "No se completo la petición."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
@@ -47,26 +47,30 @@ public class PersonajeController {
     }
 
     @PostMapping("/personaje")
-    @Operation(summary = "Guardar personaje", description = "Este método es para guarda un personaje", responses = {
+    @Operation(summary = "Guardar personaje", description = "Guarda un nuevo personaje", responses = {
             @ApiResponse(responseCode = "201", description = "Se creo el personaje."),
-            @ApiResponse(responseCode = "400", description = "No se pudo crear el personaje."),
+            @ApiResponse(responseCode = "400", description = "No se creo el personaje."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
-    public ResponseEntity<PersonajeDto> save(  /******************************/
+    @Parameter(description = "nombre", example = "Andres Restrepo", required = true)
+    @Parameter(description = "edad", example = "20", required = true)
+    @Parameter(description = "peso", example = "18.72 k", required = true)
+    @Parameter(description = "imagen")
+    @Parameter(description = "historia")
+    public ResponseEntity<PersonajeDto> save(
             @RequestParam(value = "nombre", required = false) String nombre,
             @RequestParam(value = "edad", required = false) String edad,
             @RequestParam(value = "peso", required = false) String peso,
             @RequestParam(value = "imagen", required = false) MultipartFile imagen,
             @RequestParam(value = "historia", required = false) String historia
     ) {
-        return new ResponseEntity<>(service.save(nombre,edad,peso, imagen, historia), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.save(nombre, edad, peso, imagen, historia), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/personaje")
-    @Operation(summary = "Eliminar personaje", description = "Este método es para eliminar el personaje", responses = {
+    @Operation(summary = "Eliminar personaje", description = "Elimina un personaje específico", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el personaje."),
-            @ApiResponse(responseCode = "400", description = "No se pudo eliminar el personaje."),
+            @ApiResponse(responseCode = "400", description = "No se elimino el personaje."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje")
@@ -75,9 +79,9 @@ public class PersonajeController {
     }
 
     @DeleteMapping("/personaje/deleteById/{idPersona}")
-    @Operation(summary = "Eliminar personaje con id", description = "Este método es para eliminar el personaje con el id", responses = {
+    @Operation(summary = "Eliminar personaje", description = "Elimina un personaje específico", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el personaje."),
-            @ApiResponse(responseCode = "400", description = "No se pudo eliminar el personaje."),
+            @ApiResponse(responseCode = "400", description = "No se elimino el personaje."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id persona", example = "1")
@@ -86,13 +90,17 @@ public class PersonajeController {
     }
 
     @PutMapping("/personaje/update/{idPersonaje}")
-    @Operation(summary = "Actualizar personaje", description = "Este método es para actualizar el personaje", responses = {
+    @Operation(summary = "Actualizar personaje", description = "Actualiza un personaje específico", responses = {
             @ApiResponse(responseCode = "202", description = "Se actualizo el personaje."),
-            @ApiResponse(responseCode = "400", description = "No se pudo actualizar el personaje."),
+            @ApiResponse(responseCode = "400", description = "No se actualizo el personaje."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
-    @Parameter(required = true, description = "Id personaje", example = "1")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad personaje") /******************************/
+    @Parameter(description = "Id personaje", example = "1", required = true)
+    @Parameter(description = "nombre", example = "Andres Restrepo", required = true)
+    @Parameter(description = "edad", example = "20", required = true)
+    @Parameter(description = "peso", example = "18.72 k", required = true)
+    @Parameter(description = "imagen")
+    @Parameter(description = "historia")
     public ResponseEntity<PersonajeDto> update(
             @PathVariable(value = "idPersonaje") String idPersonaje,
             @RequestParam(value = "nombre", required = false) String nombre,

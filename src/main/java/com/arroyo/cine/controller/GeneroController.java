@@ -24,33 +24,34 @@ public class GeneroController {
     }
 
     @GetMapping
-    @Operation(summary = "Trae los genero", responses = {
+    @Operation(summary = "Lista de genero", description = "Devuelve la lista de genero", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
             @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
-    }, description = "Este método trae todos los genero")
+    })
     public ResponseEntity<List<GeneroDto>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
     }
 
     @GetMapping("/getById/{idGenero}")
-    @Operation(summary = "Buscar con id", responses = {
+    @Operation(summary = "Devuelve un genero", description = "Devuelve un genero específico", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
-            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
+            @ApiResponse(responseCode = "400", description = "No se completo la petición."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
-    }, description = "Este método sirve para buscar un genero con el id")
+    })
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") String idGenero) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getById(idGenero));
     }
 
     @PostMapping
-    @Operation(summary = "Guardar genero", responses = {
-            @ApiResponse(responseCode = "201", description = "Se creo el genero."),
-            @ApiResponse(responseCode = "400", description = "No se pudo crear el genero."),
+    @Operation(summary = "Guardar genero", description = "Guarda un genero específico", responses = {
+            @ApiResponse(responseCode = "201", description = "Se guardo un genero."),
+            @ApiResponse(responseCode = "400", description = "No se guardo el genero."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
-    }, description = "Este método es para guarda el genero ")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")     /******************/
+    })
+    @Parameter(description = "nombre", required = true)
+    @Parameter(description = "imagen")
     public ResponseEntity<GeneroDto> save(
             @RequestParam(value = "nombre", required = false) String nombre,
             @RequestParam(value = "imagen", required = false) MultipartFile imagen
@@ -59,35 +60,36 @@ public class GeneroController {
     }
 
     @DeleteMapping
-    @Operation(summary = "Eliminar genero", responses = {
+    @Operation(summary = "Eliminar genero", description = "Elimina un genero específico", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el genero."),
-            @ApiResponse(responseCode = "400", description = "No se pudo eliminar el genero."),
+            @ApiResponse(responseCode = "400", description = "No se elimino el genero."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
-    }, description = "Este método sirve para eliminar el genero")
+    })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
     public ResponseEntity<GeneroDto> delete(@RequestBody @NotNull GeneroDto generoDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.delete(generoDto));
     }
 
     @DeleteMapping("/deleteById/{idGenero}")
-    @Operation(summary = "Eliminar genero con id", responses = {
+    @Operation(summary = "Eliminar genero", description = "Elimina un genero específico", responses = {
             @ApiResponse(responseCode = "202", description = "Se elimino el genero."),
-            @ApiResponse(responseCode = "400", description = "No se pudo eliminar el genero."),
+            @ApiResponse(responseCode = "400", description = "No se elimino el genero."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
-    }, description = "Este método sirve para eliminar el genero con el id")
+    })
     @Parameter(required = true, description = "Id genero", example = "1")
     public ResponseEntity<GeneroDto> deleteById(@PathVariable("idGenero") String idGenero) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteById(idGenero));
     }
 
     @PutMapping("/update/{idGenero}")
-    @Operation(summary = "Actualizar genero", responses = {
-            @ApiResponse(responseCode = "202", description = "Se modifico el genero."),
-            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
+    @Operation(summary = "Actualizar genero", description = "Actualiza un genero específico", responses = {
+            @ApiResponse(responseCode = "202", description = "Se actualizo el genero."),
+            @ApiResponse(responseCode = "400", description = "No se completo la petición."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
-    }, description = "Este método sirve para actualiza el genero")
-    @Parameter(required = true, description = "Id genero", example = "1")
-    @Parameter(required = true, description = "Nuevo genero", example = "Acción")
+    })
+    @Parameter(description = "Id genero", example = "1", required = true)
+    @Parameter(description = "nombre", example = "Acción", required = true)
+    @Parameter(description = "nombre", example = "Acción")
     public ResponseEntity<GeneroDto> update(
             @PathVariable("idGenero") String idGenero,
             @RequestParam(value = "nombre", required = false) String nombre,
