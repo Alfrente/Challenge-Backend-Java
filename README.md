@@ -6,9 +6,8 @@
 🎯 El siguiente link es de la ->  [pagina ALKEMY](https://campus.alkemy.org/login). 
 
 ## Me falta lo siguiente para completar el proyecto
-#### 9. Agregar/Remover personajes a una película -> agrego la pelicule pero no guardo la informacion del personaje.
-#### 10. Autenticación de Usuarios.
-#### 11. Envío de emails -> sin implementar dependiente del paso 10. 
+#### 10. Autenticación de Usuarios JWT
+#### 11. Envío de emails cree la cuenta, pero me sale no está autorizado para acceder a SendGrid, comuníquese con Soporte .
 #### 12. Tests.
 
 

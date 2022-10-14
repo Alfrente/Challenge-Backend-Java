@@ -1,45 +1,62 @@
 package com.arroyo.cine.controller.advice;
 
-import com.arroyo.cine.exception.custom.genero.GeneroDatosExcepciones;
-import com.arroyo.cine.exception.custom.genero.GeneroExcepcionGenerico;
+import com.arroyo.cine.exception.Excepcion;
+import com.arroyo.cine.exception.Excepciones;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.arroyo.cine.util.InformacionEstatica.FORMATO_FECHA;
+import static com.arroyo.cine.util.statico.MensajeError.*;
 
 @ControllerAdvice
 public class ControllerAdviceGlobal {
-    private Map<String, String> response;
 
-    public ControllerAdviceGlobal() {
-        response = new HashMap<>();
+    @ExceptionHandler(HttpClientErrorException.MethodNotAllowed.class)
+    public ResponseEntity<Map<String, String>> errorMethodNotAllowed() {
+        return new ResponseEntity<>(generarMapaError(new Excepcion(MENSAJE_CODIGO_ERROR, MENSAJE_CODIGO, "Usuario 2 no autorizado")), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(GeneroExcepcionGenerico.class)
-    public ResponseEntity<Map<String, String>> errorGenerico(GeneroExcepcionGenerico excepcion) {
-        this.response.put("Mensaje", excepcion.getMensaje());
-        this.response.put("Código error", String.valueOf(excepcion.getCodigo().value()));
-        this.response.put("Fecha", excepcion.getFecha().format(DateTimeFormatter.ofPattern(FORMATO_FECHA)));
-        return new ResponseEntity<>(this.response, excepcion.getCodigo());
+    @ExceptionHandler(HttpClientErrorException.Forbidden.class)
+    public ResponseEntity<Map<String, String>> errorForbidden() {
+        return new ResponseEntity<>(generarMapaError(new Excepcion(MENSAJE_CODIGO_ERROR, MENSAJE_CODIGO, "Usuario no autorizado")), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(GeneroDatosExcepciones.class)
-    public ResponseEntity<Map<String, String>> errorDatosGenero(GeneroDatosExcepciones excepciones) {
-        int index = 0;
+    @ExceptionHandler(Excepcion.class)
+    public ResponseEntity<Map<String, String>> error(Excepcion excepcion) {
+        return new ResponseEntity<>(generarMapaError(excepcion), excepcion.getCodigo());
+    }
+
+    @ExceptionHandler(Excepciones.class)
+    public ResponseEntity<Map<String, String>> errores(Excepciones excepciones) {
+        return new ResponseEntity<>(generarMapaErrores(excepciones), excepciones.getCodigo());
+    }
+
+    private Map<String, String> generarMapaError(Excepcion excepcion) {
+        Map<String, String> response = new HashMap<>();
+        response.put(excepcion.getLlaveMapMensajeOError(), excepcion.getMensaje());
+        response.put(excepcion.getLlaveMapMensajeOCodigoError(), String.valueOf(excepcion.getCodigo().value()));
+        response.put("Fecha", FECHA_ACTUAL);
+        return response;
+    }
+
+    private Map<String, String> generarMapaErrores(Excepciones excepciones) {
+        Map<String, String> response = new HashMap<>();
         StringBuilder mensajes = new StringBuilder();
+        int index = 0;
+        mensajes.setLength(0);
         for (String mensaje : excepciones.getMensajes()) {
             index++;
             mensajes.append(index).append(" ").append(mensaje).append(" - ");
         }
-        this.response.put("Mensaje", mensajes.toString());
-        this.response.put("Código error", String.valueOf(excepciones.getCodigo().value()));
-        this.response.put("Fecha", excepciones.getFecha().format(DateTimeFormatter.ofPattern(FORMATO_FECHA)));
-        return new ResponseEntity<>(this.response, excepciones.getCodigo());
+        mensajes.replace(mensajes.length() - 2, mensajes.length(), "");
+        response.put(excepciones.getLlaveMapMensajeOError(), mensajes.toString());
+        response.put(excepciones.getLlaveMapMensajeOErrorCodigo(), String.valueOf(excepciones.getCodigo().value()));
+        response.put("Fecha", FECHA_ACTUAL);
+        return response;
     }
-
 }
