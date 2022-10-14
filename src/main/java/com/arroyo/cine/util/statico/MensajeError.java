@@ -27,7 +27,7 @@ public class MensajeError {
     public static final String INGRESE_DATOS_REQUERIDOS = "Por favor ingrese los datos obligatorios.";
     public static final String PERSONAJE = "personaje";
     public static final String GENERO = "genero";
-    public static final String PUNTO = "calificación";
+    public static final String CALIFICACION = "calificación";
     public static final String PELICULA_SERIE = "película o serie";
     public static final String FECHA_ACTUAL = LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_FECHA));
 }

@@ -35,7 +35,7 @@ public class PeliculaSerieController {
     public ResponseEntity<List<PeliculaSerieDto>> getAll(
          @RequestParam(required = false, name = "name") @Null String name,
          @RequestParam(required = false, name = "genre")
-    @Null Integer genre, @RequestParam(required = false, name = "order") @Null String order
+    @Null String genre, @RequestParam(required = false, name = "order") @Null String order
     ) {
         return new ResponseEntity<>(service.getAll(name, genre, order), HttpStatus.OK);
     }

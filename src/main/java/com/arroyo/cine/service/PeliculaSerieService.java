@@ -39,7 +39,7 @@ public class PeliculaSerieService {
         this.mapper = mapper;
     }
 
-    public List<PeliculaSerieDto> getAll(String name, Integer genre, String order) {
+    public List<PeliculaSerieDto> getAll(String name, String genre, String order) {
         return mapper.aListPeliculaSerieDto(filtroPeliculaSerie(repository.findAll(), name, genre, order));
     }
 
@@ -69,7 +69,7 @@ public class PeliculaSerieService {
         validarPeliculaSerieDto(peliculaSerieDto);
         PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(idPeliculaSerie);
         buscarGeneroConId(peliculaSerieDto.getIdGenero());
-        return mapper.aPeliculaSerieDto(repository.save(identificarParametroActualizar(peliculaSerie, peliculaSerieDto)));
+        return mapper.aPeliculaSerieDto(repository.save(parametroActualizar(peliculaSerie, peliculaSerieDto)));
     }
 
     @Transactional

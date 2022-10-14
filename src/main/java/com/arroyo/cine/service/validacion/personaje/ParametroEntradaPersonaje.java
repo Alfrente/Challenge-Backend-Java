@@ -68,7 +68,7 @@ public class ParametroEntradaPersonaje {
         if (personajes.isEmpty())
             throw new Excepcion(MENSAJE_CODIGO, MENSAJE, NO_HAY + PERSONAJE + DISPONIBLE, HttpStatus.OK);
 
-        validarDatoEntradaFiltro(name, age, movie);
+        validarFiltro(name, age, movie);
         int numero = numeroFiltro(name, age, movie);
 
         switch (numero) {
@@ -85,7 +85,7 @@ public class ParametroEntradaPersonaje {
         }
     }
 
-    private static void validarDatoEntradaFiltro(String name, String age, String movie) {
+    private static void validarFiltro(String name, String age, String movie) {
         List<String> errores = new ArrayList<>();
         if (name != null && validarNombre(name))
             errores.add(POR_FAVOR_INGRESE + "un name " + VALIDO);
