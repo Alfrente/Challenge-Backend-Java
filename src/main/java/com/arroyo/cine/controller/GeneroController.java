@@ -1,6 +1,6 @@
 package com.arroyo.cine.controller;
 
-import com.arroyo.cine.dto.genero.GeneroDto;
+import com.arroyo.cine.model.dto.GeneroDto;
 import com.arroyo.cine.service.GeneroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -39,7 +40,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método sirve para buscar un genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
-    public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") Integer idGenero) {
+    public ResponseEntity<GeneroDto> getById(@PathVariable("idGenero") String idGenero) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getById(idGenero));
     }
 
@@ -49,9 +50,12 @@ public class GeneroController {
             @ApiResponse(responseCode = "400", description = "No se pudo crear el genero."),
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método es para guarda el genero ")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")
-    public ResponseEntity<GeneroDto> save(@RequestBody @NotNull GeneroDto generoDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(generoDto));
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad genero")     /******************/
+    public ResponseEntity<GeneroDto> save(
+            @RequestParam(value = "nombre", required = false) String nombre,
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(nombre, imagen));
     }
 
     @DeleteMapping
@@ -72,11 +76,11 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     }, description = "Este método sirve para eliminar el genero con el id")
     @Parameter(required = true, description = "Id genero", example = "1")
-    public ResponseEntity<GeneroDto> deleteById(@PathVariable("idGenero") Integer idGenero) {
+    public ResponseEntity<GeneroDto> deleteById(@PathVariable("idGenero") String idGenero) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteById(idGenero));
     }
 
-    @PutMapping("/update/{idGenero}/{nuevoGenero}")
+    @PutMapping("/update/{idGenero}")
     @Operation(summary = "Actualizar genero", responses = {
             @ApiResponse(responseCode = "202", description = "Se modifico el genero."),
             @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
@@ -84,7 +88,11 @@ public class GeneroController {
     }, description = "Este método sirve para actualiza el genero")
     @Parameter(required = true, description = "Id genero", example = "1")
     @Parameter(required = true, description = "Nuevo genero", example = "Acción")
-    public ResponseEntity<GeneroDto> update(@PathVariable("idGenero") Integer idGenero, @PathVariable("nuevoGenero") String nuevoGenero) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.update(idGenero, nuevoGenero));
+    public ResponseEntity<GeneroDto> update(
+            @PathVariable("idGenero") String idGenero,
+            @RequestParam(value = "nombre", required = false) String nombre,
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.update(idGenero, nombre, imagen));
     }
 }

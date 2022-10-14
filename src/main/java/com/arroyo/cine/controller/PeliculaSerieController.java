@@ -1,7 +1,6 @@
 package com.arroyo.cine.controller;
 
-import com.arroyo.cine.dto.pelicula_serie.PeliculaSerieDto;
-import com.arroyo.cine.dto.pelicula_serie.PeliculaSeriePersonalizadoPsDto;
+import com.arroyo.cine.model.dto.PeliculaSerieDto;
 import com.arroyo.cine.service.PeliculaSerieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PeliculaSerieController {
@@ -37,20 +37,6 @@ public class PeliculaSerieController {
         return new ResponseEntity<>(service.getAll(name, genre, order), HttpStatus.OK);
     }
 
-    @GetMapping("/peliculaSerie/getAll")
-    @Operation(summary = "Trae las peliculas y series", description = "Este método trae todas las peliculas y series tiene la opción de filtrar el resultado", responses = {
-            @ApiResponse(responseCode = "200", description = "Petición exitosa."),
-            @ApiResponse(responseCode = "400", description = "No se pudo completar la petición."),
-            @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
-    })
-    @Parameter(description = "name", example = "Guerra z")
-    @Parameter(description = "genre", example = "1")
-    @Parameter(description = "order", example = "ASC")
-    public ResponseEntity<List<PeliculaSeriePersonalizadoPsDto>> getAllParameter(@RequestParam(required = false, name = "name") @Null String name, @RequestParam(required = false, name = "genre")
-    @Null Integer genre, @RequestParam(required = false, name = "order") @Null String order) {
-        return new ResponseEntity<>(service.getAllParameter(name, genre, order), HttpStatus.OK);
-    }
-
     @GetMapping("/peliculaSerie/getById/{id}")
     @Operation(summary = "Buscar pelicula o serie", description = "Este método es para buscar una pelicula o serie con el id", responses = {
             @ApiResponse(responseCode = "200", description = "Petición exitosa."),
@@ -58,7 +44,7 @@ public class PeliculaSerieController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id", example = "1")
-    public ResponseEntity<PeliculaSerieDto> getById(@PathVariable("id") Integer id) {
+    public ResponseEntity<PeliculaSerieDto> getById(@PathVariable("id") String id) {
         return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
     }
 
@@ -82,8 +68,8 @@ public class PeliculaSerieController {
     @Parameter(description = "idMovie", required = true, example = "1")
     @Parameter(description = "idCharacter", required = true, example = "2")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void saveReq(@PathVariable("idMovie") Integer idMovie, @PathVariable("idCharacter") Integer idCharacter) {
-        service.savePersonalizado(idMovie, idCharacter);
+    public ResponseEntity<PeliculaSerieDto> saveReq(@PathVariable("idMovie") String idMovie, @PathVariable("idCharacter") String idCharacter) {
+        return new ResponseEntity<>(service.savePersonalizado(idMovie, idCharacter), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/peliculaSerie")
@@ -106,8 +92,9 @@ public class PeliculaSerieController {
     @Parameter(description = "idMovie", required = true, example = "1")
     @Parameter(description = "idCharacter", required = true, example = "2")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteReq(@PathVariable("idMovie") Integer idMovie, @PathVariable("idCharacter") Integer idCharacter) {
+    public ResponseEntity<Map<String,String>> deletePersonalizado(@PathVariable("idMovie") String idMovie, @PathVariable("idCharacter") String idCharacter) {
         service.deletePersonalizado(idMovie, idCharacter);
+        return new ResponseEntity<>(Map.of("Mensaje", "Recurso eliminado"),HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/peliculaSerie/deleteById/{id}")
@@ -117,7 +104,7 @@ public class PeliculaSerieController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @Parameter(required = true, description = "Id", example = "1")
-    public ResponseEntity<PeliculaSerieDto> deleteById(@PathVariable("id") Integer id) {
+    public ResponseEntity<PeliculaSerieDto> deleteById(@PathVariable("id") String id) {
         return new ResponseEntity<>(service.deleteById(id), HttpStatus.ACCEPTED);
     }
 
@@ -129,8 +116,7 @@ public class PeliculaSerieController {
     })
     @Parameter(required = true, description = "Id", example = "1")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad pelicula_serie")
-    public ResponseEntity<PeliculaSerieDto> update(@PathVariable("id") Integer id, @RequestBody @NotBlank PeliculaSerieDto peliculaSerieDto) {
+    public ResponseEntity<PeliculaSerieDto> update(@PathVariable("id") String id, @RequestBody @NotBlank PeliculaSerieDto peliculaSerieDto) {
         return new ResponseEntity<>(service.update(id, peliculaSerieDto), HttpStatus.ACCEPTED);
     }
-
 }
