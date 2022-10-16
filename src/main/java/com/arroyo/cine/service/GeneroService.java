@@ -1,9 +1,9 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.exception.Excepcion;
-import com.arroyo.cine.model.mapper.genero.GeneroMapper;
 import com.arroyo.cine.model.dto.GeneroDto;
 import com.arroyo.cine.model.entity.Genero;
+import com.arroyo.cine.model.mapper.genero.GeneroMapper;
 import com.arroyo.cine.repository.GeneroRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,14 @@ import static com.arroyo.cine.service.validacion.ValidacionGenerica.validarId;
 import static com.arroyo.cine.service.validacion.genero.validarGeneroEntrada.*;
 import static com.arroyo.cine.service.validacion.imagen.GuardarImagen.*;
 import static com.arroyo.cine.service.validacion.imagen.ValidarImagenEntrada.devolverDirectorioImagen;
+import static com.arroyo.cine.util.statico.Directorio.DIRECTORIO_GENERO;
 import static com.arroyo.cine.util.statico.MensajeError.*;
 
 @Service
 public class GeneroService {
     private final GeneroRepository repository;
-    private final GeneroMapper mapper;
 
-    private static final int directorio = 1;
+    private final GeneroMapper mapper;
 
     public GeneroService(GeneroRepository repository, GeneroMapper mapper) {
         this.repository = repository;
@@ -35,13 +35,13 @@ public class GeneroService {
     public List<GeneroDto> getAll() {
         List<Genero> generoList = repository.findAll();
         verificarHayGenero(generoList);
-        generoList.forEach(genero -> devolverDirectorioImagen(genero.getImagen(), directorio));
+        generoList.forEach(genero -> devolverDirectorioImagen(genero.getImagen(), DIRECTORIO_GENERO));
         return mapper.aListGeneroDto(generoList);
     }
 
     public GeneroDto getById(String idGenero) {
         Genero genero = buscarGeneroConId(idGenero);
-        genero.setImagen(devolverDirectorioImagen(genero.getImagen(), directorio).toString());
+        genero.setImagen(devolverDirectorioImagen(genero.getImagen(), DIRECTORIO_GENERO).toString());
         return mapper.aGeneroDto(genero);
     }
 
@@ -51,7 +51,7 @@ public class GeneroService {
         validarNombreGeneroDto(nombre);
         Genero genero = new Genero();
         genero.setNombre(nombre);
-        genero.setImagen(guardarImagen(imagen, directorio));
+        genero.setImagen(guardarImagen(imagen, DIRECTORIO_GENERO));
         return mapper.aGeneroDto(repository.save(genero));
     }
 
@@ -66,7 +66,7 @@ public class GeneroService {
     @Transactional
     public GeneroDto delete(GeneroDto dto) {
         validarGeneroDto(dto);
-        Genero genero = buscarGeneroConId(dto.getIdGenero());
+        Genero genero = buscarGeneroConId(dto.idGenero());
         validarGeneroDtoEliminar(dto, genero);
         repository.delete(mapper.aGenero(dto));
         return mapper.aGeneroDto(genero);
@@ -76,7 +76,7 @@ public class GeneroService {
     public GeneroDto deleteById(String idGenero) {
         Genero genero = buscarGeneroConId(idGenero);
         repository.deleteById(genero.getIdGenero());
-        borrarImagen(genero.getImagen(), directorio);
+        borrarImagen(genero.getImagen(), DIRECTORIO_GENERO);
         return mapper.aGeneroDto(genero);
     }
 
@@ -90,8 +90,8 @@ public class GeneroService {
         if (nuevoGenero != null)
             genero.setNombre(nuevoGenero);
         if (nuevaImagen != null && genero.getImagen() != null) {
-            borrarImagenActualizar(genero.getImagen(), Objects.requireNonNull(nuevaImagen.getOriginalFilename()), directorio);
-            genero.setImagen(guardarImagen(nuevaImagen, directorio));
+            borrarImagenActualizar(genero.getImagen(), Objects.requireNonNull(nuevaImagen.getOriginalFilename()), DIRECTORIO_GENERO);
+            genero.setImagen(guardarImagen(nuevaImagen, DIRECTORIO_GENERO));
         }
         return mapper.aGeneroDto(genero);
     }

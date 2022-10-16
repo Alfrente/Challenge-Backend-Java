@@ -24,9 +24,9 @@ public class ParametroEntrada {
     }
 
     public static void validarPeliculaSerieDto(PeliculaSerieDto dto) {
-        if (dto != null && dto.getIdPeliculaSerie() == null && dto.getTitulo() == null
-                && dto.getCalifiacion() == null && dto.getCaratula() == null
-                && dto.getFechaCreacion() == null && dto.getIdGenero() == null
+        if (dto != null && dto.idPeliculaSerie() == null && dto.titulo() == null
+                && dto.califiacion() == null && dto.imagen() == null
+                && dto.fechaCreacion() == null && dto.idGenero() == null
         )
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
     }
@@ -54,13 +54,13 @@ public class ParametroEntrada {
 
     public static void verificarParametrosEntradaPeliculaSerie(PeliculaSerieDto dto) {
         List<String> errores = new ArrayList<>();
-        if (dto.getTitulo() == null || !dto.getTitulo().matches(TEXTO_CON_ESPACIOS))
+        if (dto.titulo() == null || !dto.titulo().matches(TEXTO_CON_ESPACIOS))
             errores.add(POR_FAVOR_INGRESE + "el titulo de la " + PELICULA_SERIE + VALIDA);
-        if (dto.getCaratula() == null || validarFormato(dto.getCaratula()))
+        if (dto.imagen() == null || validarFormato(dto.imagen()))
             errores.add(IMAGEN_FORMATO_INCORRECTO);
-        if (dto.getFechaCreacion() == null || validarFecha(dto.getFechaCreacion()))
+        if (dto.fechaCreacion() == null || validarFecha(dto.fechaCreacion()))
             errores.add(POR_FAVOR_INGRESE + "una fecha" + VALIDA);
-        if (dto.getCalifiacion() == null || !validarCalificacion(dto.getCalifiacion()))
+        if (dto.califiacion() == null || !validarCalificacion(dto.califiacion()))
             errores.add(POR_FAVOR_INGRESE + LA + CALIFICACION + VALIDA);
         if (!errores.isEmpty())
             throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
@@ -69,31 +69,31 @@ public class ParametroEntrada {
 
     public static PeliculaSerie parametroActualizar(PeliculaSerie entity, PeliculaSerieDto dto) {
         validarEntradaActualizar(dto);
-        if (dto.getTitulo() != null && dto.getTitulo().matches(TEXTO_CON_ESPACIOS_NUMERO))
-            entity.setTitulo(dto.getTitulo());
-        if (dto.getCaratula() != null && validarFormato(dto.getCaratula()))
-            entity.setImagen(dto.getCaratula());
-        if (dto.getFechaCreacion() != null && !validarFecha(dto.getFechaCreacion()))
-            entity.setFechaCreacion(LocalDate.parse(dto.getFechaCreacion()));
-        if (dto.getCalifiacion() != null && validarCalificacion(dto.getCalifiacion()))
-            entity.setCalifiacion(convertirByte(dto.getCalifiacion()));
-        if (dto.getIdGenero() != null && convertirEntero(dto.getIdGenero()) > 0)
-            entity.setIdGenero(convertirEntero(dto.getIdGenero()));
+        if (dto.titulo() != null && dto.titulo().matches(TEXTO_CON_ESPACIOS_NUMERO))
+            entity.setTitulo(dto.titulo());
+        if (dto.imagen() != null && validarFormato(dto.imagen()))
+            entity.setImagen(dto.imagen());
+        if (dto.fechaCreacion() != null && !validarFecha(dto.fechaCreacion()))
+            entity.setFechaCreacion(LocalDate.parse(dto.fechaCreacion()));
+        if (dto.califiacion() != null && validarCalificacion(dto.califiacion()))
+            entity.setCalifiacion(convertirByte(dto.califiacion()));
+        if (dto.idGenero() != null && convertirEntero(dto.idGenero()) > 0)
+            entity.setIdGenero(convertirEntero(dto.idGenero()));
         return entity;
     }
 
     private static void validarEntradaActualizar(PeliculaSerieDto dto) {
         List<String> errores = new ArrayList<>();
-        if (dto.getTitulo() != null && !dto.getTitulo().matches(TEXTO_CON_ESPACIOS_NUMERO))
-            errores.add(POR_FAVOR_VERIFIQUE + "el titulo de la " + PELICULA_SERIE + " " + dto.getTitulo());
-        if (dto.getCaratula() != null && !validarFormato(dto.getCaratula()))
+        if (dto.titulo() != null && !dto.titulo().matches(TEXTO_CON_ESPACIOS_NUMERO))
+            errores.add(POR_FAVOR_VERIFIQUE + "el titulo de la " + PELICULA_SERIE + " " + dto.titulo());
+        if (dto.imagen() != null && !validarFormato(dto.imagen()))
             errores.add(IMAGEN_FORMATO_INCORRECTO);
-        if (dto.getFechaCreacion() != null && validarFecha(dto.getFechaCreacion()))
-            errores.add(POR_FAVOR_VERIFIQUE + "la fecha " + dto.getFechaCreacion());
-        if (dto.getCalifiacion() != null && !validarCalificacion(dto.getCalifiacion()))
-            errores.add(POR_FAVOR_VERIFIQUE + LA + CALIFICACION + " " + dto.getCalifiacion());
-        if (dto.getIdGenero() != null && convertirEntero(dto.getIdGenero()) <= 0)
-            errores.add(POR_FAVOR_VERIFIQUE + EL + "id genero " + dto.getIdGenero());
+        if (dto.fechaCreacion() != null && validarFecha(dto.fechaCreacion()))
+            errores.add(POR_FAVOR_VERIFIQUE + "la fecha " + dto.fechaCreacion());
+        if (dto.califiacion() != null && !validarCalificacion(dto.califiacion()))
+            errores.add(POR_FAVOR_VERIFIQUE + LA + CALIFICACION + " " + dto.califiacion());
+        if (dto.idGenero() != null && convertirEntero(dto.idGenero()) <= 0)
+            errores.add(POR_FAVOR_VERIFIQUE + EL + "id genero " + dto.idGenero());
         if (!errores.isEmpty())
             throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
     }
@@ -109,13 +109,13 @@ public class ParametroEntrada {
 
     public static void validarDatosSonIgual(PeliculaSerie peliculaSerie, PeliculaSerieDto dto) {
         List<String> errores = new ArrayList<>();
-        if (peliculaSerie.getTitulo() != null && dto.getTitulo() != null && !peliculaSerie.getTitulo().equals(dto.getTitulo()))
+        if (peliculaSerie.getTitulo() != null && dto.titulo() != null && !peliculaSerie.getTitulo().equals(dto.titulo()))
             errores.add(POR_FAVOR_VERIFIQUE + "el titulo");
-        if (peliculaSerie.getFechaCreacion() != null && dto.getFechaCreacion() != null && !peliculaSerie.getFechaCreacion().equals(LocalDate.parse(dto.getFechaCreacion())))
+        if (peliculaSerie.getFechaCreacion() != null && dto.fechaCreacion() != null && !peliculaSerie.getFechaCreacion().equals(LocalDate.parse(dto.fechaCreacion())))
             errores.add(POR_FAVOR_VERIFIQUE + "la fecha de creación");
-        if (peliculaSerie.getIdGenero() != null && dto.getIdGenero() != null && !peliculaSerie.getIdGenero().equals(convertirEntero(dto.getIdGenero())))
+        if (peliculaSerie.getIdGenero() != null && dto.idGenero() != null && !peliculaSerie.getIdGenero().equals(convertirEntero(dto.idGenero())))
             errores.add(POR_FAVOR_VERIFIQUE + "el id genero");
-        if (peliculaSerie.getCalifiacion() != null && dto.getCalifiacion() != null && !peliculaSerie.getCalifiacion().equals(convertirByte(dto.getCalifiacion())))
+        if (peliculaSerie.getCalifiacion() != null && dto.califiacion() != null && !peliculaSerie.getCalifiacion().equals(convertirByte(dto.califiacion())))
             errores.add(POR_FAVOR_VERIFIQUE + "la calificación");
         if (!errores.isEmpty())
             throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);

@@ -42,9 +42,9 @@ public class PeliculaSerie {
     @JoinTable(name = "pelicula_serie_personaje", joinColumns = @JoinColumn(name = "id_pelicula_serie"), inverseJoinColumns = @JoinColumn(name = "id_personaje"))
     private List<Personaje> personajes;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_genero", insertable = false, updatable = false)
-    private Genero genero;
+    private Genero generoPelicula;
 
     public Integer getIdPeliculaSerie() {
         return idPeliculaSerie;
@@ -100,5 +100,13 @@ public class PeliculaSerie {
 
     public void setPersonajes(List<Personaje> personajes) {
         this.personajes = personajes;
+    }
+
+    public Genero getGeneroPelicula() {
+        return generoPelicula;
+    }
+
+    public void setGeneroPelicula(Genero generoPelicula) {
+        this.generoPelicula = generoPelicula;
     }
 }

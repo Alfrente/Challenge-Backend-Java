@@ -29,7 +29,6 @@ public class PeliculaSerieService {
     private final PersonajeRepository personajeRepository;
     private final PeliculaSeriePersonajeService peliculaSeriePersonajeService;
     private final PeliculaSerieMapper mapper;
-    private static final int directorio = 3;
 
     public PeliculaSerieService(PeliculaSerieRepository repository, GeneroRepository generoRepository, PersonajeRepository personajeRepository, PeliculaSeriePersonajeService peliculaSeriePersonajeService, PeliculaSerieMapper mapper) {
         this.repository = repository;
@@ -50,9 +49,9 @@ public class PeliculaSerieService {
     @Transactional
     public PeliculaSerieDto save(PeliculaSerieDto peliculaSerie) {
         validarPeliculaSerieDto(peliculaSerie);
-        buscarGeneroConId(peliculaSerie.getIdGenero());
+        buscarGeneroConId(peliculaSerie.idGenero());
         verificarParametrosEntradaPeliculaSerie(peliculaSerie);
-        verificarParametrosEntradaPersonajes(peliculaSerie.getPersonajes());
+        verificarParametrosEntradaPersonajes(peliculaSerie.personajes());
         return mapper.aPeliculaSerieDto(repository.save(mapper.aPeliculaSerie(peliculaSerie)));
     }
 
@@ -68,17 +67,18 @@ public class PeliculaSerieService {
     public PeliculaSerieDto update(String idPeliculaSerie, PeliculaSerieDto peliculaSerieDto) {
         validarPeliculaSerieDto(peliculaSerieDto);
         PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(idPeliculaSerie);
-        buscarGeneroConId(peliculaSerieDto.getIdGenero());
+        buscarGeneroConId(peliculaSerieDto.idGenero());
         return mapper.aPeliculaSerieDto(repository.save(parametroActualizar(peliculaSerie, peliculaSerieDto)));
     }
 
     @Transactional
     public PeliculaSerieDto delete(PeliculaSerieDto peliculaSerieDto) {
         validarPeliculaSerieDto(peliculaSerieDto);
-        PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(peliculaSerieDto.getIdPeliculaSerie());
+        PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(peliculaSerieDto.idPeliculaSerie());
         verificarParametrosEntradaPeliculaSerie(peliculaSerieDto);
         validarDatosSonIgual(peliculaSerie, peliculaSerieDto);
-        repository.delete(mapper.aPeliculaSerie(setearPersonajesNull(peliculaSerieDto)));
+        repository.delete(mapper.aPeliculaSerie(peliculaSerieDto));
+        //repository.delete(mapper.aPeliculaSerie(setearPersonajesNull(peliculaSerieDto)));
         return mapper.aPeliculaSerieDto(peliculaSerie);
     }
 
@@ -90,16 +90,16 @@ public class PeliculaSerieService {
         peliculaSeriePersonajeService.delete(new PeliculaSeriePersonaje(new FkPeliculaSeriePersonaje(peliculaSerie.getIdPeliculaSerie(), personaje.getIdPersonaje())));
     }
 
+     /*private PeliculaSerieDto setearPersonajesNull(PeliculaSerieDto peliculaSerieDto) {
+        peliculaSerieDto.personajes(null);
+        return peliculaSerieDto;
+    }*/
+
     @Transactional
     public PeliculaSerieDto deleteById(String idPeliculaSerie) {
         Optional<PeliculaSerie> peliculaSerie = Optional.of(buscarPeliculaSerieConId(idPeliculaSerie));
         peliculaSerie.ifPresent(peliculaSerie1 -> repository.deleteById(peliculaSerie1.getIdPeliculaSerie()));
         return mapper.aPeliculaSerieDto(peliculaSerie.get());
-    }
-
-    private PeliculaSerieDto setearPersonajesNull(PeliculaSerieDto peliculaSerieDto) {
-        peliculaSerieDto.setPersonajes(null);
-        return peliculaSerieDto;
     }
 
     private PeliculaSerie buscarPeliculaSerieConId(String idPeliculaSerie) {

@@ -1,17 +1,19 @@
 package com.arroyo.cine.controller;
 
 import com.arroyo.cine.model.dto.GeneroDto;
-import com.arroyo.cine.service.GeneroService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GeneroControllerTest {
 
@@ -23,17 +25,8 @@ class GeneroControllerTest {
     static void beforeAll() {
         controller = Mockito.mock(GeneroController.class);
 
-        generoDto = new GeneroDto();
-        generoDtoPrueba = new GeneroDto();
-
-        generoDto.setIdGenero("1");
-        generoDto.setImagen("boys.jpg");
-        generoDto.setNombre("The boys");
-
-        generoDtoPrueba.setIdGenero("");
-        generoDtoPrueba.setImagen("boys.jpg");
-        generoDtoPrueba.setNombre("The boys");
-
+        generoDto = new GeneroDto("1", "The boys", "boys.jpg", null);
+        generoDtoPrueba = new GeneroDto("1", "The boys", "boys.jpg", null);
 
         generoDtoList = new ArrayList<>();
         generoDtoListPrueba = new ArrayList<>();
@@ -50,10 +43,21 @@ class GeneroControllerTest {
 
     @Test
     void getById() {
+        Mockito.when(controller.getById("1")).thenReturn(new ResponseEntity<>(generoDto, HttpStatus.OK));
+        assertEquals(new ResponseEntity<>(generoDtoPrueba, HttpStatus.OK), controller.getById("1"));
     }
 
     @Test
     void save() {
+        MockMultipartFile filea = new MockMultipartFile(
+                "file",
+                "saludo.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "HOLA".getBytes()
+        );
+
+        Mockito.when(controller.save("Accion pura", filea)).thenReturn(new ResponseEntity<>(generoDto, HttpStatus.CREATED));
+        assertEquals(new ResponseEntity<>(generoDtoPrueba, HttpStatus.CREATED), controller.save("Accion pura", filea));
     }
 
     @Test

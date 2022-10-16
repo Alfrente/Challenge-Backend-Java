@@ -19,7 +19,7 @@ public class validarGeneroEntrada {
     }
 
     public static void validarGeneroDto(GeneroDto dto) {
-        if (dto != null && dto.getNombre() == null && dto.getImagen() == null)
+        if (dto != null && dto.imagen() == null && dto.imagen() == null)
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
     }
 
@@ -30,9 +30,9 @@ public class validarGeneroEntrada {
 
     public static void validarGeneroDtoEliminar(GeneroDto dto, Genero genero) {
         List<String> excepciones = new ArrayList<>();
-        if (dto.getNombre() == null || (!dto.getNombre().equals(genero.getNombre())))
+        if (dto.nombre() == null || (!dto.nombre().equals(genero.getNombre())))
             excepciones.add(POR_FAVOR_VERIFIQUE + "el nombre " + DE_EL + GENERO);
-        if (dto.getImagen() == null || (!dto.getImagen().equals(genero.getImagen())))
+        if (dto.imagen() == null || (!dto.imagen().equals(genero.getImagen())))
             excepciones.add(POR_FAVOR_VERIFIQUE + "la dirección de la imagen");
         if (!excepciones.isEmpty())
             throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, excepciones, HttpStatus.BAD_REQUEST);

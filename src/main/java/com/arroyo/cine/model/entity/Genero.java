@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +23,9 @@ public class Genero {
     @Null
     @Column(unique = true)
     private String imagen;
+
+    @OneToMany(mappedBy = "generoPelicula", fetch = FetchType.LAZY)
+    private List<PeliculaSerie> peliculaSerieList;
 
     public Integer getIdGenero() {
         return idGenero;
@@ -47,13 +51,12 @@ public class Genero {
         this.imagen = imagen;
     }
 
-    @Override
-    public String toString() {
-        return "Genero{" +
-                "idGenero=" + idGenero +
-                ", nombre='" + nombre + '\'' +
-                ", imagen='" + imagen + '\'' +
-                '}';
+    public List<PeliculaSerie> getPeliculaSerieList() {
+        return peliculaSerieList;
+    }
+
+    public void setPeliculaSerieList(List<PeliculaSerie> peliculaSerieList) {
+        this.peliculaSerieList = peliculaSerieList;
     }
 
     @Override

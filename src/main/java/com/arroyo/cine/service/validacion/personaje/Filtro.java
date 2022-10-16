@@ -59,7 +59,6 @@ public class Filtro {
             personaje.setIdPersonaje(null);
             personaje.setHistoria(null);
             personaje.setPeso(null);
-            personaje.setPeliculaSeries(null);
             personaje.setEdad(null);
         }
         return personaje;

@@ -20,26 +20,10 @@ class PersonajeServiceTest {
     @BeforeAll
     static void beforeAll() {
         service = Mockito.mock(PersonajeService.class);
-        personajeDto = new PersonajeDto();
-        personajeDtoPrueba = new PersonajeDto();
+        personajeDto = new PersonajeDto("1","Arroyo", "20", "15.50", "FotoPersonaje.jpg", "Soy productor", null);
+        personajeDtoPrueba = new PersonajeDto("1","Arroyo", "20", "15.50", "FotoPersonaje.jpg", "Soy productor", null);
         personajeDtoList = new ArrayList<>();
         personajeDtoListPrueba = new ArrayList<>();
-
-        personajeDto.setImagen("FotoPersonaje.jpg");
-        personajeDto.setNombre("Arroyo");
-        personajeDto.setIdPersonaje("1");
-        personajeDto.setPeso("15.50");
-        personajeDto.setPeliculaSeries(null);
-        personajeDto.setHistoria("Soy productor");
-        personajeDto.setEdad("20");
-
-        personajeDtoPrueba.setImagen("FotoPersonaje.jpg");
-        personajeDtoPrueba.setNombre("Arroyo");
-        personajeDtoPrueba.setIdPersonaje("1");
-        personajeDtoPrueba.setPeso("15.50");
-        personajeDtoPrueba.setPeliculaSeries(null);
-        personajeDtoPrueba.setHistoria("Soy productor");
-        personajeDtoPrueba.setEdad("20");
 
         personajeDtoList.add(personajeDto);
         personajeDtoListPrueba.add(personajeDtoPrueba);
@@ -50,7 +34,6 @@ class PersonajeServiceTest {
         Mockito.when(service.getAll(null, null, null)).thenReturn(personajeDtoList);
         assertEquals(personajeDtoListPrueba, service.getAll(null, null, null));
     }
-
     @Test
     void getById() {
         Mockito.when(service.getById("1")).thenReturn(personajeDto);

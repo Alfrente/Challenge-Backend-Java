@@ -25,8 +25,8 @@ public class ParametroEntradaPersonaje {
     }
 
     public static void validarPersonajeDto(PersonajeDto dto) {
-        if (dto != null && dto.getIdPersonaje() == null && dto.getHistoria() == null
-                && dto.getPeso() == null && dto.getEdad() == null && dto.getNombre() == null
+        if (dto != null && dto.idPersonaje() == null && dto.historia() == null
+                && dto.peso() == null && dto.edad() == null && dto.nombre() == null
         )
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
     }
@@ -34,17 +34,17 @@ public class ParametroEntradaPersonaje {
 
     public static void compararPersonajeConPersonajeDto(Personaje db, PersonajeDto dto) {
         List<String> errores = new ArrayList<>();
-        if (!db.getIdPersonaje().equals(convertirEntero(dto.getIdPersonaje())))
+        if (!db.getIdPersonaje().equals(convertirEntero(dto.idPersonaje())))
             errores.add(POR_FAVOR_VERIFIQUE + "el id " + DE_EL + PERSONAJE + ".");
-        if (!db.getNombre().equals(dto.getNombre()))
+        if (!db.getNombre().equals(dto.nombre()))
             errores.add(POR_FAVOR_VERIFIQUE + "el nombre " + DE_EL + PERSONAJE + ".");
-        if (!db.getEdad().equals(convertirByte(dto.getEdad())))
+        if (!db.getEdad().equals(convertirByte(dto.edad())))
             errores.add(POR_FAVOR_VERIFIQUE + "la edad " + DE_EL + PERSONAJE + ".");
-        if (!db.getPeso().equals(convertirFloat(dto.getPeso())))
+        if (!db.getPeso().equals(convertirFloat(dto.peso())))
             errores.add(POR_FAVOR_VERIFIQUE + "el peso " + DE_EL + PERSONAJE + ".");
-        if (!db.getImagen().equals(dto.getImagen()))
+        if (!db.getImagen().equals(dto.imagen()))
             errores.add(POR_FAVOR_VERIFIQUE + "la dirección de la imagen " + DE_EL + PERSONAJE + ".");
-        if (!db.getHistoria().equals(dto.getHistoria()))
+        if (!db.getHistoria().equals(dto.historia()))
             errores.add(POR_FAVOR_VERIFIQUE + "la historia " + DE_EL + PERSONAJE + ".");
         if (!errores.isEmpty())
             throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);
@@ -52,13 +52,13 @@ public class ParametroEntradaPersonaje {
 
     public static void validarDatoRecibido(PersonajeDto dto) {
         List<String> errores = new ArrayList<>();
-        if (dto.getNombre() == null || validarNombre(dto.getNombre()))
+        if (dto.nombre() == null || validarNombre(dto.nombre()))
             errores.add(POR_FAVOR_INGRESE + "el nombre " + DE_EL + PERSONAJE);
-        if (dto.getEdad() == null || validarEdad(dto.getEdad()))
+        if (dto.edad() == null || validarEdad(dto.edad()))
             errores.add(POR_FAVOR_INGRESE + "la edad" + VALIDA);
-        if (dto.getPeso() == null || validarPeso(dto.getPeso()))
+        if (dto.peso() == null || validarPeso(dto.peso()))
             errores.add(POR_FAVOR_INGRESE + "el peso" + VALIDO);
-        if (dto.getHistoria() != null && validarHistoria(dto.getHistoria()))
+        if (dto.historia() != null && validarHistoria(dto.historia()))
             errores.add(POR_FAVOR_INGRESE + "la historia" + VALIDA);
         if (!errores.isEmpty())
             throw new Excepciones(MENSAJE_CODIGO_ERROR, ERROR, errores, HttpStatus.BAD_REQUEST);

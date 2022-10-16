@@ -1,9 +1,9 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.exception.Excepcion;
-import com.arroyo.cine.model.mapper.personaje.PersonajeMapper;
 import com.arroyo.cine.model.dto.PersonajeDto;
 import com.arroyo.cine.model.entity.Personaje;
+import com.arroyo.cine.model.mapper.personaje.PersonajeMapper;
 import com.arroyo.cine.repository.PersonajeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,13 +19,13 @@ import static com.arroyo.cine.service.validacion.imagen.GuardarImagen.*;
 import static com.arroyo.cine.service.validacion.imagen.ValidarImagenEntrada.devolverDirectorioImagen;
 import static com.arroyo.cine.service.validacion.personaje.ParametroEntradaPersonaje.*;
 import static com.arroyo.cine.service.validacion.personaje.ValidarCampoIndividual.*;
+import static com.arroyo.cine.util.statico.Directorio.DIRECTORIO_PERSONAJE;
 import static com.arroyo.cine.util.statico.MensajeError.*;
 
 @Service
 public class PersonajeService {
     private final PersonajeRepository repository;
     private final PersonajeMapper mapper;
-    private static final int directorio = 2;
 
     public PersonajeService(PersonajeRepository repository, PersonajeMapper mapper) {
         this.repository = repository;
@@ -34,22 +34,22 @@ public class PersonajeService {
 
     public List<PersonajeDto> getAll(String name, String age, String movie) {
         List<Personaje> personajes = repository.findAll();
-        personajes.forEach(personaje1 -> personaje1.setImagen(devolverDirectorioImagen(personaje1.getImagen(), directorio).toString()));
+        personajes.forEach(personaje1 -> personaje1.setImagen(devolverDirectorioImagen(personaje1.getImagen(), DIRECTORIO_PERSONAJE).toString()));
         return mapper.aListPersonajeDto(filtroPersonaje(personajes, name, age, movie, true));
     }
 
     public PersonajeDto getById(String idPersonaje) {
         Personaje personaje = buscarConId(idPersonaje);
-        personaje.setImagen(devolverDirectorioImagen(personaje.getImagen(), directorio).toString());
+        personaje.setImagen(devolverDirectorioImagen(personaje.getImagen(), DIRECTORIO_PERSONAJE).toString());
         return mapper.aPersonajeDto(personaje);
     }
 
     @Transactional
     public PersonajeDto save(String nombre, String edad, String peso, MultipartFile imagen, String historia) {
         validarPersonajeDto(nombre, edad, peso);
-        PersonajeDto dto = crearPersonajeDto(nombre, edad, peso, historia);
+        PersonajeDto dto = crearPersonajeDto(nombre, edad, peso, historia, imagen);
         validarDatoRecibido(dto);
-        dto.setImagen(guardarImagen(imagen, directorio));
+        guardarImagen(imagen, DIRECTORIO_PERSONAJE);
         return mapper.aPersonajeDto(repository.save(mapper.aPersonaje(dto)));
     }
 
@@ -63,11 +63,11 @@ public class PersonajeService {
     @Transactional
     public PersonajeDto delete(PersonajeDto personajeDto) {
         validarPersonajeDto(personajeDto);
-        Personaje personaje = buscarConId(personajeDto.getIdPersonaje());
+        Personaje personaje = buscarConId(personajeDto.idPersonaje());
         validarDatoRecibido(personajeDto);
         compararPersonajeConPersonajeDto(personaje, personajeDto);
         repository.delete(mapper.aPersonaje(personajeDto));
-        borrarImagen(personaje.getImagen(), directorio);
+        borrarImagen(personaje.getImagen(), DIRECTORIO_PERSONAJE);
         return mapper.aPersonajeDto(personaje);
     }
 
@@ -75,7 +75,7 @@ public class PersonajeService {
     public PersonajeDto deleteById(String idPersonaje) {
         Personaje personaje = buscarConId(idPersonaje);
         repository.deleteById(convertirEntero(idPersonaje));
-        borrarImagen(personaje.getImagen(), directorio);
+        borrarImagen(personaje.getImagen(), DIRECTORIO_PERSONAJE);
         return mapper.aPersonajeDto(personaje);
     }
 
@@ -85,13 +85,8 @@ public class PersonajeService {
                 new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, EL + PERSONAJE + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 
-    private PersonajeDto crearPersonajeDto(String nombre, String edad, String peso, String historia) {
-        PersonajeDto dto = new PersonajeDto();
-        dto.setNombre(nombre);
-        dto.setEdad(edad);
-        dto.setPeso(peso);
-        dto.setHistoria(historia);
-        return dto;
+    private PersonajeDto crearPersonajeDto(String nombre, String edad, String peso, String historia, MultipartFile imagen) {
+        return new PersonajeDto(null,nombre, edad, peso, historia, imagen.getOriginalFilename(), null);
     }
 
     private PersonajeDto verificarDatoModificar(String nombre, String edad, String peso, MultipartFile imagen, String historia, Personaje personaje) {
@@ -106,8 +101,8 @@ public class PersonajeService {
         if (historia != null && !historia.isBlank()) personaje.setHistoria(historia);
 
         if (imagen != null && personaje.getImagen() != null) {
-            borrarImagenActualizar(personaje.getImagen(), Objects.requireNonNull(imagen.getOriginalFilename()), directorio);
-            personaje.setImagen(guardarImagen(imagen, directorio));
+            borrarImagenActualizar(personaje.getImagen(), Objects.requireNonNull(imagen.getOriginalFilename()), DIRECTORIO_PERSONAJE);
+            personaje.setImagen(guardarImagen(imagen, DIRECTORIO_PERSONAJE));
         }
 
         return mapper.aPersonajeDto(personaje);

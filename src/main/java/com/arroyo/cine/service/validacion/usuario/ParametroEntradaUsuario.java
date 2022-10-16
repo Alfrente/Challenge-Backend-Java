@@ -11,9 +11,9 @@ import static com.arroyo.cine.util.statico.MensajeError.*;
 public class ParametroEntradaUsuario {
 
     public static void validarUsuarioDto(UsuarioDto dto) {
-        if (dto != null && dto.getIdUsuario() == null
-                && dto.getUsuario() == null && dto.getContrasena() == null
-                && dto.getCorreo() == null && dto.getRol() == null
+        if (dto != null && dto.idUsuario() == null
+                && dto.usuario() == null && dto.contrasena() == null
+                && dto.correo() == null && dto.rol() == null
         )
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
     }

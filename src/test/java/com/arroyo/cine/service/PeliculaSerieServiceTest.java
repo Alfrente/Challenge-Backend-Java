@@ -21,27 +21,10 @@ class PeliculaSerieServiceTest {
     @BeforeAll
     static void beforeAll() {
         service = Mockito.mock(PeliculaSerieService.class);
-        peliculaSerieDto = new PeliculaSerieDto();
-        peliculaSerieDtoPrueba = new PeliculaSerieDto();
+        peliculaSerieDto = new PeliculaSerieDto("1","El agua","pelicula.jpg","2020-09-16","2", "2", null);
+        peliculaSerieDtoPrueba = new PeliculaSerieDto("1","El agua","pelicula.jpg","2020-09-16","2", "2", null);
         peliculaSerieDtoList = new ArrayList<>();
         peliculaSerieDtoListPrueba = new ArrayList<>();
-
-        peliculaSerieDto.setIdPeliculaSerie("1");
-        peliculaSerieDto.setPersonajes(null);
-        peliculaSerieDto.setIdGenero("2");
-        peliculaSerieDto.setCalifiacion("5");
-        peliculaSerieDto.setFechaCreacion("2020-09-16");
-        peliculaSerieDto.setTitulo("El agua");
-        peliculaSerieDto.setCaratula("pelicula.jpg");
-
-        peliculaSerieDtoPrueba.setIdPeliculaSerie("1");
-        peliculaSerieDtoPrueba.setPersonajes(null);
-        peliculaSerieDtoPrueba.setIdGenero("2");
-        peliculaSerieDtoPrueba.setCalifiacion("5");
-        peliculaSerieDtoPrueba.setFechaCreacion("2020-09-16");
-        peliculaSerieDtoPrueba.setTitulo("El agua");
-        peliculaSerieDtoPrueba.setCaratula("pelicula.jpg");
-
 
         peliculaSerieDtoList.add(peliculaSerieDto);
         peliculaSerieDtoListPrueba.add(peliculaSerieDtoPrueba);

@@ -29,24 +29,24 @@ public class UsuarioService {
     @Transactional
     public void save(UsuarioDto dto) {
         validarUsuarioDto(dto);
-        validarCorreo(dto.getCorreo());
-        validarUsuario(dto.getUsuario());
-        validarSiExisteUsuario(dto.getUsuario());
-        validarSiExisteCorreo(dto.getCorreo());
-        validarRol(dto.getRol());
-        dto.setContrasena(passwordEncoder.encode(dto.getContrasena()));
-        repository.save(mapper.aUsuario(dto));
+        validarCorreo(dto.correo());
+        validarUsuario(dto.usuario());
+        validarSiExisteUsuario(dto.usuario());
+        validarSiExisteCorreo(dto.correo());
+        validarRol(dto.rol());
+        UsuarioDto usuario = new UsuarioDto(dto.idUsuario(), dto.usuario(), dto.correo(), passwordEncoder.encode(dto.contrasena()), dto.rol());
+        repository.save(mapper.aUsuario(usuario));
     }
 
     @Transactional
     public void saveRolUser(UsuarioDto dto) {
-        dto.setRol("ROLE_USER");
-        save(dto);
+        UsuarioDto usuario = new UsuarioDto(dto.idUsuario(), dto.usuario(), dto.correo(), passwordEncoder.encode(dto.contrasena()), "ROLE_USER");
+        save(usuario);
     }
 
     @Transactional
     public void saveLineaComando(UsuarioDto dto) {
-        if (correoExiste(dto.getCorreo()))
+        if (correoExiste(dto.correo()))
             repository.save(mapper.aUsuario(dto));
     }
 

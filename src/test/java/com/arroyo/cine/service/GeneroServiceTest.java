@@ -4,10 +4,13 @@ import com.arroyo.cine.model.dto.GeneroDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GeneroServiceTest {
 
@@ -19,17 +22,8 @@ class GeneroServiceTest {
     static void beforeAll() {
         service = Mockito.mock(GeneroService.class);
 
-        generoDto = new GeneroDto();
-        generoDtoPrueba = new GeneroDto();
-
-        generoDto.setIdGenero("1");
-        generoDto.setImagen("boys.jpg");
-        generoDto.setNombre("The boys");
-
-        generoDtoPrueba.setIdGenero("1");
-        generoDtoPrueba.setImagen("boys.jpg");
-        generoDtoPrueba.setNombre("The boys");
-
+        generoDto = new GeneroDto("1","The boys", "boys.jpg", null);
+        generoDtoPrueba = new GeneroDto("1","The boys", "boys.jpg", null);
 
         generoDtoList = new ArrayList<>();
         generoDtoListPrueba = new ArrayList<>();

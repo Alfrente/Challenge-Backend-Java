@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.arroyo.cine</groupId>
     <artifactId>cine</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>cine</name>
     <description>El proyecto trata sobre el back de una app de cine</description>
     <properties>
