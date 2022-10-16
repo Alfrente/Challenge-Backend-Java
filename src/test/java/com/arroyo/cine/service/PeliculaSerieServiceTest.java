@@ -16,7 +16,6 @@ class PeliculaSerieServiceTest {
 
     private static PeliculaSerieService service;
     private static PeliculaSerieDto peliculaSerieDto, peliculaSerieDtoPrueba;
-    private static PersonajeDto personajeDto;
     private static List<PeliculaSerieDto> peliculaSerieDtoList, peliculaSerieDtoListPrueba;
 
     @BeforeAll
@@ -24,17 +23,8 @@ class PeliculaSerieServiceTest {
         service = Mockito.mock(PeliculaSerieService.class);
         peliculaSerieDto = new PeliculaSerieDto();
         peliculaSerieDtoPrueba = new PeliculaSerieDto();
-        personajeDto = new PersonajeDto();
         peliculaSerieDtoList = new ArrayList<>();
         peliculaSerieDtoListPrueba = new ArrayList<>();
-
-        personajeDto.setImagen("FotoPersonaje.jpg");
-        personajeDto.setNombre("Arroyo");
-        personajeDto.setIdPersonaje("1");
-        personajeDto.setPeso("15.50");
-        personajeDto.setPeliculaSeries(null);
-        personajeDto.setHistoria("Soy productor");
-        personajeDto.setEdad("20");
 
         peliculaSerieDto.setIdPeliculaSerie("1");
         peliculaSerieDto.setPersonajes(null);
@@ -94,10 +84,8 @@ class PeliculaSerieServiceTest {
     }
 
     @Test
-    void deletePersonalizado() {
-    }
-
-    @Test
     void deleteById() {
+        Mockito.when(service.deleteById("1")).thenReturn(peliculaSerieDto);
+        assertEquals(peliculaSerieDtoPrueba, service.deleteById("1"));
     }
 }

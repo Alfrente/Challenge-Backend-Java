@@ -94,7 +94,7 @@ public class PersonajeService {
         return dto;
     }
 
-    public PersonajeDto verificarDatoModificar(String nombre, String edad, String peso, MultipartFile imagen, String historia, Personaje personaje) {
+    private PersonajeDto verificarDatoModificar(String nombre, String edad, String peso, MultipartFile imagen, String historia, Personaje personaje) {
         validarNombreError(nombre);
         validarEdadError(edad);
         validarPesoError(peso);

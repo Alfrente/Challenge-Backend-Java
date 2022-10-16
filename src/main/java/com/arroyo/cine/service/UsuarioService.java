@@ -26,10 +26,6 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UsuarioDto getById(){
-        return mapper.aUsuarioDto(repository.findById(1).orElseThrow());
-    }
-
     @Transactional
     public void save(UsuarioDto dto) {
         validarUsuarioDto(dto);
@@ -58,8 +54,6 @@ public class UsuarioService {
         if (!correoExiste(correo))
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, "El correo " + correo + " no esta disponible", HttpStatus.BAD_REQUEST);
     }
-
-
 
     private boolean correoExiste(String correo) {
         return repository.findByCorreo(correo) == null;
