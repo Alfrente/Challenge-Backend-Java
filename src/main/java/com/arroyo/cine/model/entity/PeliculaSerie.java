@@ -102,9 +102,9 @@ public class PeliculaSerie {
         this.personajes = personajes;
     }
 
-    public Genero getGeneroPelicula() {
+   /* public Genero getGeneroPelicula() {
         return generoPelicula;
-    }
+    }*/
 
     public void setGeneroPelicula(Genero generoPelicula) {
         this.generoPelicula = generoPelicula;

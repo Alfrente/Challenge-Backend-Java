@@ -37,7 +37,6 @@ public class GuardarImagen {
         }
     }
 
-
     public static void borrarImagenActualizar(String nombreImageVieja, String nombreImageNueva, int directorio){
         if (!nombreImageNueva.equals(nombreImageVieja)){
             borrarImagen(nombreImageVieja, directorio);

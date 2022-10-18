@@ -54,7 +54,7 @@ public class PersonajeController {
     })
     @Parameter(description = "nombre", example = "Andres Restrepo", required = true)
     @Parameter(description = "edad", example = "20", required = true)
-    @Parameter(description = "peso", example = "18.72 k", required = true)
+    @Parameter(description = "peso", example = "18.72", required = true)
     @Parameter(description = "imagen")
     @Parameter(description = "historia")
     public ResponseEntity<PersonajeDto> save(
@@ -98,7 +98,7 @@ public class PersonajeController {
     @Parameter(description = "Id personaje", example = "1", required = true)
     @Parameter(description = "nombre", example = "Andres Restrepo", required = true)
     @Parameter(description = "edad", example = "20", required = true)
-    @Parameter(description = "peso", example = "18.72 k", required = true)
+    @Parameter(description = "peso", example = "18.72", required = true)
     @Parameter(description = "imagen")
     @Parameter(description = "historia")
     public ResponseEntity<PersonajeDto> update(

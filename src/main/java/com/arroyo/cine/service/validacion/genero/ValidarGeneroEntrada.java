@@ -13,13 +13,13 @@ import java.util.List;
 import static com.arroyo.cine.util.statico.ExprecionRegular.TEXTO_ESPACIO_NUMERO;
 import static com.arroyo.cine.util.statico.MensajeError.*;
 
-public class validarGeneroEntrada {
+public class ValidarGeneroEntrada {
 
-    private validarGeneroEntrada() {
+    private ValidarGeneroEntrada() {
     }
 
     public static void validarGeneroDto(GeneroDto dto) {
-        if (dto != null && dto.imagen() == null && dto.imagen() == null)
+        if (dto != null && dto.imagen() == null && dto.nombre() == null)
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
     }
 

@@ -8,14 +8,11 @@ import java.util.Objects;
 public class PeliculaSeriePersonaje {
 
     @EmbeddedId
-    private FkPeliculaSeriePersonaje fkCompuesta;
+    private final FkPeliculaSeriePersonaje fkCompuesta;
 
-    public PeliculaSeriePersonaje() {
-    }
-
-    public FkPeliculaSeriePersonaje getFkCompuesta() {
+    /*public FkPeliculaSeriePersonaje getFkCompuesta() {
         return fkCompuesta;
-    }
+    }*/
 
     public PeliculaSeriePersonaje(FkPeliculaSeriePersonaje fkCompuesta) {
         this.fkCompuesta = fkCompuesta;

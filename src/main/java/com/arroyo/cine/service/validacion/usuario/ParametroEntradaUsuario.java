@@ -9,6 +9,8 @@ import static com.arroyo.cine.util.statico.ExprecionRegular.TEXTO_CON_ESPACIOS_N
 import static com.arroyo.cine.util.statico.MensajeError.*;
 
 public class ParametroEntradaUsuario {
+    private ParametroEntradaUsuario() {
+    }
 
     public static void validarUsuarioDto(UsuarioDto dto) {
         if (dto != null && dto.idUsuario() == null

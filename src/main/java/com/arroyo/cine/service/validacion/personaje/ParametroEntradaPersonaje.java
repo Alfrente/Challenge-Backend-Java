@@ -31,7 +31,6 @@ public class ParametroEntradaPersonaje {
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, INGRESE_DATOS_REQUERIDOS, HttpStatus.BAD_REQUEST);
     }
 
-
     public static void compararPersonajeConPersonajeDto(Personaje db, PersonajeDto dto) {
         List<String> errores = new ArrayList<>();
         if (!db.getIdPersonaje().equals(convertirEntero(dto.idPersonaje())))
@@ -71,18 +70,13 @@ public class ParametroEntradaPersonaje {
         validarFiltro(name, age, movie);
         int numero = numeroFiltro(name, age, movie);
 
-        switch (numero) {
-            case 1:
-                return filtroTresCampos(personajes, name, age, movie, ponerCampoNull);
-            case 2:
-                return filtroNombre(personajes, name, ponerCampoNull);
-            case 3:
-                return filtroEdad(personajes, age, ponerCampoNull);
-            case 4:
-                return filtroId(personajes, movie, ponerCampoNull);
-            default:
-                return personajes;
-        }
+        return switch (numero) {
+            case 1 -> filtroTresCampos(personajes, name, age, movie, ponerCampoNull);
+            case 2 -> filtroNombre(personajes, name, ponerCampoNull);
+            case 3 -> filtroEdad(personajes, age, ponerCampoNull);
+            case 4 -> filtroId(personajes, movie, ponerCampoNull);
+            default -> personajes;
+        };
     }
 
     private static void validarFiltro(String name, String age, String movie) {

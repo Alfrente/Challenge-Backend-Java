@@ -15,7 +15,7 @@ import java.util.Objects;
 
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.convertirEntero;
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.validarId;
-import static com.arroyo.cine.service.validacion.genero.validarGeneroEntrada.*;
+import static com.arroyo.cine.service.validacion.genero.ValidarGeneroEntrada.*;
 import static com.arroyo.cine.service.validacion.imagen.GuardarImagen.*;
 import static com.arroyo.cine.service.validacion.imagen.ValidarImagenEntrada.devolverDirectorioImagen;
 import static com.arroyo.cine.util.statico.Directorio.DIRECTORIO_GENERO;
@@ -60,7 +60,8 @@ public class GeneroService {
         Genero genero = buscarGeneroConId(idGenero);
         validarParametro(nuevoGenero, nuevaImagen);
         validarNombreGeneroDto(nuevoGenero);
-        return mapper.aGeneroDto(repository.save(mapper.aGenero(verificarDatoModificar(nuevoGenero, nuevaImagen, genero))));
+        repository.save((verificarDatoModificar(nuevoGenero, nuevaImagen, genero)));
+        return mapper.aGeneroDto(buscarGeneroConId(idGenero));
     }
 
     @Transactional
@@ -86,13 +87,13 @@ public class GeneroService {
                 orElseThrow(() -> new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, EL + GENERO + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 
-    private GeneroDto verificarDatoModificar(String nuevoGenero, MultipartFile nuevaImagen, Genero genero){
+    private Genero verificarDatoModificar(String nuevoGenero, MultipartFile nuevaImagen, Genero genero){
         if (nuevoGenero != null)
             genero.setNombre(nuevoGenero);
         if (nuevaImagen != null && genero.getImagen() != null) {
             borrarImagenActualizar(genero.getImagen(), Objects.requireNonNull(nuevaImagen.getOriginalFilename()), DIRECTORIO_GENERO);
             genero.setImagen(guardarImagen(nuevaImagen, DIRECTORIO_GENERO));
         }
-        return mapper.aGeneroDto(genero);
+        return genero;
     }
 }

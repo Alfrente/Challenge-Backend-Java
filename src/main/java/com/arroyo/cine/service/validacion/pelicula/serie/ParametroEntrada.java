@@ -38,26 +38,21 @@ public class ParametroEntrada {
         validarFiltro(name, genre, order);
         int numero = numeroFiltro(name, genre, order);
 
-        switch (numero) {
-            case 1:
-                return filtroNombreGenero(pelicula, name, genre);
-            case 2:
-                return filtroNombre(pelicula, name);
-            case 3:
-                return filtroGenero(pelicula, genre);
-            case 4:
-                return filtroOrden(pelicula, order);
-            default:
-                return pelicula;
-        }
+        return switch (numero) {
+            case 1 -> filtroNombreGenero(pelicula, name, genre);
+            case 2 -> filtroNombre(pelicula, name);
+            case 3 -> filtroGenero(pelicula, genre);
+            case 4 -> filtroOrden(pelicula, order);
+            default -> pelicula;
+        };
     }
 
     public static void verificarParametrosEntradaPeliculaSerie(PeliculaSerieDto dto) {
         List<String> errores = new ArrayList<>();
         if (dto.titulo() == null || !dto.titulo().matches(TEXTO_CON_ESPACIOS))
             errores.add(POR_FAVOR_INGRESE + "el titulo de la " + PELICULA_SERIE + VALIDA);
-        if (dto.imagen() == null || validarFormato(dto.imagen()))
-            errores.add(IMAGEN_FORMATO_INCORRECTO);
+        if (dto.imagen() != null && !validarFormato(dto.imagen()))
+            errores.add(IMAGEN_FORMATO_INCORRECTO + " valida para la película o serie");
         if (dto.fechaCreacion() == null || validarFecha(dto.fechaCreacion()))
             errores.add(POR_FAVOR_INGRESE + "una fecha" + VALIDA);
         if (dto.califiacion() == null || !validarCalificacion(dto.califiacion()))

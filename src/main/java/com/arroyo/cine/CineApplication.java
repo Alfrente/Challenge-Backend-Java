@@ -20,15 +20,15 @@ public class CineApplication {
         SpringApplication.run(CineApplication.class, args);
     }
 
-	@Bean
-    CommandLineRunner lineRunner(UsuarioService service, PasswordEncoder encoder){
+    @Bean
+    CommandLineRunner lineRunner(UsuarioService service, PasswordEncoder encoder) {
         logger.info("Se creo el usuario: user, contraseña: user");
         logger.info("Se creo el usuario: admin, contraseña: admin");
         crearDirectorio();
         return args -> {
-            service.saveLineaComando(new UsuarioDto("user","user@gmail.com",encoder.encode("user"),"ROLE_USER"));
-            service.saveLineaComando(new UsuarioDto("admin","admin@gmail.com",encoder.encode("admin"),"ROLE_ADMIN"));
-		};
+            service.saveLineaComando(new UsuarioDto(null, "user", "user@gmail.com", encoder.encode("user"), "ROLE_USER"));
+            service.saveLineaComando(new UsuarioDto(null, "admin", "admin@gmail.com", encoder.encode("admin"), "ROLE_ADMIN"));
+        };
     }
 
 

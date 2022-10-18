@@ -1,10 +1,11 @@
 package com.arroyo.cine.model.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
@@ -23,16 +24,17 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nombreUsuario, String correo, String contrasena, String rol) {
+
+    /*public Usuario(String nombreUsuario, String correo, String contrasena, String rol) {
         this.nombreUsuario = nombreUsuario;
         this.correo = correo;
         this.contrasena = contrasena;
         this.rol = rol;
-    }
+    }*/
 
-    public Integer getIdUsuario() {
+    /*public Integer getIdUsuario() {
         return idUsuario;
-    }
+    }*/
 
     public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
@@ -46,9 +48,9 @@ public class Usuario {
         this.nombreUsuario = nombreUsuario;
     }
 
-    public String getCorreo() {
+    /*public String getCorreo() {
         return correo;
-    }
+    }*/
 
     public void setCorreo(String correo) {
         this.correo = correo;

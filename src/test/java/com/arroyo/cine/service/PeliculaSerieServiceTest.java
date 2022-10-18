@@ -1,8 +1,6 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.model.dto.PeliculaSerieDto;
-import com.arroyo.cine.model.dto.PersonajeDto;
-import com.arroyo.cine.model.entity.PeliculaSerie;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,7 +8,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PeliculaSerieServiceTest {
 

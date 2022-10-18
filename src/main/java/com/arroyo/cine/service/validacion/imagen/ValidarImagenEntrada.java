@@ -29,10 +29,10 @@ public class ValidarImagenEntrada {
 
     public static void validarExisteImagen(String nombreImagen, int directorio) {
         if (devolverDirectorioImagen(nombreImagen, directorio).exists())
-            throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, "la imagen " + nombreImagen+" ya existe", HttpStatus.BAD_REQUEST);
+            throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, "la imagen " + nombreImagen + " ya existe", HttpStatus.BAD_REQUEST);
     }
 
-    public static void validarFormatoImagen(String nombreImagen){
+    public static void validarFormatoImagen(String nombreImagen) {
         if (!validarFormato(nombreImagen))
             throw new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, IMAGEN_FORMATO_INCORRECTO, HttpStatus.BAD_REQUEST);
     }
@@ -41,8 +41,14 @@ public class ValidarImagenEntrada {
         String directorio;
         if (nombreImagen != null) {
             directorio = cambiarDirectorio(directorioIMagen);
-            return new File(directorio, nombreImagen);
+            return buscarImagenDirectorio(new File(directorio, nombreImagen));
         }
         return new File("");
+    }
+
+    private static File buscarImagenDirectorio(File file) {
+        if (file.exists())
+            return file;
+        return new File(file.getName());
     }
 }

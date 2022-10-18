@@ -2,16 +2,14 @@ package com.arroyo.cine.controller.advice;
 
 import com.arroyo.cine.exception.Excepcion;
 import com.arroyo.cine.exception.Excepciones;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.arroyo.cine.util.statico.MensajeError.*;
+import static com.arroyo.cine.util.statico.MensajeError.FECHA_ACTUAL;
 
 @ControllerAdvice
 public class ControllerAdviceGlobal {

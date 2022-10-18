@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.convertirEntero;
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.validarNumero;
@@ -21,21 +20,21 @@ public class Filtro {
 
     public static List<PeliculaSerie> filtroNombreGenero(List<PeliculaSerie> pelicula, String name, String genre) {
         return pelicula.stream().filter(pelicula1 -> pelicula1.getTitulo().equals(name) &&
-                pelicula1.getIdGenero().equals(convertirEntero(genre))).map(setearNull).collect(Collectors.toList());
+                pelicula1.getIdGenero().equals(convertirEntero(genre))).map(setearNull).toList();
     }
 
     public static List<PeliculaSerie> filtroNombre(List<PeliculaSerie> pelicula, String name) {
         return pelicula.stream().filter(pelicula1 -> pelicula1.getTitulo().equals(name)).
-                map(setearNull).collect(Collectors.toList());
+                map(setearNull).toList();
     }
 
     public static List<PeliculaSerie> filtroGenero(List<PeliculaSerie> pelicula, String genre) {
         return pelicula.stream().filter(pelicula1 -> pelicula1.getIdGenero().equals(convertirEntero(genre))).
-                map(setearNull).collect(Collectors.toList());
+                map(setearNull).toList();
     }
 
     public static List<PeliculaSerie> filtroOrden(List<PeliculaSerie> pelicula, String order) {
-        return ordenarLista(pelicula, order).stream().map(setearNull).collect(Collectors.toList());
+        return ordenarLista(pelicula, order).stream().map(setearNull).toList();
     }
 
     private static final UnaryOperator<PeliculaSerie> setearNull = peliculaSerie -> {

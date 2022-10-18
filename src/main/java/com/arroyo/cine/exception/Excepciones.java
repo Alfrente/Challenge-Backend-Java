@@ -5,13 +5,10 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 public class Excepciones extends RuntimeException{
-    private String llaveMapMensajeOErrorCodigo;
-    private String llaveMapMensajeOError;
-    private List<String> mensajes;
-    private HttpStatus codigo;
-
-    public Excepciones() {
-    }
+    private final String llaveMapMensajeOErrorCodigo;
+    private final String llaveMapMensajeOError;
+    private final List<String> mensajes;
+    private final HttpStatus codigo;
 
     public Excepciones(String llaveMapMensajeOErrorCodigo, String llaveMapMensajeOError, List<String> mensajes, HttpStatus codigo) {
         this.llaveMapMensajeOErrorCodigo = llaveMapMensajeOErrorCodigo;

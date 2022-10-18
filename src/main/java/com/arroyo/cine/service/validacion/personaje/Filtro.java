@@ -5,10 +5,8 @@ import com.arroyo.cine.model.entity.Personaje;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.*;
-import static com.arroyo.cine.service.validacion.ValidacionGenerica.validarNumero;
 import static com.arroyo.cine.service.validacion.personaje.ValidarCampoIndividual.validarEdad;
 import static com.arroyo.cine.service.validacion.personaje.ValidarCampoIndividual.validarNombre;
 
@@ -21,22 +19,22 @@ public class Filtro {
         return personajes.stream().filter(personaje -> personaje.getNombre().equals(name)
                         && Objects.equals(personaje.getEdad(), convertirByte(age)) && Objects.equals(personaje.getIdPersonaje(),
                         convertirEntero(movie)))
-                .map(personaje1 -> ponerNullCampoDto.apply(personaje1, ponerCampoNull)).collect(Collectors.toList());
+                .map(personaje1 -> ponerNullCampoDto.apply(personaje1, ponerCampoNull)).toList();
     }
 
     public static List<Personaje> filtroNombre(List<Personaje> personajes, String name, Boolean ponerCampoNull) {
         return personajes.stream().filter(personaje -> personaje.getNombre().equals(name))
-                .map(personaje1 -> ponerNullCampoDto.apply(personaje1, ponerCampoNull)).collect(Collectors.toList());
+                .map(personaje1 -> ponerNullCampoDto.apply(personaje1, ponerCampoNull)).toList();
     }
 
     public static List<Personaje> filtroEdad(List<Personaje> personajes, String age, Boolean ponerCampoNull) {
         return personajes.stream().filter(personaje -> Objects.equals(personaje.getEdad(), convertirByte(age)))
-                .map(personajeStream -> ponerNullCampoDto.apply(personajeStream, ponerCampoNull)).collect(Collectors.toList());
+                .map(personajeStream -> ponerNullCampoDto.apply(personajeStream, ponerCampoNull)).toList();
     }
 
     public static List<Personaje> filtroId(List<Personaje> personajes, String movie, Boolean ponerCampoNull) {
         return personajes.stream().filter(personaje -> Objects.equals(personaje.getIdPersonaje(), convertirEntero(movie)))
-                .map(personaje1 -> ponerNullCampoDto.apply(personaje1, ponerCampoNull)).collect(Collectors.toList());
+                .map(personaje1 -> ponerNullCampoDto.apply(personaje1, ponerCampoNull)).toList();
     }
 
     public static int numeroFiltro(String name, String age, String movie) {

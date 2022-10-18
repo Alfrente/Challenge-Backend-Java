@@ -86,7 +86,9 @@ public class PersonajeService {
     }
 
     private PersonajeDto crearPersonajeDto(String nombre, String edad, String peso, String historia, MultipartFile imagen) {
-        return new PersonajeDto(null,nombre, edad, peso, historia, imagen.getOriginalFilename(), null);
+        if (imagen != null)
+            return new PersonajeDto(null, nombre, edad, peso, imagen.getOriginalFilename(), historia, null);
+        return new PersonajeDto(null, nombre, edad, peso, null, historia, null);
     }
 
     private PersonajeDto verificarDatoModificar(String nombre, String edad, String peso, MultipartFile imagen, String historia, Personaje personaje) {
