@@ -71,4 +71,14 @@ public class Genero {
     public int hashCode() {
         return Objects.hash(idGenero, nombre, imagen);
     }
+
+    @Override
+    public String toString() {
+        return "Genero{" +
+                "idGenero=" + idGenero +
+                ", nombre='" + nombre + '\'' +
+                ", imagen='" + imagen + '\'' +
+                ", peliculaSerieList=" + peliculaSerieList +
+                '}';
+    }
 }

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.arroyo.cine.service.validacion.imagen.GuardarImagen.borrarImagen;
+import static com.arroyo.cine.service.validacion.imagen.GuardarImagen.crearDirectorio;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GeneroServiceTest {
@@ -44,8 +45,10 @@ class GeneroServiceTest {
 
     @BeforeAll
     static void beforeAll() {
-        genero = new Genero();
+        crearDirectorio();
         PeliculaSerie peliculaSerie = new PeliculaSerie();
+        imagen = new MockMultipartFile("prueba", "prueba.jpg", MediaType.TEXT_PLAIN_VALUE, "prueba".getBytes());
+        genero = new Genero();
         peliculaSerieList = new ArrayList<>();
         generoList = new ArrayList<>();
         generoDtoList = new ArrayList<>();
@@ -62,17 +65,6 @@ class GeneroServiceTest {
         genero.setImagen("boys.jpg");
 
         peliculaSerieList.add(peliculaSerie);
-
-        imagen = new MockMultipartFile("prueba",
-                "prueba.jpg",
-                MediaType.TEXT_PLAIN_VALUE,
-                "prueba".getBytes()
-        );
-    }
-
-    @AfterEach
-    void tearDown() {
-        borrarImagen(imagen.getOriginalFilename(), 1);
     }
 
     @Test
@@ -99,6 +91,7 @@ class GeneroServiceTest {
         Mockito.when(serviceMock.save("La biblia", imagen)).thenReturn(generoDto);
         Mockito.when(service.save("La biblia", imagen)).thenReturn(generoDto);
         assertEquals(generoDto, serviceMock.save("La biblia", imagen));
+        borrarImagen(imagen.getOriginalFilename(), 1);
     }
 
     @Test
@@ -111,11 +104,12 @@ class GeneroServiceTest {
         Mockito.when(repository.findById(1)).thenReturn(Optional.of(genero));
         Mockito.when(serviceMock.update("1", "The boys modificado", imagen)).thenReturn(generoModificado);
         assertEquals(generoModificado, service.update("1", "The boys modificado", imagen));
+        borrarImagen(imagen.getOriginalFilename(), 1);
     }
 
     @Test
     void delete() {
-        GeneroDto generoDto = new GeneroDto("1", "The boys","boys.jpg", null);
+        GeneroDto generoDto = new GeneroDto("1", "The boys", "boys.jpg", null);
         Mockito.when(repository.findById(1)).thenReturn(Optional.of(genero));
         Mockito.when(serviceMock.delete(generoDto)).thenReturn(generoDto);
         assertEquals(generoDto, service.delete(generoDto));

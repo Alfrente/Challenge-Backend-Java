@@ -1,72 +1,137 @@
 package com.arroyo.cine.service;
 
 import com.arroyo.cine.model.dto.PeliculaSerieDto;
+import com.arroyo.cine.model.dto.PersonajeDto;
+import com.arroyo.cine.model.entity.*;
+import com.arroyo.cine.model.mapper.pelicula_serie.PeliculaSerieMapper;
+import com.arroyo.cine.model.mapper.pelicula_serie.PeliculaSerieMapperImpl;
+import com.arroyo.cine.model.mapper.pelicula_serie.PersonajeComplementoPeliculaSerieMapper;
+import com.arroyo.cine.model.mapper.pelicula_serie.PersonajeComplementoPeliculaSerieMapperImpl;
+import com.arroyo.cine.repository.GeneroRepository;
+import com.arroyo.cine.repository.PeliculaSeriePersonajeRepository;
+import com.arroyo.cine.repository.PeliculaSerieRepository;
+import com.arroyo.cine.repository.PersonajeRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PeliculaSerieServiceTest {
 
-    private static PeliculaSerieService service;
-    private static PeliculaSerieDto peliculaSerieDto, peliculaSerieDtoPrueba;
-    private static List<PeliculaSerieDto> peliculaSerieDtoList, peliculaSerieDtoListPrueba;
+    private static final PeliculaSeriePersonajeRepository peliculaSeriePersonajeRepository = Mockito.mock(PeliculaSeriePersonajeRepository.class);
+    private static final PersonajeComplementoPeliculaSerieMapper peliculaSerieMapper = new PersonajeComplementoPeliculaSerieMapperImpl();
+    private static final PeliculaSerieMapper mapper = new PeliculaSerieMapperImpl(peliculaSerieMapper);
+    private static final PeliculaSeriePersonajeService peliculaSeriePersonajeService = new PeliculaSeriePersonajeService(peliculaSeriePersonajeRepository);
+    private static final PeliculaSerieRepository repository = Mockito.mock(PeliculaSerieRepository.class);
+    private static final PersonajeRepository personajeRepository = Mockito.mock(PersonajeRepository.class);
+    private static final GeneroRepository generoRepository = Mockito.mock(GeneroRepository.class);
+    private static final PeliculaSerieService service = new PeliculaSerieService(repository, generoRepository, personajeRepository, peliculaSeriePersonajeService, mapper);
+    private static PeliculaSerie peliculaSerie;
+    private static List<PeliculaSerieDto> peliculaSerieDtoList;
+    private static List<PeliculaSerie> peliculaSerieList;
+    private static Personaje personaje;
+    private static Genero genero;
+
 
     @BeforeAll
     static void beforeAll() {
-        service = Mockito.mock(PeliculaSerieService.class);
-        peliculaSerieDto = new PeliculaSerieDto("1","El agua","pelicula.jpg","2020-09-16","2", "2", null);
-        peliculaSerieDtoPrueba = new PeliculaSerieDto("1","El agua","pelicula.jpg","2020-09-16","2", "2", null);
         peliculaSerieDtoList = new ArrayList<>();
-        peliculaSerieDtoListPrueba = new ArrayList<>();
+        peliculaSerieList = new ArrayList<>();
+        personaje = new Personaje();
+        peliculaSerie = new PeliculaSerie();
+        genero = new Genero();
 
-        peliculaSerieDtoList.add(peliculaSerieDto);
-        peliculaSerieDtoListPrueba.add(peliculaSerieDtoPrueba);
+        genero.setIdGenero(1);
+        genero.setImagen("accion.jpg");
+        genero.setNombre("Accion");
+
+        personaje.setIdPersonaje(1);
+        personaje.setNombre("Omar");
+        personaje.setHistoria("Soy productor");
+        personaje.setImagen("omar.jpg");
+        personaje.setEdad((byte) 20);
+        personaje.setPeso(18.50F);
+
+        peliculaSerie.setIdPeliculaSerie(1);
+        peliculaSerie.setTitulo("Los simson");
+        peliculaSerie.setImagen("simson.jpg");
+        peliculaSerie.setIdGenero(1);
+        peliculaSerie.setCalifiacion((byte) 5);
+        peliculaSerie.setFechaCreacion(LocalDate.now());
+        peliculaSerie.setGeneroPelicula(genero);
+        peliculaSerie.setPersonajes(List.of(personaje));
+
+        peliculaSerieList.add(peliculaSerie);
     }
 
     @Test
     void getAll() {
-        Mockito.when(service.getAll(null, null,null)).thenReturn(peliculaSerieDtoList);
-        assertEquals(peliculaSerieDtoListPrueba, service.getAll(null, null,null));
+        PeliculaSerieDto peliculaSerieDto = mapper.aPeliculaSerieDto(peliculaSerie);
+        peliculaSerieDtoList.add(peliculaSerieDto);
+        Mockito.when(repository.findAll()).thenReturn(peliculaSerieList);
+        assertEquals(peliculaSerieDtoList, service.getAll(null, null, null));
     }
 
     @Test
     void getById() {
-        Mockito.when(service.getById("1")).thenReturn(peliculaSerieDto);
-        assertEquals(peliculaSerieDtoPrueba, service.getById("1"));
+        PeliculaSerieDto peliculaSerieDto = mapper.aPeliculaSerieDto(peliculaSerie);
+        Mockito.when(repository.findById(1)).thenReturn(Optional.of(peliculaSerie));
+        assertEquals(peliculaSerieDto, service.getById("1"));
     }
 
     @Test
     void save() {
-        Mockito.when(service.save(peliculaSerieDto)).thenReturn(peliculaSerieDto);
-        assertEquals(peliculaSerieDtoPrueba, service.save(peliculaSerieDto));
+        PeliculaSerieDto peliculaSerieDto = mapper.aPeliculaSerieDto(peliculaSerie);
+        Mockito.when(generoRepository.findById(1)).thenReturn(Optional.of(genero));
+        Mockito.when(repository.findById(1)).thenReturn(Optional.of(peliculaSerie));
+        Mockito.when(repository.save(peliculaSerie)).thenReturn(peliculaSerie);
+        assertEquals(peliculaSerieDto, service.save(peliculaSerieDto));
     }
 
     @Test
     void savePersonalizado() {
-        Mockito.when(service.savePersonalizado("1","1")).thenReturn(peliculaSerieDto);
-        assertEquals(peliculaSerieDtoPrueba, service.savePersonalizado("1","1"));
+        PeliculaSerieDto peliculaSerieDto = new PeliculaSerieDto("1", "Los simson", "simson.jpg", LocalDate.now().toString(), "5"
+                , "1", List.of(new PersonajeDto("1", "Omar", "20", "18.5", "omar.jpg", "Soy productor", null)));
+        Mockito.when(repository.findById(1)).thenReturn(Optional.of(peliculaSerie));
+        Mockito.when(personajeRepository.findById(1)).thenReturn(Optional.of(personaje));
+        assertEquals(peliculaSerieDto, service.savePersonalizado("1", "1"));
     }
 
     @Test
     void update() {
-        Mockito.when(service.update("1", peliculaSerieDto)).thenReturn(peliculaSerieDto);
-        assertEquals(peliculaSerieDtoPrueba, service.update("1", peliculaSerieDto));
+        PeliculaSerieDto peliculaSerieDto = new PeliculaSerieDto("1", "Los simson modificado", "simson.jpg", LocalDate.now().toString(), "5"
+                , "1", List.of(new PersonajeDto("1", "Omar", "20", "18.5", "omar.jpg", "Soy productor", null)));
+        Mockito.when(repository.findById(1)).thenReturn(Optional.of(peliculaSerie));
+        Mockito.when(generoRepository.findById(1)).thenReturn(Optional.of(genero));
+        assertEquals(peliculaSerieDto, service.update("1", peliculaSerieDto));
     }
 
     @Test
     void delete() {
-        Mockito.when(service.delete(peliculaSerieDto)).thenReturn(peliculaSerieDto);
-        assertEquals(peliculaSerieDtoPrueba, service.delete(peliculaSerieDto));
+        PeliculaSerieDto peliculaSerieDto = mapper.aPeliculaSerieDto(peliculaSerie);
+        Mockito.when(repository.findById(1)).thenReturn(Optional.of(peliculaSerie));
+        assertEquals(peliculaSerieDto, service.delete(peliculaSerieDto));
     }
 
     @Test
     void deleteById() {
-        Mockito.when(service.deleteById("1")).thenReturn(peliculaSerieDto);
-        assertEquals(peliculaSerieDtoPrueba, service.deleteById("1"));
+        PeliculaSerieDto peliculaSerieDto = mapper.aPeliculaSerieDto(peliculaSerie);
+        Mockito.when(repository.findById(1)).thenReturn(Optional.of(peliculaSerie));
+        assertEquals(peliculaSerieDto, service.deleteById("1"));
+    }
+
+    @Test
+    void deletePersonalizado() {
+        Mockito.when(repository.findById(1)).thenReturn(Optional.of(peliculaSerie));
+        Mockito.when(personajeRepository.findById(1)).thenReturn(Optional.of(personaje));
+        Mockito.when(peliculaSeriePersonajeRepository.buscarConIdPeliculaSerieAndIdPersonaje(1, 1)).thenReturn(new PeliculaSeriePersonaje(new FkPeliculaSeriePersonaje(1, 1)));
+        assertEquals(Map.of("Mensaje", "El personaje " + personaje.getNombre() + " se elimino de la película " + peliculaSerie.getTitulo()), service.deletePersonalizado("1", "1"));
     }
 }

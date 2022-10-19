@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 import static com.arroyo.cine.service.validacion.usuario.ParametroEntradaUsuario.*;
 import static com.arroyo.cine.util.statico.MensajeError.*;
 
@@ -27,7 +29,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void save(UsuarioDto dto) {
+    public Map<String, String> save(UsuarioDto dto) {
         validarUsuarioDto(dto);
         validarCorreo(dto.correo());
         validarUsuario(dto.usuario());
@@ -36,12 +38,13 @@ public class UsuarioService {
         validarRol(dto.rol());
         UsuarioDto usuario = new UsuarioDto(dto.idUsuario(), dto.usuario(), dto.correo(), passwordEncoder.encode(dto.contrasena()), dto.rol());
         repository.save(mapper.aUsuario(usuario));
+        return Map.of("Mensaje", "el usuario " + dto.usuario() + " se creo exitosamente");
     }
 
     @Transactional
-    public void saveRolUser(UsuarioDto dto) {
+    public Map<String, String> saveRolUser(UsuarioDto dto) {
         UsuarioDto usuario = new UsuarioDto(dto.idUsuario(), dto.usuario(), dto.correo(), passwordEncoder.encode(dto.contrasena()), "ROLE_USER");
-        save(usuario);
+        return save(usuario);
     }
 
     @Transactional

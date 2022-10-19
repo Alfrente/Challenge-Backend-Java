@@ -2,6 +2,7 @@ package com.arroyo.cine.service;
 
 import com.arroyo.cine.exception.Excepcion;
 import com.arroyo.cine.model.dto.PeliculaSerieDto;
+import com.arroyo.cine.model.dto.PersonajeDto;
 import com.arroyo.cine.model.entity.FkPeliculaSeriePersonaje;
 import com.arroyo.cine.model.entity.PeliculaSerie;
 import com.arroyo.cine.model.entity.PeliculaSeriePersonaje;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.arroyo.cine.service.validacion.ValidacionGenerica.convertirEntero;
@@ -52,7 +54,8 @@ public class PeliculaSerieService {
         buscarGeneroConId(peliculaSerie.idGenero());
         verificarParametrosEntradaPeliculaSerie(peliculaSerie);
         verificarParametrosEntradaPersonajes(peliculaSerie.personajes());
-        return mapper.aPeliculaSerieDto(repository.save(mapper.aPeliculaSerie(peliculaSerie)));
+        repository.save(mapper.aPeliculaSerie(peliculaSerie));
+        return mapper.aPeliculaSerieDto(buscarPeliculaSerieConId(peliculaSerie.idPeliculaSerie()));
     }
 
     @Transactional
@@ -68,7 +71,8 @@ public class PeliculaSerieService {
         validarPeliculaSerieDto(peliculaSerieDto);
         PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(idPeliculaSerie);
         buscarGeneroConId(peliculaSerieDto.idGenero());
-        return mapper.aPeliculaSerieDto(repository.save(parametroActualizar(peliculaSerie, peliculaSerieDto)));
+        repository.save(parametroActualizar(peliculaSerie, peliculaSerieDto));
+        return mapper.aPeliculaSerieDto(buscarPeliculaSerieConId(idPeliculaSerie));
     }
 
     @Transactional
@@ -82,18 +86,20 @@ public class PeliculaSerieService {
         return mapper.aPeliculaSerieDto(peliculaSerie);
     }
 
-    @Transactional
-    public void deletePersonalizado(String idPeliculaSerie, String idPersonaje) {
-        PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(idPeliculaSerie);
-        Personaje personaje = buscarPersonajeConId(idPersonaje);
-        validarTablaIntermedia(peliculaSerie.getIdPeliculaSerie(), personaje.getIdPersonaje());
-        peliculaSeriePersonajeService.delete(new PeliculaSeriePersonaje(new FkPeliculaSeriePersonaje(peliculaSerie.getIdPeliculaSerie(), personaje.getIdPersonaje())));
-    }
-
-     /*private PeliculaSerieDto setearPersonajesNull(PeliculaSerieDto peliculaSerieDto) {
+      /*private PeliculaSerieDto setearPersonajesNull(PeliculaSerieDto peliculaSerieDto) {
         peliculaSerieDto.personajes(null);
         return peliculaSerieDto;
     }*/
+
+    @Transactional
+    public Map<String, String> deletePersonalizado(String idPeliculaSerie, String idPersonaje) {
+        PeliculaSerie peliculaSerie = buscarPeliculaSerieConId(idPeliculaSerie);
+        Personaje personaje = buscarPersonajeConId(idPersonaje);
+        validarTablaIntermedia(peliculaSerie.getIdPeliculaSerie(), personaje.getIdPersonaje());
+        peliculaSeriePersonajeService.delete(new PeliculaSeriePersonaje(new
+                FkPeliculaSeriePersonaje(peliculaSerie.getIdPeliculaSerie(), personaje.getIdPersonaje())));
+        return Map.of("Mensaje", "El personaje " + personaje.getNombre() + " se elimino de la película " + peliculaSerie.getTitulo());
+    }
 
     @Transactional
     public PeliculaSerieDto deleteById(String idPeliculaSerie) {

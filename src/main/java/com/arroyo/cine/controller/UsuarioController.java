@@ -28,9 +28,8 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Servicio no disponible.")
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad usuario")
-    public ResponseEntity<String> registrar(@RequestBody UsuarioDto dto) {
-        service.saveRolUser(dto);
-        return new ResponseEntity<>("Usuario creado exitosamente", HttpStatus.CREATED);
+    public ResponseEntity<Map<String, String>> registrar(@RequestBody UsuarioDto dto) {
+        return new ResponseEntity<>(service.saveRolUser(dto), HttpStatus.CREATED);
     }
 
     @PostMapping("/register/admin")
@@ -42,7 +41,6 @@ public class UsuarioController {
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Entidad usuario")
     public ResponseEntity<Map<String, String>> registrarAdmin(@RequestBody UsuarioDto dto) {
-        service.save(dto);
-        return new ResponseEntity<>(Map.of("Mensaje","Usuario creado exitosamente"), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.save(dto), HttpStatus.CREATED);
     }
 }

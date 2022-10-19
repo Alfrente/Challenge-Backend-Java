@@ -10,7 +10,6 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PeliculaSeriePersonajeServiceTest {
-
     private static PeliculaSeriePersonajeService service;
     private static PeliculaSeriePersonaje psp, pspPrueba;
 
@@ -18,10 +17,8 @@ class PeliculaSeriePersonajeServiceTest {
     static void beforeAll() {
         PeliculaSeriePersonajeRepository repository = Mockito.mock(PeliculaSeriePersonajeRepository.class);
         service = new PeliculaSeriePersonajeService(repository);
-        FkPeliculaSeriePersonaje fkPsp = new FkPeliculaSeriePersonaje(1, 2);
-        FkPeliculaSeriePersonaje fkPspPrueba = new FkPeliculaSeriePersonaje(1, 2);
-        psp = new PeliculaSeriePersonaje(fkPsp);
-        pspPrueba = new PeliculaSeriePersonaje(fkPspPrueba);
+        psp = new PeliculaSeriePersonaje(new FkPeliculaSeriePersonaje(1, 2));
+        pspPrueba = new PeliculaSeriePersonaje(new FkPeliculaSeriePersonaje(1, 2));
     }
 
     @Test

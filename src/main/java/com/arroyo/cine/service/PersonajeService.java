@@ -47,10 +47,9 @@ public class PersonajeService {
     @Transactional
     public PersonajeDto save(String nombre, String edad, String peso, MultipartFile imagen, String historia) {
         validarPersonajeDto(nombre, edad, peso);
-        PersonajeDto dto = crearPersonajeDto(nombre, edad, peso, historia, imagen);
-        validarDatoRecibido(dto);
+        Personaje personaje = crearPersonaje(nombre, edad, peso, historia, imagen);
         guardarImagen(imagen, DIRECTORIO_PERSONAJE);
-        return mapper.aPersonajeDto(repository.save(mapper.aPersonaje(dto)));
+        return mapper.aPersonajeDto(repository.save(personaje));
     }
 
     @Transactional
@@ -85,10 +84,14 @@ public class PersonajeService {
                 new Excepcion(MENSAJE_CODIGO_ERROR, ERROR, EL + PERSONAJE + NO_DISPONIBLE, HttpStatus.BAD_REQUEST));
     }
 
-    private PersonajeDto crearPersonajeDto(String nombre, String edad, String peso, String historia, MultipartFile imagen) {
+    private Personaje crearPersonaje(String nombre, String edad, String peso, String historia, MultipartFile imagen) {
+        PersonajeDto personajeDto;
         if (imagen != null)
-            return new PersonajeDto(null, nombre, edad, peso, imagen.getOriginalFilename(), historia, null);
-        return new PersonajeDto(null, nombre, edad, peso, null, historia, null);
+            personajeDto = new PersonajeDto(null, nombre, edad, peso, imagen.getOriginalFilename(), historia, null);
+        else
+            personajeDto = new PersonajeDto(null, nombre, edad, peso, null, historia, null);
+        validarPersonajeDto(personajeDto);
+        return mapper.aPersonaje(personajeDto);
     }
 
     private PersonajeDto verificarDatoModificar(String nombre, String edad, String peso, MultipartFile imagen, String historia, Personaje personaje) {

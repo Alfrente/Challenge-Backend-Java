@@ -1,6 +1,7 @@
 package com.arroyo.cine.controller;
 
 import com.arroyo.cine.model.dto.GeneroDto;
+import com.arroyo.cine.service.GeneroService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,59 +16,54 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GeneroControllerTest {
-
-    private static GeneroController controller;
-    private static GeneroDto generoDto, generoDtoPrueba;
-    private static List<GeneroDto> generoDtoList, generoDtoListPrueba;
+    private static final GeneroService service = Mockito.mock(GeneroService.class);
+    private static final GeneroController controller = new GeneroController(service);
+    private static GeneroDto generoDto;
+    private static List<GeneroDto> generoDtoList;
+    private static MockMultipartFile imagen;
 
     @BeforeAll
     static void beforeAll() {
-        controller = Mockito.mock(GeneroController.class);
-
-        generoDto = new GeneroDto("1", "The boys", "boys.jpg", null);
-        generoDtoPrueba = new GeneroDto("1", "The boys", "boys.jpg", null);
-
+        generoDto = new GeneroDto("1", "Terror", "prueba.jpg", null);
         generoDtoList = new ArrayList<>();
-        generoDtoListPrueba = new ArrayList<>();
-
         generoDtoList.add(generoDto);
-        generoDtoListPrueba.add(generoDtoPrueba);
+        imagen = new MockMultipartFile("prueba", "prueba.jpg", MediaType.TEXT_PLAIN_VALUE, "prueba".getBytes());
     }
 
     @Test
     void getAll() {
-        Mockito.when(controller.getAll()).thenReturn(new ResponseEntity<>(generoDtoList, HttpStatus.OK));
-        assertEquals(new ResponseEntity<>(generoDtoListPrueba, HttpStatus.OK), controller.getAll());
+        Mockito.when(service.getAll()).thenReturn(generoDtoList);
+        assertEquals(new ResponseEntity<>(generoDtoList, HttpStatus.OK), controller.getAll());
     }
 
     @Test
     void getById() {
-        Mockito.when(controller.getById("1")).thenReturn(new ResponseEntity<>(generoDto, HttpStatus.OK));
-        assertEquals(new ResponseEntity<>(generoDtoPrueba, HttpStatus.OK), controller.getById("1"));
+        Mockito.when(service.getById("1")).thenReturn(generoDto);
+        assertEquals(new ResponseEntity<>(generoDto, HttpStatus.OK), controller.getById("1"));
     }
 
     @Test
     void save() {
-        MockMultipartFile filea = new MockMultipartFile(
-                "file",
-                "saludo.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-                "HOLA".getBytes()
-        );
-
-        Mockito.when(controller.save("Accion pura", filea)).thenReturn(new ResponseEntity<>(generoDto, HttpStatus.CREATED));
-        assertEquals(new ResponseEntity<>(generoDtoPrueba, HttpStatus.CREATED), controller.save("Accion pura", filea));
+        Mockito.when(service.save("Terror", imagen)).thenReturn(generoDto);
+        assertEquals(new ResponseEntity<>(generoDto, HttpStatus.CREATED), controller.save("Terror", imagen));
     }
 
     @Test
     void delete() {
+        Mockito.when(service.delete(generoDto)).thenReturn(generoDto);
+        assertEquals(new ResponseEntity<>(generoDto, HttpStatus.ACCEPTED), controller.delete(generoDto));
     }
 
     @Test
     void deleteById() {
+        Mockito.when(service.deleteById("1")).thenReturn(generoDto);
+        assertEquals(new ResponseEntity<>(generoDto, HttpStatus.ACCEPTED), controller.deleteById("1"));
     }
 
     @Test
     void update() {
+        GeneroDto generoDtoActualizar = new GeneroDto("1","Terror", "prueba.jpg", null);
+        Mockito.when(service.update("1","Terror", imagen)).thenReturn(generoDtoActualizar);
+        assertEquals(new ResponseEntity<>(generoDtoActualizar, HttpStatus.OK), controller.update("1","Terror", imagen));
     }
 }
