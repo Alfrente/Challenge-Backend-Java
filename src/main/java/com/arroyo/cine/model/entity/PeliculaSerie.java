@@ -102,25 +102,7 @@ public class PeliculaSerie {
         this.personajes = personajes;
     }
 
-   /* public Genero getGeneroPelicula() {
-        return generoPelicula;
-    }*/
-
     public void setGeneroPelicula(Genero generoPelicula) {
         this.generoPelicula = generoPelicula;
-    }
-
-    @Override
-    public String toString() {
-        return "PeliculaSerie{" +
-                "idPeliculaSerie=" + idPeliculaSerie +
-                ", titulo='" + titulo + '\'' +
-                ", imagen='" + imagen + '\'' +
-                ", fechaCreacion=" + fechaCreacion +
-                ", califiacion=" + califiacion +
-                ", idGenero=" + idGenero +
-                ", personajes=" + personajes +
-                ", generoPelicula=" + generoPelicula +
-                '}';
     }
 }

@@ -21,21 +21,6 @@ public class Usuario implements Serializable {
     @Column(nullable = false, length = 20)
     String rol;
 
-    public Usuario() {
-    }
-
-
-    /*public Usuario(String nombreUsuario, String correo, String contrasena, String rol) {
-        this.nombreUsuario = nombreUsuario;
-        this.correo = correo;
-        this.contrasena = contrasena;
-        this.rol = rol;
-    }*/
-
-    /*public Integer getIdUsuario() {
-        return idUsuario;
-    }*/
-
     public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
@@ -47,10 +32,6 @@ public class Usuario implements Serializable {
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
-
-    /*public String getCorreo() {
-        return correo;
-    }*/
 
     public void setCorreo(String correo) {
         this.correo = correo;

@@ -8,6 +8,6 @@
 ## Me falta lo siguiente para completar el proyecto
 #### 10. Autenticación de Usuarios JWT
 #### 11. Envío de emails cree la cuenta, pero me sale no está autorizado para acceder a SendGrid, comuníquese con Soporte .
-#### 12. Tests.
 
+### [Link del json](https://www.google.com)
 

@@ -33,22 +33,15 @@ class PeliculaSerieServiceTest {
     private static final PersonajeRepository personajeRepository = Mockito.mock(PersonajeRepository.class);
     private static final GeneroRepository generoRepository = Mockito.mock(GeneroRepository.class);
     private static final PeliculaSerieService service = new PeliculaSerieService(repository, generoRepository, personajeRepository, peliculaSeriePersonajeService, mapper);
-    private static PeliculaSerie peliculaSerie;
-    private static List<PeliculaSerieDto> peliculaSerieDtoList;
-    private static List<PeliculaSerie> peliculaSerieList;
-    private static Personaje personaje;
-    private static Genero genero;
+    private static final PeliculaSerie peliculaSerie= new PeliculaSerie();
+    private static final List<PeliculaSerieDto> peliculaSerieDtoList= new ArrayList<>();
+    private static final Personaje personaje= new Personaje();
+    private static final Genero genero= new Genero();
 
 
     @BeforeAll
     static void beforeAll() {
-        peliculaSerieDtoList = new ArrayList<>();
-        peliculaSerieList = new ArrayList<>();
-        personaje = new Personaje();
-        peliculaSerie = new PeliculaSerie();
-        genero = new Genero();
-
-        genero.setIdGenero(1);
+         genero.setIdGenero(1);
         genero.setImagen("accion.jpg");
         genero.setNombre("Accion");
 
@@ -67,15 +60,13 @@ class PeliculaSerieServiceTest {
         peliculaSerie.setFechaCreacion(LocalDate.now());
         peliculaSerie.setGeneroPelicula(genero);
         peliculaSerie.setPersonajes(List.of(personaje));
-
-        peliculaSerieList.add(peliculaSerie);
     }
 
     @Test
     void getAll() {
         PeliculaSerieDto peliculaSerieDto = mapper.aPeliculaSerieDto(peliculaSerie);
         peliculaSerieDtoList.add(peliculaSerieDto);
-        Mockito.when(repository.findAll()).thenReturn(peliculaSerieList);
+        Mockito.when(repository.findAll()).thenReturn(List.of(peliculaSerie));
         assertEquals(peliculaSerieDtoList, service.getAll(null, null, null));
     }
 

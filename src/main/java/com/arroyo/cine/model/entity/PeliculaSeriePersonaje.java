@@ -7,12 +7,14 @@ import java.util.Objects;
 @Table(name = "pelicula_serie_personaje")
 public class PeliculaSeriePersonaje {
 
+    public PeliculaSeriePersonaje() {
+        fkCompuesta = null;
+    }
+
     @EmbeddedId
     private final FkPeliculaSeriePersonaje fkCompuesta;
 
-    /*public FkPeliculaSeriePersonaje getFkCompuesta() {
-        return fkCompuesta;
-    }*/
+
 
     public PeliculaSeriePersonaje(FkPeliculaSeriePersonaje fkCompuesta) {
         this.fkCompuesta = fkCompuesta;

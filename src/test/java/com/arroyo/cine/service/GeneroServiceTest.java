@@ -35,24 +35,16 @@ class GeneroServiceTest {
     private static final GeneroService service = new GeneroService(repository, mapper);
     @Autowired
     private static final GeneroService serviceMock = Mockito.mock(GeneroService.class);
-
     private static GeneroDto generoDto;
-    private static List<GeneroDto> generoDtoList;
-    private static List<PeliculaSerie> peliculaSerieList;
-    private static Genero genero;
-    private static List<Genero> generoList;
-    private static MockMultipartFile imagen;
+    private static final List<PeliculaSerie> peliculaSerieList= new ArrayList<>();
+    private static final Genero genero = new Genero();
+    private static final List<Genero> generoList= new ArrayList<>();
+    private static final MockMultipartFile imagen = new MockMultipartFile("prueba", "prueba.jpg", MediaType.TEXT_PLAIN_VALUE, "prueba".getBytes());
 
     @BeforeAll
     static void beforeAll() {
         crearDirectorio();
         PeliculaSerie peliculaSerie = new PeliculaSerie();
-        imagen = new MockMultipartFile("prueba", "prueba.jpg", MediaType.TEXT_PLAIN_VALUE, "prueba".getBytes());
-        genero = new Genero();
-        peliculaSerieList = new ArrayList<>();
-        generoList = new ArrayList<>();
-        generoDtoList = new ArrayList<>();
-
         peliculaSerie.setIdPeliculaSerie(1);
         peliculaSerie.setIdGenero(2);
         peliculaSerie.setImagen("Foto.jpg");
@@ -71,7 +63,7 @@ class GeneroServiceTest {
     void getAll() {
         genero.setPeliculaSerieList(peliculaSerieList);
         generoList.add(genero);
-        generoDtoList = mapper.aListGeneroDto(generoList);
+        List<GeneroDto> generoDtoList = mapper.aListGeneroDto(generoList);
         Mockito.when(repository.findAll()).thenReturn(generoList);
         assertEquals(generoDtoList, service.getAll());
     }

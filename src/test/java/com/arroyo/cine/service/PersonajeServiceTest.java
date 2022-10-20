@@ -1,6 +1,5 @@
 package com.arroyo.cine.service;
 
-import com.arroyo.cine.model.dto.PeliculaSerieDto;
 import com.arroyo.cine.model.dto.PersonajeDto;
 import com.arroyo.cine.model.entity.PeliculaSerie;
 import com.arroyo.cine.model.entity.Personaje;
@@ -9,7 +8,6 @@ import com.arroyo.cine.model.mapper.personaje.PeliculaSerieComplementoMapperImpl
 import com.arroyo.cine.model.mapper.personaje.PersonajeMapper;
 import com.arroyo.cine.model.mapper.personaje.PersonajeMapperImpl;
 import com.arroyo.cine.repository.PersonajeRepository;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +30,6 @@ class PersonajeServiceTest {
     private static final PersonajeService service = new PersonajeService(repository, mapper);
     private static final Personaje personaje = new Personaje();
     private static final PeliculaSerie peliculaSerie = new PeliculaSerie();
-    private static final List<Personaje> personajeList = new ArrayList<>();
     private static final MockMultipartFile imagen = new MockMultipartFile("prueba", "prueba.jpg", MediaType.TEXT_PLAIN_VALUE, "prueba".getBytes());
 
     @BeforeAll
@@ -47,7 +43,7 @@ class PersonajeServiceTest {
         peliculaSerie.setFechaCreacion(LocalDate.now());
 
         personaje.setIdPersonaje(1);
-        personaje.setImagen(imagen.getOriginalFilename());
+        personaje.setImagen("prueba.jpg");
         personaje.setPeso(18.47F);
         personaje.setEdad((byte) 20);
         personaje.setNombre("Omar");
@@ -58,9 +54,8 @@ class PersonajeServiceTest {
     @Test
     void getAll() {
         personaje.setPeliculaSeries(List.of(peliculaSerie));
-        personajeList.add(personaje);
-        List<PersonajeDto> personajeDtoList = mapper.aListPersonajeDto(personajeList);
-        Mockito.when(repository.findAll()).thenReturn(personajeList);
+        List<PersonajeDto> personajeDtoList = mapper.aListPersonajeDto(List.of(personaje));
+        Mockito.when(repository.findAll()).thenReturn(List.of(personaje));
         assertEquals(personajeDtoList, service.getAll(null, null, null));
     }
 
@@ -74,7 +69,7 @@ class PersonajeServiceTest {
     @Test
     void save() {
         assertNull(service.save("Omar", "20", "18.47", imagen, "Soy productor"));
-        borrarImagen(imagen.getOriginalFilename(), 2);
+        borrarImagen("prueba.jpg", 2);
     }
 
     @Test
@@ -83,7 +78,7 @@ class PersonajeServiceTest {
         Mockito.when(repository.findById(personaje.getIdPersonaje())).thenReturn(Optional.of(personaje));
         Mockito.when(repository.save(personaje)).thenReturn(personaje);
         assertEquals(personajeDto, service.update("1", "Omar", "20", "18.47", imagen, "Soy productor"));
-        borrarImagen(imagen.getOriginalFilename(), 2);
+        borrarImagen("prueba.jpg", 2);
     }
 
     @Test
