@@ -1,4 +1,4 @@
-# PPROYECTO CINE
+# PROYECTO CINE
 
 ### El proyecto es un desafío en Alkemy.
 ### `Alkemy CHALLENGE BACKEND - Java Spring Boot (API).` 
